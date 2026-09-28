@@ -50,8 +50,9 @@ CPU. Figures are regenerated from `results/` with `paper/make_figures.py`
 
 ## Status
 
-Draft. The paper has not yet been compiled in this repository; the connectome
-data citation is still marked TODO.
+Draft. The paper compiles on Overleaf with no errors or warnings. The
+connectome is MaleCNS v1.0 (Berg et al., Cell 2026). Related work and the
+novelty boundary are in `docs/LITERATURE_INDEX.md`.
 
 ## License
 

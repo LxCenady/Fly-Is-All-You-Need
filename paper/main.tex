@@ -76,13 +76,33 @@ KC$\rightarrow$MBON layer with dopaminergic teaching signals
 connectivity degree are chosen for what the downstream plasticity must do
 \cite{litwinkumar2017}.
 
-Whole-connectome simulations make it possible to ask these questions with the
-real wiring in place \cite{shiu2024,lappalainen2024}. We use such a model not to
-claim a memory capacity but to localise the memory causally: which state
-variable carries it, which wiring determines which cue can retrieve it and what
-it evokes at the output, what sets its lifetime, and how it leaves the MB.
-Each question is answered by an intervention with a matched control and, where
-possible, a restoration.
+Much of this is established. Sparse, decorrelated KC codes improve learned
+odour discrimination and have been proposed to provide precisely addressable
+locations for odour-specific memories \cite{lin2014}. Models of the MB have
+implemented dopamine-gated KC$\rightarrow$MBON plasticity and reinforcement
+learning \cite{bennett2021}, the integration of stochastic KC input by a
+single MBON has been modelled from its EM architecture \cite{hafez2023}, and a
+connectome-constrained model combined with voltage imaging has explained
+dopamine-mediated interactions between short- and long-term memory units
+\cite{huang2024}. Whole-brain connectomes have been turned into executable
+models of sensorimotor processing \cite{shiu2024,lappalainen2024} and perturbed
+in silico to find the elements that sustain spontaneous activity
+\cite{li2026}.
+
+What has not been done is to take one executable whole-CNS model with local
+plasticity and decompose a memory causally into its parts: which state variable
+carries it after activity has decayed, which wiring determines which cue
+retrieves it, which wiring determines what it evokes at the output, which part
+of the dopaminergic system decides where it is written, what sets its lifetime,
+when two memories interfere, and when a stored trace becomes visible
+downstream. We do this in a model of the complete male CNS connectome
+\cite{berg2026}, answering each question with an intervention, a matched
+control and, where possible, a restoration: state transplants, weight scrambles
+that preserve the multiset of weight changes, topology-preserving wiring swaps,
+teacher swaps and decay controls. We do not claim a memory capacity, and none
+of the components (sparse coding, dopamine-gated plasticity, executable
+connectomes) is new; the contribution is the decomposition and the conditions
+under which each component does or does not operate.
 
 An earlier analysis of this model \cite{olddraft} reported that plasticity
 bought no readout advantage and that the write-effect direction was fixed by
@@ -97,8 +117,9 @@ operating point in which the MB's sparse code is absent.
 \label{sec:methods}
 
 \subsection{Connectome and dynamics}
-The substrate is an adult male \textit{Drosophila} CNS reconstruction
-\todo{cite the connectome release used by the flybrain package} with 166{,}700
+The substrate is the adult male \textit{Drosophila} CNS connectome
+(MaleCNS v1.0, synapse confidence threshold 0.5) \cite{berg2026}, simulated
+with the \texttt{flybrain} leaky integrate-and-fire package, with 166{,}700
 neurons and 25{,}582{,}938 synaptic entries, of which 25{,}088{,}107 remain
 after removing inputs onto sensory neurons. Populations: 4{,}064 KCs, 97 MBONs,
 356 dopaminergic neurons (PAM/PPL/PPM), 675 projection neurons (PNs) in 180
@@ -395,8 +416,9 @@ by different teachers produced nearly unrelated outputs (cosine 0.085 between
 the PAM halves, $-0.06$ between PAM and PPL). Across the 24 item--teacher
 combinations, the teacher explained 87\% of the variance of the normalised
 output, the item 5\%, and their interaction 7\%; within a teacher, items
-remained as distinct as before (0.89--0.91). The dopaminergic system therefore
-decides \emph{where} a memory is stored, and the KC layer decides what is
+remained as distinct as before (0.89--0.91). Consistent with the compartmental
+organisation of dopaminergic input \cite{aso2014a}, the dopaminergic system
+therefore decides \emph{where} a memory is stored, and the KC layer decides what is
 stored there and which cue retrieves it. The sign of the change is not a
 result: in this model PAM writes potentiate and PPL writes depress (100\% of
 changed synapses in each case) because of the hand-set valence signs, whereas
@@ -510,6 +532,13 @@ all probes activating nearly the same KCs.
 
 % =====================================================================
 \section{Discussion}
+That sparse KC codes could provide addressable memory locations was proposed
+from experiments \cite{lin2014}, and that dopaminergic neurons gate plasticity
+compartment by compartment is part of the known MB architecture
+\cite{aso2014a,hige2015}. What the model adds is a causal separation of these
+roles from each other and from coarse and fine wiring, with the conditions
+under which each operates.
+
 In this model, a mushroom-body memory has three addresses. The KC layer supplies
 the retrieval key: when input is sparse, only a cue that re-activates the
 written KCs retrieves the change, and random PN$\rightarrow$KC wiring suffices
@@ -539,9 +568,15 @@ Two properties are set by modelling choices rather than by the wiring. Memory
 lifetime is exactly the prescribed synaptic decay, and the network contributes
 no maintenance because it is silent between events; claims about forgetting or
 consolidation require intrinsic activity, feedback plasticity or
-DAN$\rightarrow$MBON dynamics that this model lacks \cite{eschbach2020}. And the
+DAN$\rightarrow$MBON dynamics that this model lacks \cite{eschbach2020}, such
+as the dopamine-mediated interactions between short- and long-term memory
+units found in vivo \cite{huang2024}. And the
 readout's all-or-none character follows from integrate-and-fire transmission:
-downstream neurons see the memory only when it changes an MBON spike.
+downstream neurons see the memory only when it changes an MBON spike. Our MBONs
+are point neurons; a biophysical model of MBON-$\alpha$3 built from its EM
+architecture shows that dendritic integration of stochastic KC input shapes the
+MBON response \cite{hafez2023}, and how graded such a readout is in a
+compartmental model is open.
 
 \paragraph*{Limitations}
 One connectome and one reconstruction; leaky integrate-and-fire neurons with
@@ -603,6 +638,24 @@ system,'' \textit{Nature}, 2024.
 \bibitem{eschbach2020} C. Eschbach \textit{et al.}, ``Recurrent architecture
 for adaptive regulation of learning in the insect brain,'' \textit{Nat.
 Neurosci.}, vol.~23, pp.~544--555, 2020.
+\bibitem{berg2026} S. Berg \textit{et al.}, ``Sexual dimorphism in the
+complete \textit{Drosophila} male central nervous system connectome,''
+\textit{Cell}, vol.~189, no.~18, pp.~5504--5526.e15, 2026,
+doi: 10.1016/j.cell.2026.08.015.
+\bibitem{bennett2021} J. E. M. Bennett, A. Philippides, and T. Nowotny,
+``Learning with reinforcement prediction errors in a model of the
+\textit{Drosophila} mushroom body,'' \textit{Nat. Commun.}, vol.~12, 2569,
+2021, doi: 10.1038/s41467-021-22592-4.
+\bibitem{hafez2023} O. A. Hafez, B. Escribano, R. L. Ziegler, J. J. Hirtz,
+E. Niebur, and J. Pielage, ``The cellular architecture of memory modules in
+\textit{Drosophila} supports stochastic input integration,'' \textit{eLife},
+vol.~12, e77578, 2023, doi: 10.7554/eLife.77578.
+\bibitem{huang2024} C. Huang \textit{et al.}, ``Dopamine-mediated interactions
+between short- and long-term memory dynamics,'' \textit{Nature}, vol.~634,
+pp.~1141--1149, 2024, doi: 10.1038/s41586-024-07819-w.
+\bibitem{li2026} Q. Li, W. Ping, K. Zhang, and C. Wang, ``Connectome-constrained
+modeling identifies neurons and synapses that sustain spontaneous activity in
+\textit{Drosophila},'' bioRxiv preprint, 2026, doi: 10.64898/2026.08.21.745055.
 \bibitem{olddraft} Earlier draft of this study (2026-09-20), superseded;
 see the correction register PAPER\_OVERTURN\_20260928.md.
 \end{thebibliography}
