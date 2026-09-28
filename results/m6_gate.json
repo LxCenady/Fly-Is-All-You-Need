@@ -1,0 +1,58 @@
+[
+ {
+  "active": 160,
+  "scale": 1.5,
+  "natural": {
+   "item_cos_mean": 0.75584850256637,
+   "item_cos_min": 0.4015502983816549,
+   "gate_cos_mean": 1.0,
+   "gate_cos_min": 1.0,
+   "gate_nonzero_mbons": 77,
+   "I_norm_median": 0.001525266831977383
+  },
+  "gate_clamped_to_item_mean": {
+   "item_cos_mean": 0.7558485349703365,
+   "item_cos_min": 0.4015503513176058,
+   "gate_cos_mean": 1.0,
+   "gate_cos_min": 1.0,
+   "gate_nonzero_mbons": 77,
+   "I_norm_median": 0.0015252668398589462
+  },
+  "gate_uniform_plus1": {
+   "item_cos_mean": 0.7528285190147131,
+   "item_cos_min": 0.3960044158270486,
+   "gate_cos_mean": 1.0,
+   "gate_cos_min": 1.0,
+   "gate_nonzero_mbons": 77,
+   "I_norm_median": 0.0019072269617489682
+  }
+ },
+ {
+  "active": 192,
+  "scale": 1.5,
+  "natural": {
+   "item_cos_mean": 0.7644782085838215,
+   "item_cos_min": 0.4451266927849154,
+   "gate_cos_mean": 1.0,
+   "gate_cos_min": 1.0,
+   "gate_nonzero_mbons": 77,
+   "I_norm_median": 0.0029180233649525045
+  },
+  "gate_clamped_to_item_mean": {
+   "item_cos_mean": 0.764478252997029,
+   "item_cos_min": 0.44512680780615743,
+   "gate_cos_mean": 1.0,
+   "gate_cos_min": 1.0,
+   "gate_nonzero_mbons": 77,
+   "I_norm_median": 0.0029180234347360575
+  },
+  "gate_uniform_plus1": {
+   "item_cos_mean": 0.7471651868162649,
+   "item_cos_min": 0.41667159561637784,
+   "gate_cos_mean": 1.0,
+   "gate_cos_min": 1.0,
+   "gate_nonzero_mbons": 77,
+   "I_norm_median": 0.0034830172281960885
+  }
+ }
+]

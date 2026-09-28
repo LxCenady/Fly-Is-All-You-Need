@@ -1,0 +1,17 @@
+{
+  "cupy": "14.2.0",
+  "before": {
+    "flag": false,
+    "idx": "eb73b50103bfb8c4",
+    "data": "350c838e9511f0f5"
+  },
+  "after_first_spmv": {
+    "flag": true,
+    "idx": "9e49a7d3bad85348",
+    "data": "21487fb482723536"
+  },
+  "cpu_canonical_idx": {
+    "idx": "9e49a7d3bad85348"
+  },
+  "indices_dtype": "int32"
+}

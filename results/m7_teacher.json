@@ -1,0 +1,68 @@
+{
+ "code": "glom",
+ "active": 192,
+ "teachers": {
+  "PAM": 316,
+  "PPL": 24,
+  "PAM_A": 167,
+  "PAM_B": 149
+ },
+ "pam_types_A": [
+  "PAM01",
+  "PAM02",
+  "PAM03",
+  "PAM04",
+  "PAM05",
+  "PAM06",
+  "PAM07"
+ ],
+ "pam_types_B": [
+  "PAM08",
+  "PAM09",
+  "PAM10",
+  "PAM11",
+  "PAM12",
+  "PAM13",
+  "PAM14",
+  "PAM15"
+ ],
+ "gate_cos_between_teachers": {
+  "PAM|PPL": -0.09552900493144989,
+  "PAM|PAM_A": 0.6921261548995972,
+  "PAM|PAM_B": 0.8387649655342102,
+  "PPL|PAM_A": -0.05196383595466614,
+  "PPL|PAM_B": -0.0908041000366211,
+  "PAM_A|PAM_B": 0.18752868473529816
+ },
+ "gate_active_mbons": {
+  "PAM": 77,
+  "PPL": 94,
+  "PAM_A": 57,
+  "PAM_B": 70
+ },
+ "same_item_cos_between_teachers": {
+  "PAM|PPL": -0.05933738768309967,
+  "PAM|PAM_A": 0.5885433864619632,
+  "PAM|PAM_B": 0.842605381270376,
+  "PPL|PAM_A": -0.028284262555266792,
+  "PPL|PAM_B": -0.052705046896774625,
+  "PAM_A|PAM_B": 0.0850168099241363
+ },
+ "item_distinctness_per_teacher": {
+  "PAM": 0.9097050475095987,
+  "PPL": 0.8923229685610699,
+  "PAM_A": 0.9134892786683749,
+  "PAM_B": 0.9145568642730013
+ },
+ "depression_fraction": {
+  "PAM": 0.0,
+  "PPL": 1.0,
+  "PAM_A": 0.0,
+  "PAM_B": 0.0
+ },
+ "variance_share": {
+  "item": 0.05308887190320888,
+  "teacher": 0.8737475885350239,
+  "interaction_residual": 0.07316353956176724
+ }
+}

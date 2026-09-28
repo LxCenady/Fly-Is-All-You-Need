@@ -1,0 +1,17 @@
+{
+  "raw_sorted": true,
+  "masked_nnz": 25088107,
+  "masked_has_sorted_indices_flag": false,
+  "rows_actually_unsorted": 148687,
+  "n_kc_mbon_edges": 61210,
+  "indptr_unchanged_by_sort": true,
+  "edges_whose_slot_now_holds_a_different_presynaptic_cell": 61164,
+  "of_those_slot_now_holds_non_KC_presyn": 11130,
+  "mbon_rows_with_any_moved_slot": 97,
+  "sum_abs_w_true_in_slots_after_sort": 61.02412033081055,
+  "sum_abs_w0_cached": 56.178192138671875,
+  "sign_mismatch_slots(w0 vs true occupant)": 3725,
+  "rel_L2_change_of_MBON_input_rows_if_w0_written_back": 0.6337713003158569,
+  "n_mbon": 97,
+  "n_kc": 4064
+}

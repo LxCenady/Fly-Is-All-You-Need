@@ -1,0 +1,232 @@
+[
+ {
+  "active": 192,
+  "scale": 1.5,
+  "code": "glom",
+  "rows": [
+   {
+    "pair": "ac",
+    "teacher": "same",
+    "interference": 0.23978518076464628,
+    "kept_cos": 0.9998292206244365,
+    "linear_prediction": 0.2386387029507894,
+    "overlap_Ywritten_Xprobe": 0.1317365269461078,
+    "clip_fraction_seq": 0.0
+   },
+   {
+    "pair": "ac",
+    "teacher": "diff",
+    "interference": 0.4759502119263732,
+    "kept_cos": 0.9070539049223858,
+    "linear_prediction": 0.47372350070547115,
+    "overlap_Ywritten_Xprobe": 0.10354745925215723,
+    "clip_fraction_seq": 0.0
+   },
+   {
+    "pair": "bd",
+    "teacher": "same",
+    "interference": 0.31910392937685556,
+    "kept_cos": 0.9990137365407192,
+    "linear_prediction": 0.31626547949842176,
+    "overlap_Ywritten_Xprobe": 0.1288604898828541,
+    "clip_fraction_seq": 0.0
+   },
+   {
+    "pair": "bd",
+    "teacher": "diff",
+    "interference": 0.6282281672783967,
+    "kept_cos": 0.8587946085918043,
+    "linear_prediction": 0.624868652528008,
+    "overlap_Ywritten_Xprobe": 0.09610705596107055,
+    "clip_fraction_seq": 0.0
+   },
+   {
+    "pair": "eg",
+    "teacher": "same",
+    "interference": 0.26227711172892737,
+    "kept_cos": 0.9970357970683623,
+    "linear_prediction": 0.2642574625802075,
+    "overlap_Ywritten_Xprobe": 0.09309623430962342,
+    "clip_fraction_seq": 0.0
+   },
+   {
+    "pair": "eg",
+    "teacher": "diff",
+    "interference": 0.42271155444107716,
+    "kept_cos": 0.9271113419564863,
+    "linear_prediction": 0.4217942123093801,
+    "overlap_Ywritten_Xprobe": 0.06915629322268327,
+    "clip_fraction_seq": 0.0
+   },
+   {
+    "pair": "fh",
+    "teacher": "same",
+    "interference": 0.1469986183882762,
+    "kept_cos": 0.9998733130552747,
+    "linear_prediction": 0.1471448486903755,
+    "overlap_Ywritten_Xprobe": 0.1355072463768116,
+    "clip_fraction_seq": 0.0
+   },
+   {
+    "pair": "fh",
+    "teacher": "diff",
+    "interference": 0.29578074327521936,
+    "kept_cos": 0.9598283818441193,
+    "linear_prediction": 0.29258088102670204,
+    "overlap_Ywritten_Xprobe": 0.10555555555555556,
+    "clip_fraction_seq": 0.0
+   },
+   {
+    "pair": "ik",
+    "teacher": "same",
+    "interference": 1.084881101633201,
+    "kept_cos": 0.9503367885619817,
+    "linear_prediction": 1.0887478352873057,
+    "overlap_Ywritten_Xprobe": 0.061004784688995214,
+    "clip_fraction_seq": 0.0
+   },
+   {
+    "pair": "ik",
+    "teacher": "diff",
+    "interference": 1.4711305393046723,
+    "kept_cos": 0.585176715710714,
+    "linear_prediction": 1.4363164665393036,
+    "overlap_Ywritten_Xprobe": 0.061375661375661375,
+    "clip_fraction_seq": 0.0
+   },
+   {
+    "pair": "jl",
+    "teacher": "same",
+    "interference": 0.3322425601248296,
+    "kept_cos": 0.9988084940731051,
+    "linear_prediction": 0.3317892028894847,
+    "overlap_Ywritten_Xprobe": 0.14037433155080214,
+    "clip_fraction_seq": 0.0
+   },
+   {
+    "pair": "jl",
+    "teacher": "diff",
+    "interference": 0.6347988774999599,
+    "kept_cos": 0.8494260707195664,
+    "linear_prediction": 0.6254279264414081,
+    "overlap_Ywritten_Xprobe": 0.11269614835948645,
+    "clip_fraction_seq": 0.0
+   }
+  ]
+ },
+ {
+  "active": 512,
+  "scale": 1.0,
+  "code": "random",
+  "rows": [
+   {
+    "pair": "ac",
+    "teacher": "same",
+    "interference": 1.3598081488172122,
+    "kept_cos": 0.9815139198888095,
+    "linear_prediction": 1.3787331273351184,
+    "overlap_Ywritten_Xprobe": 0.8871101297267457,
+    "clip_fraction_seq": 0.0
+   },
+   {
+    "pair": "ac",
+    "teacher": "diff",
+    "interference": 2.7679882755459,
+    "kept_cos": 0.5732391230494178,
+    "linear_prediction": 2.8630278359272894,
+    "overlap_Ywritten_Xprobe": 0.822520720205773,
+    "clip_fraction_seq": 0.0
+   },
+   {
+    "pair": "bd",
+    "teacher": "same",
+    "interference": 1.7632176564779913,
+    "kept_cos": 0.954853944676765,
+    "linear_prediction": 1.7427060441338202,
+    "overlap_Ywritten_Xprobe": 0.9285908226988868,
+    "clip_fraction_seq": 0.0
+   },
+   {
+    "pair": "bd",
+    "teacher": "diff",
+    "interference": 4.014830493179547,
+    "kept_cos": 0.5014905267116084,
+    "linear_prediction": 4.109528630031791,
+    "overlap_Ywritten_Xprobe": 0.8591036414565826,
+    "clip_fraction_seq": 0.0
+   },
+   {
+    "pair": "eg",
+    "teacher": "same",
+    "interference": 1.3751976753338437,
+    "kept_cos": 0.9527533677224138,
+    "linear_prediction": 1.3936388695255428,
+    "overlap_Ywritten_Xprobe": 0.8815539255637055,
+    "clip_fraction_seq": 0.0
+   },
+   {
+    "pair": "eg",
+    "teacher": "diff",
+    "interference": 2.9378297222509366,
+    "kept_cos": 0.5941077176463323,
+    "linear_prediction": 3.148572211521863,
+    "overlap_Ywritten_Xprobe": 0.875937680323139,
+    "clip_fraction_seq": 0.0
+   },
+   {
+    "pair": "fh",
+    "teacher": "same",
+    "interference": 1.8039059410115612,
+    "kept_cos": 0.993876135519249,
+    "linear_prediction": 1.8757668676899442,
+    "overlap_Ywritten_Xprobe": 0.9584110903758998,
+    "clip_fraction_seq": 0.0
+   },
+   {
+    "pair": "fh",
+    "teacher": "diff",
+    "interference": 2.264680104141705,
+    "kept_cos": 0.946980443089888,
+    "linear_prediction": 2.4107136332244057,
+    "overlap_Ywritten_Xprobe": 0.8505268996117582,
+    "clip_fraction_seq": 0.0
+   },
+   {
+    "pair": "ik",
+    "teacher": "same",
+    "interference": 2.027143283291838,
+    "kept_cos": 0.8715510576013535,
+    "linear_prediction": 1.9853141139713182,
+    "overlap_Ywritten_Xprobe": 0.902828339400728,
+    "clip_fraction_seq": 0.0
+   },
+   {
+    "pair": "ik",
+    "teacher": "diff",
+    "interference": 6.932208383530335,
+    "kept_cos": 0.4048807551157623,
+    "linear_prediction": 7.05217641448507,
+    "overlap_Ywritten_Xprobe": 0.9062220899077106,
+    "clip_fraction_seq": 0.0
+   },
+   {
+    "pair": "jl",
+    "teacher": "same",
+    "interference": 1.2359183734807666,
+    "kept_cos": 0.9857341602874798,
+    "linear_prediction": 1.2234237814942162,
+    "overlap_Ywritten_Xprobe": 0.8859366612989802,
+    "clip_fraction_seq": 0.0
+   },
+   {
+    "pair": "jl",
+    "teacher": "diff",
+    "interference": 1.490094906208222,
+    "kept_cos": 0.8738171513644639,
+    "linear_prediction": 1.4694846047944434,
+    "overlap_Ywritten_Xprobe": 0.8306517589310063,
+    "clip_fraction_seq": 0.0
+   }
+  ]
+ }
+]

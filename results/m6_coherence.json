@@ -1,0 +1,383 @@
+[
+ {
+  "active": 160,
+  "scale": 1.5,
+  "items": [
+   {
+    "item": "a",
+    "N": 479,
+    "rho": 0.2009421491628298,
+    "rho_null_mean": 0.16215713224514194,
+    "rho_null_sd": 0.001342921670749216,
+    "amplification_N_x_excess_rho": 18.57802310357248,
+    "top_mbons": [
+     "MBON16",
+     "MBON10",
+     "MBON28"
+    ],
+    "top3_share": 0.18578045518437744
+   },
+   {
+    "item": "b",
+    "N": 568,
+    "rho": 0.2840393735150576,
+    "rho_null_mean": 0.192093851653987,
+    "rho_null_sd": 0.0012702433645428743,
+    "amplification_N_x_excess_rho": 52.22505641708809,
+    "top_mbons": [
+     "MBON14",
+     "MBON18",
+     "MBON07"
+    ],
+    "top3_share": 0.23475114116922965
+   },
+   {
+    "item": "c",
+    "N": 273,
+    "rho": 0.197454808838699,
+    "rho_null_mean": 0.17745502046624312,
+    "rho_null_sd": 0.002313203688344339,
+    "amplification_N_x_excess_rho": 5.459942225680458,
+    "top_mbons": [
+     "MBON10",
+     "MBON01",
+     "MBON22"
+    ],
+    "top3_share": 0.1470565354323676
+   },
+   {
+    "item": "d",
+    "N": 176,
+    "rho": 0.24339082047476787,
+    "rho_null_mean": 0.1764344071479375,
+    "rho_null_sd": 0.0035842989505712633,
+    "amplification_N_x_excess_rho": 11.784328745522144,
+    "top_mbons": [
+     "MBON22",
+     "MBON18",
+     "MBON14"
+    ],
+    "top3_share": 0.14579236600499607
+   },
+   {
+    "item": "e",
+    "N": 346,
+    "rho": 0.22150180000425213,
+    "rho_null_mean": 0.17692735323970066,
+    "rho_null_sd": 0.0022722105267518823,
+    "amplification_N_x_excess_rho": 15.422758580534808,
+    "top_mbons": [
+     "MBON22",
+     "MBON14",
+     "MBON12"
+    ],
+    "top3_share": 0.12628665934891173
+   },
+   {
+    "item": "f",
+    "N": 294,
+    "rho": 0.18815699179414433,
+    "rho_null_mean": 0.17689691867162824,
+    "rho_null_sd": 0.0023673282219063055,
+    "amplification_N_x_excess_rho": 3.3104614980197304,
+    "top_mbons": [
+     "MBON16",
+     "MBON28",
+     "MBON10"
+    ],
+    "top3_share": 0.15825171082313688
+   },
+   {
+    "item": "g",
+    "N": 134,
+    "rho": 0.1989423490677438,
+    "rho_null_mean": 0.15914073557977063,
+    "rho_null_sd": 0.004020788648258868,
+    "amplification_N_x_excess_rho": 5.333416207388406,
+    "top_mbons": [
+     "MBON10",
+     "MBON28",
+     "MBON31"
+    ],
+    "top3_share": 0.25674554716354625
+   },
+   {
+    "item": "h",
+    "N": 398,
+    "rho": 0.23486978025743577,
+    "rho_null_mean": 0.18128559437301042,
+    "rho_null_sd": 0.002240243117461128,
+    "amplification_N_x_excess_rho": 21.326505982001287,
+    "top_mbons": [
+     "MBON05",
+     "MBON22",
+     "MBON01"
+    ],
+    "top3_share": 0.186625182655295
+   }
+  ],
+  "static_sum_distinct_real": 0.7598774468198398,
+  "static_sum_distinct_swapped_within_subtype": [
+   0.9130976734064742,
+   0.9049068525307058,
+   0.9196043899620857,
+   0.9248015309257668,
+   0.9212596369288456
+  ],
+  "written_set_jaccard_mean": 0.060359798081800954
+ },
+ {
+  "active": 192,
+  "scale": 1.5,
+  "items": [
+   {
+    "item": "a",
+    "N": 1105,
+    "rho": 0.34926634883189656,
+    "rho_null_mean": 0.21649436091155055,
+    "rho_null_sd": 0.001009454748219584,
+    "amplification_N_x_excess_rho": 146.71304665198232,
+    "top_mbons": [
+     "MBON14",
+     "MBON18",
+     "MBON14"
+    ],
+    "top3_share": 0.29481047608436245
+   },
+   {
+    "item": "b",
+    "N": 1376,
+    "rho": 0.33555154324844816,
+    "rho_null_mean": 0.19524099010417992,
+    "rho_null_sd": 0.0008248350479411097,
+    "amplification_N_x_excess_rho": 193.0673211265131,
+    "top_mbons": [
+     "MBON14",
+     "MBON18",
+     "MBON14"
+    ],
+    "top3_share": 0.2972014224312686
+   },
+   {
+    "item": "c",
+    "N": 332,
+    "rho": 0.24583403690050415,
+    "rho_null_mean": 0.17672387768526654,
+    "rho_null_sd": 0.003148102409173544,
+    "amplification_N_x_excess_rho": 22.944572859458887,
+    "top_mbons": [
+     "MBON11",
+     "MBON22",
+     "MBON14"
+    ],
+    "top3_share": 0.1484777827486603
+   },
+   {
+    "item": "d",
+    "N": 522,
+    "rho": 0.20443151636376458,
+    "rho_null_mean": 0.16753213845544174,
+    "rho_null_sd": 0.0017230929288041554,
+    "amplification_N_x_excess_rho": 19.261475268144526,
+    "top_mbons": [
+     "MBON18",
+     "MBON14",
+     "MBON07"
+    ],
+    "top3_share": 0.13850460495523775
+   },
+   {
+    "item": "e",
+    "N": 400,
+    "rho": 0.18648847904935237,
+    "rho_null_mean": 0.1765724256004485,
+    "rho_null_sd": 0.0024982042161648095,
+    "amplification_N_x_excess_rho": 3.9664213795615466,
+    "top_mbons": [
+     "MBON01",
+     "MBON05",
+     "MBON12"
+    ],
+    "top3_share": 0.14145712398954954
+   },
+   {
+    "item": "f",
+    "N": 652,
+    "rho": 0.2073348264749593,
+    "rho_null_mean": 0.18091777334838904,
+    "rho_null_sd": 0.0012701091578941424,
+    "amplification_N_x_excess_rho": 17.223918638523802,
+    "top_mbons": [
+     "MBON14",
+     "MBON14",
+     "MBON18"
+    ],
+    "top3_share": 0.15621859632975008
+   },
+   {
+    "item": "g",
+    "N": 558,
+    "rho": 0.16414257953861128,
+    "rho_null_mean": 0.14832169529006015,
+    "rho_null_sd": 0.0015759705165215247,
+    "amplification_N_x_excess_rho": 8.828053410691531,
+    "top_mbons": [
+     "MBON10",
+     "MBON16",
+     "MBON28"
+    ],
+    "top3_share": 0.36034826370740264
+   },
+   {
+    "item": "h",
+    "N": 419,
+    "rho": 0.17448529815825517,
+    "rho_null_mean": 0.1695351030206444,
+    "rho_null_sd": 0.0021508248283838537,
+    "amplification_N_x_excess_rho": 2.0741317626589146,
+    "top_mbons": [
+     "MBON12",
+     "MBON12",
+     "MBON01"
+    ],
+    "top3_share": 0.1094845847476179
+   }
+  ],
+  "static_sum_distinct_real": 0.7164911776128909,
+  "static_sum_distinct_swapped_within_subtype": [
+   0.8580822392983753,
+   0.865176102467295,
+   0.8618478426827149,
+   0.8612455121187101,
+   0.8572128909326174
+  ],
+  "written_set_jaccard_mean": 0.120084105466859
+ },
+ {
+  "active": 512,
+  "scale": 1.0,
+  "items": [
+   {
+    "item": "a",
+    "N": 3312,
+    "rho": 0.18509392872629316,
+    "rho_null_mean": 0.1843156962454477,
+    "rho_null_sd": 6.849698387749902e-05,
+    "amplification_N_x_excess_rho": 2.577505976560178,
+    "top_mbons": [
+     "MBON22",
+     "MBON14",
+     "MBON14"
+    ],
+    "top3_share": 0.11224033319546531
+   },
+   {
+    "item": "b",
+    "N": 3367,
+    "rho": 0.18137553398252929,
+    "rho_null_mean": 0.18037404403368093,
+    "rho_null_sd": 8.775515511446103e-05,
+    "amplification_N_x_excess_rho": 3.3720166577724124,
+    "top_mbons": [
+     "MBON22",
+     "MBON14",
+     "MBON14"
+    ],
+    "top3_share": 0.12325769855373916
+   },
+   {
+    "item": "c",
+    "N": 3344,
+    "rho": 0.18261096942301505,
+    "rho_null_mean": 0.18147433739144192,
+    "rho_null_sd": 8.621083858555813e-05,
+    "amplification_N_x_excess_rho": 3.800897513580552,
+    "top_mbons": [
+     "MBON14",
+     "MBON14",
+     "MBON14"
+    ],
+    "top3_share": 0.15433569112273593
+   },
+   {
+    "item": "d",
+    "N": 3544,
+    "rho": 0.16878113185887894,
+    "rho_null_mean": 0.16816617347659601,
+    "rho_null_sd": 9.58722023092097e-05,
+    "amplification_N_x_excess_rho": 2.179412506810691,
+    "top_mbons": [
+     "MBON14",
+     "MBON14",
+     "MBON18"
+    ],
+    "top3_share": 0.19510031540906944
+   },
+   {
+    "item": "e",
+    "N": 3271,
+    "rho": 0.17561113316554014,
+    "rho_null_mean": 0.17368247515115257,
+    "rho_null_sd": 0.00014277142816471406,
+    "amplification_N_x_excess_rho": 6.3086403650617555,
+    "top_mbons": [
+     "MBON14",
+     "MBON22",
+     "MBON14"
+    ],
+    "top3_share": 0.120658166445234
+   },
+   {
+    "item": "f",
+    "N": 3512,
+    "rho": 0.17070670742767763,
+    "rho_null_mean": 0.1699901237219748,
+    "rho_null_sd": 5.337957838742906e-05,
+    "amplification_N_x_excess_rho": 2.516641974428312,
+    "top_mbons": [
+     "MBON14",
+     "MBON14",
+     "MBON14"
+    ],
+    "top3_share": 0.18270959110633034
+   },
+   {
+    "item": "g",
+    "N": 3475,
+    "rho": 0.17414276840682813,
+    "rho_null_mean": 0.1723232111114102,
+    "rho_null_sd": 8.072697591926577e-05,
+    "amplification_N_x_excess_rho": 6.32296160157734,
+    "top_mbons": [
+     "MBON14",
+     "MBON14",
+     "MBON18"
+    ],
+    "top3_share": 0.17508504395655672
+   },
+   {
+    "item": "h",
+    "N": 3746,
+    "rho": 0.1586139958157665,
+    "rho_null_mean": 0.1580210050493253,
+    "rho_null_sd": 4.9743581587152564e-05,
+    "amplification_N_x_excess_rho": 2.2213434110886454,
+    "top_mbons": [
+     "MBON14",
+     "MBON14",
+     "MBON14"
+    ],
+    "top3_share": 0.11736955785909757
+   }
+  ],
+  "static_sum_distinct_real": 0.9121919269436057,
+  "static_sum_distinct_swapped_within_subtype": [
+   0.9240674186042253,
+   0.9246917175060163,
+   0.9247133330803806,
+   0.9243245399271053,
+   0.9245677939723239
+  ],
+  "written_set_jaccard_mean": 0.9059037486353615
+ }
+]

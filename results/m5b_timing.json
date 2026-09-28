@@ -1,0 +1,1794 @@
+[
+ {
+  "active": 160,
+  "bias": 0.0,
+  "pair": "ac",
+  "probe": "a",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.0336119048441136,
+  "W_central": 0.0
+ },
+ {
+  "active": 160,
+  "bias": 0.02,
+  "pair": "ac",
+  "probe": "a",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.033612074772353964,
+  "W_central": 5.1619136559035694e-08
+ },
+ {
+  "active": 160,
+  "bias": 0.05,
+  "pair": "ac",
+  "probe": "a",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.03361206008111911,
+  "W_central": 5.1619136559035694e-08
+ },
+ {
+  "active": 160,
+  "bias": 0.08,
+  "pair": "ac",
+  "probe": "a",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.03361213136681314,
+  "W_central": 0.0
+ },
+ {
+  "active": 160,
+  "bias": 0.0,
+  "pair": "ac",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.01155868184114059,
+  "W_central": 0.0
+ },
+ {
+  "active": 160,
+  "bias": 0.02,
+  "pair": "ac",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.011558586660617475,
+  "W_central": 2.9802322387695312e-08
+ },
+ {
+  "active": 160,
+  "bias": 0.05,
+  "pair": "ac",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.011558614577577639,
+  "W_central": 0.0
+ },
+ {
+  "active": 160,
+  "bias": 0.08,
+  "pair": "ac",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   1.0,
+   1.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.01155853139639213,
+  "W_central": 2.9802322387695312e-08
+ },
+ {
+  "active": 160,
+  "bias": 0.0,
+  "pair": "bd",
+  "probe": "b",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.05673290721874531,
+  "W_central": 5.1619136559035694e-08
+ },
+ {
+  "active": 160,
+  "bias": 0.02,
+  "pair": "bd",
+  "probe": "b",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.05673282566250494,
+  "W_central": 0.0
+ },
+ {
+  "active": 160,
+  "bias": 0.05,
+  "pair": "bd",
+  "probe": "b",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.05673278224323944,
+  "W_central": 0.0
+ },
+ {
+  "active": 160,
+  "bias": 0.08,
+  "pair": "bd",
+  "probe": "b",
+  "class": "identical",
+  "mbon_spikes": [
+   2.0,
+   2.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.056732950103243286,
+  "W_central": 5.1619136559035694e-08
+ },
+ {
+  "active": 160,
+  "bias": 0.0,
+  "pair": "bd",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.006831001437264037,
+  "W_central": 2.9802322387695312e-08
+ },
+ {
+  "active": 160,
+  "bias": 0.02,
+  "pair": "bd",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.006830986693372441,
+  "W_central": 0.0
+ },
+ {
+  "active": 160,
+  "bias": 0.05,
+  "pair": "bd",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.006830976043263703,
+  "W_central": 2.9802322387695312e-08
+ },
+ {
+  "active": 160,
+  "bias": 0.08,
+  "pair": "bd",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   1.0,
+   1.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.00683093219496194,
+  "W_central": 0.0
+ },
+ {
+  "active": 160,
+  "bias": 0.0,
+  "pair": "eg",
+  "probe": "e",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.021659186779527526,
+  "W_central": 4.2146848510894035e-08
+ },
+ {
+  "active": 160,
+  "bias": 0.02,
+  "pair": "eg",
+  "probe": "e",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.021659095571940512,
+  "W_central": 0.0
+ },
+ {
+  "active": 160,
+  "bias": 0.05,
+  "pair": "eg",
+  "probe": "e",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.021659226543329413,
+  "W_central": 0.0
+ },
+ {
+  "active": 160,
+  "bias": 0.08,
+  "pair": "eg",
+  "probe": "e",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.021659168638819754,
+  "W_central": 4.2146848510894035e-08
+ },
+ {
+  "active": 160,
+  "bias": 0.0,
+  "pair": "eg",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.008652846838522079,
+  "W_central": 0.0
+ },
+ {
+  "active": 160,
+  "bias": 0.02,
+  "pair": "eg",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.008652729513572818,
+  "W_central": 0.0
+ },
+ {
+  "active": 160,
+  "bias": 0.05,
+  "pair": "eg",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.008652753010459159,
+  "W_central": 0.0
+ },
+ {
+  "active": 160,
+  "bias": 0.08,
+  "pair": "eg",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   1.0,
+   1.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.00865288166391505,
+  "W_central": 2.9802322387695312e-08
+ },
+ {
+  "active": 160,
+  "bias": 0.0,
+  "pair": "fh",
+  "probe": "f",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.018244796287018094,
+  "W_central": 0.0
+ },
+ {
+  "active": 160,
+  "bias": 0.02,
+  "pair": "fh",
+  "probe": "f",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.018244932238572095,
+  "W_central": 0.0
+ },
+ {
+  "active": 160,
+  "bias": 0.05,
+  "pair": "fh",
+  "probe": "f",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.018244796077056116,
+  "W_central": 1.0323827311807139e-07
+ },
+ {
+  "active": 160,
+  "bias": 0.08,
+  "pair": "fh",
+  "probe": "f",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.01824483882824461,
+  "W_central": 2.3084779657169682e-07
+ },
+ {
+  "active": 160,
+  "bias": 0.0,
+  "pair": "fh",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.0031849410851317503,
+  "W_central": 2.9802322387695312e-08
+ },
+ {
+  "active": 160,
+  "bias": 0.02,
+  "pair": "fh",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.003184910030927635,
+  "W_central": 2.9802322387695312e-08
+ },
+ {
+  "active": 160,
+  "bias": 0.05,
+  "pair": "fh",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.003184735072340385,
+  "W_central": 2.9802322387695312e-08
+ },
+ {
+  "active": 160,
+  "bias": 0.08,
+  "pair": "fh",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   1.0,
+   1.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.003184999067692694,
+  "W_central": 0.0
+ },
+ {
+  "active": 192,
+  "bias": 0.0,
+  "pair": "ac",
+  "probe": "a",
+  "class": "count_diff",
+  "mbon_spikes": [
+   6.0,
+   5.0
+  ],
+  "raster_mismatch": 1,
+  "W_mbon": 1.2475952247414037,
+  "W_central": 0.3124048179690715
+ },
+ {
+  "active": 192,
+  "bias": 0.02,
+  "pair": "ac",
+  "probe": "a",
+  "class": "identical",
+  "mbon_spikes": [
+   6.0,
+   6.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.20489193074518766,
+  "W_central": 0.0
+ },
+ {
+  "active": 192,
+  "bias": 0.05,
+  "pair": "ac",
+  "probe": "a",
+  "class": "timing_only",
+  "mbon_spikes": [
+   7.0,
+   7.0
+  ],
+  "raster_mismatch": 4,
+  "W_mbon": 1.4056680959907497,
+  "W_central": 0.4422020447864551
+ },
+ {
+  "active": 192,
+  "bias": 0.08,
+  "pair": "ac",
+  "probe": "a",
+  "class": "count_diff",
+  "mbon_spikes": [
+   10.0,
+   9.0
+  ],
+  "raster_mismatch": 1,
+  "W_mbon": 1.26008225712015,
+  "W_central": 0.4060900331463718
+ },
+ {
+  "active": 192,
+  "bias": 0.0,
+  "pair": "ac",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.05266006962310197,
+  "W_central": 2.5809568279517847e-08
+ },
+ {
+  "active": 192,
+  "bias": 0.02,
+  "pair": "ac",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.052660037147353116,
+  "W_central": 1.0641557616804317e-07
+ },
+ {
+  "active": 192,
+  "bias": 0.05,
+  "pair": "ac",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.052659993284372625,
+  "W_central": 5.1619136559035694e-08
+ },
+ {
+  "active": 192,
+  "bias": 0.08,
+  "pair": "ac",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   5.0,
+   5.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.05259501407849029,
+  "W_central": 7.300048299977713e-08
+ },
+ {
+  "active": 192,
+  "bias": 0.0,
+  "pair": "bd",
+  "probe": "b",
+  "class": "identical",
+  "mbon_spikes": [
+   7.0,
+   7.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.18959763170087607,
+  "W_central": 7.300048299977713e-08
+ },
+ {
+  "active": 192,
+  "bias": 0.02,
+  "pair": "bd",
+  "probe": "b",
+  "class": "identical",
+  "mbon_spikes": [
+   7.0,
+   7.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.18959764542984833,
+  "W_central": 8.429369702178807e-08
+ },
+ {
+  "active": 192,
+  "bias": 0.05,
+  "pair": "bd",
+  "probe": "b",
+  "class": "count_diff",
+  "mbon_spikes": [
+   10.0,
+   8.0
+  ],
+  "raster_mismatch": 4,
+  "W_mbon": 1.9891709875274324,
+  "W_central": 0.4591246924449258
+ },
+ {
+  "active": 192,
+  "bias": 0.08,
+  "pair": "bd",
+  "probe": "b",
+  "class": "identical",
+  "mbon_spikes": [
+   13.0,
+   13.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.15771620630724315,
+  "W_central": 1.228781230931777e-07
+ },
+ {
+  "active": 192,
+  "bias": 0.0,
+  "pair": "bd",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.05119739820454447,
+  "W_central": 3.650024149988857e-08
+ },
+ {
+  "active": 192,
+  "bias": 0.02,
+  "pair": "bd",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.051197214995175225,
+  "W_central": 3.650024149988857e-08
+ },
+ {
+  "active": 192,
+  "bias": 0.05,
+  "pair": "bd",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.05119723052184459,
+  "W_central": 2.9802322387695312e-08
+ },
+ {
+  "active": 192,
+  "bias": 0.08,
+  "pair": "bd",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   5.0,
+   5.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.05115964485458506,
+  "W_central": 5.5755039852469285e-08
+ },
+ {
+  "active": 192,
+  "bias": 0.0,
+  "pair": "eg",
+  "probe": "e",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.02640274551132872,
+  "W_central": 9.8843121241194e-08
+ },
+ {
+  "active": 192,
+  "bias": 0.02,
+  "pair": "eg",
+  "probe": "e",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.026402771041065844,
+  "W_central": 0.0
+ },
+ {
+  "active": 192,
+  "bias": 0.05,
+  "pair": "eg",
+  "probe": "e",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.02640273154013339,
+  "W_central": 7.450580596923828e-09
+ },
+ {
+  "active": 192,
+  "bias": 0.08,
+  "pair": "eg",
+  "probe": "e",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.02640282244446382,
+  "W_central": 9.912352782227151e-08
+ },
+ {
+  "active": 192,
+  "bias": 0.0,
+  "pair": "eg",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.011243291924706845,
+  "W_central": 3.942476676500724e-08
+ },
+ {
+  "active": 192,
+  "bias": 0.02,
+  "pair": "eg",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.011243277152705728,
+  "W_central": 8.940696716308594e-08
+ },
+ {
+  "active": 192,
+  "bias": 0.05,
+  "pair": "eg",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.011243037039003924,
+  "W_central": 4.2146848510894035e-08
+ },
+ {
+  "active": 192,
+  "bias": 0.08,
+  "pair": "eg",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   5.0,
+   5.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.011049062489515106,
+  "W_central": 3.332000937312528e-08
+ },
+ {
+  "active": 192,
+  "bias": 0.0,
+  "pair": "fh",
+  "probe": "f",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.04735500962813579,
+  "W_central": 7.598131170262075e-08
+ },
+ {
+  "active": 192,
+  "bias": 0.02,
+  "pair": "fh",
+  "probe": "f",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.04735511946912658,
+  "W_central": 3.687849244703228e-08
+ },
+ {
+  "active": 192,
+  "bias": 0.05,
+  "pair": "fh",
+  "probe": "f",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.047355036688971223,
+  "W_central": 8.161702118890973e-08
+ },
+ {
+  "active": 192,
+  "bias": 0.08,
+  "pair": "fh",
+  "probe": "f",
+  "class": "identical",
+  "mbon_spikes": [
+   3.0,
+   3.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.04735487220992016,
+  "W_central": 3.161013638317052e-08
+ },
+ {
+  "active": 192,
+  "bias": 0.0,
+  "pair": "fh",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.022760412710139177,
+  "W_central": 8.940696716308594e-08
+ },
+ {
+  "active": 192,
+  "bias": 0.02,
+  "pair": "fh",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.022760379467284306,
+  "W_central": 8.429369702178807e-08
+ },
+ {
+  "active": 192,
+  "bias": 0.05,
+  "pair": "fh",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.022760301259290447,
+  "W_central": 1.0323827311807139e-07
+ },
+ {
+  "active": 192,
+  "bias": 0.08,
+  "pair": "fh",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   5.0,
+   5.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.020802990205109555,
+  "W_central": 1.0323827311807139e-07
+ },
+ {
+  "active": 224,
+  "bias": 0.0,
+  "pair": "ac",
+  "probe": "a",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.035239625088597036,
+  "W_central": 4.2146848510894035e-08
+ },
+ {
+  "active": 224,
+  "bias": 0.02,
+  "pair": "ac",
+  "probe": "a",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.035239833037072836,
+  "W_central": 0.0
+ },
+ {
+  "active": 224,
+  "bias": 0.05,
+  "pair": "ac",
+  "probe": "a",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.03523956068143356,
+  "W_central": 4.2146848510894035e-08
+ },
+ {
+  "active": 224,
+  "bias": 0.08,
+  "pair": "ac",
+  "probe": "a",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.035239758871287996,
+  "W_central": 4.2146848510894035e-08
+ },
+ {
+  "active": 224,
+  "bias": 0.0,
+  "pair": "ac",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   3.0,
+   3.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.02053337613492879,
+  "W_central": 0.0
+ },
+ {
+  "active": 224,
+  "bias": 0.02,
+  "pair": "ac",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   5.0,
+   5.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.0189012232086509,
+  "W_central": 5.268356063861754e-08
+ },
+ {
+  "active": 224,
+  "bias": 0.05,
+  "pair": "ac",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   7.0,
+   7.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.017171120271328246,
+  "W_central": 4.2146848510894035e-08
+ },
+ {
+  "active": 224,
+  "bias": 0.08,
+  "pair": "ac",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   13.0,
+   13.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.015577849371964202,
+  "W_central": 2.5809568279517847e-08
+ },
+ {
+  "active": 224,
+  "bias": 0.0,
+  "pair": "bd",
+  "probe": "b",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.026399729787254845,
+  "W_central": 0.0
+ },
+ {
+  "active": 224,
+  "bias": 0.02,
+  "pair": "bd",
+  "probe": "b",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.026399866289479827,
+  "W_central": 0.0
+ },
+ {
+  "active": 224,
+  "bias": 0.05,
+  "pair": "bd",
+  "probe": "b",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.026399725605691263,
+  "W_central": 7.300048299977713e-08
+ },
+ {
+  "active": 224,
+  "bias": 0.08,
+  "pair": "bd",
+  "probe": "b",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.026399720775127523,
+  "W_central": 0.0
+ },
+ {
+  "active": 224,
+  "bias": 0.0,
+  "pair": "bd",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   3.0,
+   3.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.016709363941290564,
+  "W_central": 5.1619136559035694e-08
+ },
+ {
+  "active": 224,
+  "bias": 0.02,
+  "pair": "bd",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   5.0,
+   5.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.015553977606866179,
+  "W_central": 2.6863450374185958e-08
+ },
+ {
+  "active": 224,
+  "bias": 0.05,
+  "pair": "bd",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   7.0,
+   7.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.01406625927281778,
+  "W_central": 7.300048299977713e-08
+ },
+ {
+  "active": 224,
+  "bias": 0.08,
+  "pair": "bd",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   13.0,
+   13.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.013011244247382148,
+  "W_central": 0.0
+ },
+ {
+  "active": 224,
+  "bias": 0.0,
+  "pair": "eg",
+  "probe": "e",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.04411246569431031,
+  "W_central": 0.0
+ },
+ {
+  "active": 224,
+  "bias": 0.02,
+  "pair": "eg",
+  "probe": "e",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.04411248323502629,
+  "W_central": 1.1542389828584841e-07
+ },
+ {
+  "active": 224,
+  "bias": 0.05,
+  "pair": "eg",
+  "probe": "e",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.04411263112267743,
+  "W_central": 1.3657139822709083e-07
+ },
+ {
+  "active": 224,
+  "bias": 0.08,
+  "pair": "eg",
+  "probe": "e",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.044112757411387774,
+  "W_central": 1.2270859697461578e-07
+ },
+ {
+  "active": 224,
+  "bias": 0.0,
+  "pair": "eg",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   3.0,
+   3.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.02960701878600521,
+  "W_central": 0.0
+ },
+ {
+  "active": 224,
+  "bias": 0.02,
+  "pair": "eg",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   5.0,
+   5.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.027385742741970934,
+  "W_central": 0.0
+ },
+ {
+  "active": 224,
+  "bias": 0.05,
+  "pair": "eg",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   7.0,
+   7.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.02410752389852795,
+  "W_central": 5.960464477539063e-08
+ },
+ {
+  "active": 224,
+  "bias": 0.08,
+  "pair": "eg",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   13.0,
+   13.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.022789705365773592,
+  "W_central": 0.0
+ },
+ {
+  "active": 224,
+  "bias": 0.0,
+  "pair": "fh",
+  "probe": "f",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.04477023841719562,
+  "W_central": 2.9802322387695312e-08
+ },
+ {
+  "active": 224,
+  "bias": 0.02,
+  "pair": "fh",
+  "probe": "f",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.04477029051932457,
+  "W_central": 6.664001874625056e-08
+ },
+ {
+  "active": 224,
+  "bias": 0.05,
+  "pair": "fh",
+  "probe": "f",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.04477005943433549,
+  "W_central": 0.0
+ },
+ {
+  "active": 224,
+  "bias": 0.08,
+  "pair": "fh",
+  "probe": "f",
+  "class": "identical",
+  "mbon_spikes": [
+   0.0,
+   0.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.044770135152680655,
+  "W_central": 5.960464477539063e-08
+ },
+ {
+  "active": 224,
+  "bias": 0.0,
+  "pair": "fh",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   3.0,
+   3.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.02242510682183624,
+  "W_central": 5.1619136559035694e-08
+ },
+ {
+  "active": 224,
+  "bias": 0.02,
+  "pair": "fh",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   5.0,
+   5.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.022048743495002153,
+  "W_central": 0.0
+ },
+ {
+  "active": 224,
+  "bias": 0.05,
+  "pair": "fh",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   7.0,
+   7.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.021586812741420543,
+  "W_central": 6.580174614733344e-08
+ },
+ {
+  "active": 224,
+  "bias": 0.08,
+  "pair": "fh",
+  "probe": "z",
+  "class": "identical",
+  "mbon_spikes": [
+   13.0,
+   13.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.02065890548748247,
+  "W_central": 0.0
+ },
+ {
+  "active": 512,
+  "bias": 0.0,
+  "pair": "ac",
+  "probe": "a",
+  "class": "identical",
+  "mbon_spikes": [
+   76.0,
+   76.0
+  ],
+  "raster_mismatch": 0,
+  "W_mbon": 0.3678466976820572,
+  "W_central": 1.2013700229374393e-07
+ },
+ {
+  "active": 512,
+  "bias": 0.02,
+  "pair": "ac",
+  "probe": "a",
+  "class": "count_diff",
+  "mbon_spikes": [
+   80.0,
+   79.0
+  ],
+  "raster_mismatch": 11,
+  "W_mbon": 2.227621983942543,
+  "W_central": 0.8121527193061687
+ },
+ {
+  "active": 512,
+  "bias": 0.05,
+  "pair": "ac",
+  "probe": "a",
+  "class": "count_diff",
+  "mbon_spikes": [
+   93.0,
+   92.0
+  ],
+  "raster_mismatch": 5,
+  "W_mbon": 1.6714135293445382,
+  "W_central": 0.4599872438135151
+ },
+ {
+  "active": 512,
+  "bias": 0.08,
+  "pair": "ac",
+  "probe": "a",
+  "class": "count_diff",
+  "mbon_spikes": [
+   103.0,
+   102.0
+  ],
+  "raster_mismatch": 7,
+  "W_mbon": 1.9840176583518823,
+  "W_central": 1.5776483919965905
+ },
+ {
+  "active": 512,
+  "bias": 0.0,
+  "pair": "ac",
+  "probe": "z",
+  "class": "count_diff",
+  "mbon_spikes": [
+   64.0,
+   60.0
+  ],
+  "raster_mismatch": 12,
+  "W_mbon": 2.623655808544199,
+  "W_central": 1.3193169781404592
+ },
+ {
+  "active": 512,
+  "bias": 0.02,
+  "pair": "ac",
+  "probe": "z",
+  "class": "count_diff",
+  "mbon_spikes": [
+   64.0,
+   65.0
+  ],
+  "raster_mismatch": 7,
+  "W_mbon": 1.803658613977912,
+  "W_central": 0.8222216031342511
+ },
+ {
+  "active": 512,
+  "bias": 0.05,
+  "pair": "ac",
+  "probe": "z",
+  "class": "count_diff",
+  "mbon_spikes": [
+   77.0,
+   75.0
+  ],
+  "raster_mismatch": 10,
+  "W_mbon": 2.18001713388673,
+  "W_central": 0.8487091441642493
+ },
+ {
+  "active": 512,
+  "bias": 0.08,
+  "pair": "ac",
+  "probe": "z",
+  "class": "count_diff",
+  "mbon_spikes": [
+   94.0,
+   93.0
+  ],
+  "raster_mismatch": 9,
+  "W_mbon": 2.035377642401631,
+  "W_central": 0.7697720431209091
+ },
+ {
+  "active": 512,
+  "bias": 0.0,
+  "pair": "bd",
+  "probe": "b",
+  "class": "timing_only",
+  "mbon_spikes": [
+   73.0,
+   73.0
+  ],
+  "raster_mismatch": 2,
+  "W_mbon": 0.9428337207319523,
+  "W_central": 0.6288228589735383
+ },
+ {
+  "active": 512,
+  "bias": 0.02,
+  "pair": "bd",
+  "probe": "b",
+  "class": "count_diff",
+  "mbon_spikes": [
+   79.0,
+   78.0
+  ],
+  "raster_mismatch": 9,
+  "W_mbon": 2.067897910738794,
+  "W_central": 0.559129804995815
+ },
+ {
+  "active": 512,
+  "bias": 0.05,
+  "pair": "bd",
+  "probe": "b",
+  "class": "count_diff",
+  "mbon_spikes": [
+   97.0,
+   96.0
+  ],
+  "raster_mismatch": 3,
+  "W_mbon": 1.4417060224720195,
+  "W_central": 0.2521352558387011
+ },
+ {
+  "active": 512,
+  "bias": 0.08,
+  "pair": "bd",
+  "probe": "b",
+  "class": "count_diff",
+  "mbon_spikes": [
+   117.0,
+   115.0
+  ],
+  "raster_mismatch": 14,
+  "W_mbon": 2.249944631572064,
+  "W_central": 0.6653612656364134
+ },
+ {
+  "active": 512,
+  "bias": 0.0,
+  "pair": "bd",
+  "probe": "z",
+  "class": "count_diff",
+  "mbon_spikes": [
+   64.0,
+   60.0
+  ],
+  "raster_mismatch": 10,
+  "W_mbon": 2.4847181354138264,
+  "W_central": 1.1524864179121237
+ },
+ {
+  "active": 512,
+  "bias": 0.02,
+  "pair": "bd",
+  "probe": "z",
+  "class": "count_diff",
+  "mbon_spikes": [
+   64.0,
+   65.0
+  ],
+  "raster_mismatch": 7,
+  "W_mbon": 1.7999318211415751,
+  "W_central": 0.8222215588567984
+ },
+ {
+  "active": 512,
+  "bias": 0.05,
+  "pair": "bd",
+  "probe": "z",
+  "class": "count_diff",
+  "mbon_spikes": [
+   77.0,
+   75.0
+  ],
+  "raster_mismatch": 10,
+  "W_mbon": 2.178885557603537,
+  "W_central": 0.848709163393289
+ },
+ {
+  "active": 512,
+  "bias": 0.08,
+  "pair": "bd",
+  "probe": "z",
+  "class": "count_diff",
+  "mbon_spikes": [
+   94.0,
+   93.0
+  ],
+  "raster_mismatch": 9,
+  "W_mbon": 2.0366420333546453,
+  "W_central": 0.7697720603951751
+ },
+ {
+  "active": 512,
+  "bias": 0.0,
+  "pair": "eg",
+  "probe": "e",
+  "class": "count_diff",
+  "mbon_spikes": [
+   71.0,
+   70.0
+  ],
+  "raster_mismatch": 7,
+  "W_mbon": 1.814183938792063,
+  "W_central": 1.6878010813660849
+ },
+ {
+  "active": 512,
+  "bias": 0.02,
+  "pair": "eg",
+  "probe": "e",
+  "class": "count_diff",
+  "mbon_spikes": [
+   81.0,
+   78.0
+  ],
+  "raster_mismatch": 11,
+  "W_mbon": 2.3595961211912284,
+  "W_central": 0.8092262761988956
+ },
+ {
+  "active": 512,
+  "bias": 0.05,
+  "pair": "eg",
+  "probe": "e",
+  "class": "timing_only",
+  "mbon_spikes": [
+   88.0,
+   88.0
+  ],
+  "raster_mismatch": 4,
+  "W_mbon": 1.3030248258175767,
+  "W_central": 0.3193584235409065
+ },
+ {
+  "active": 512,
+  "bias": 0.08,
+  "pair": "eg",
+  "probe": "e",
+  "class": "count_diff",
+  "mbon_spikes": [
+   101.0,
+   100.0
+  ],
+  "raster_mismatch": 7,
+  "W_mbon": 1.578986708581139,
+  "W_central": 1.2721919511996997
+ },
+ {
+  "active": 512,
+  "bias": 0.0,
+  "pair": "eg",
+  "probe": "z",
+  "class": "count_diff",
+  "mbon_spikes": [
+   63.0,
+   60.0
+  ],
+  "raster_mismatch": 9,
+  "W_mbon": 2.3327058172316564,
+  "W_central": 1.00037512622677
+ },
+ {
+  "active": 512,
+  "bias": 0.02,
+  "pair": "eg",
+  "probe": "z",
+  "class": "timing_only",
+  "mbon_spikes": [
+   65.0,
+   65.0
+  ],
+  "raster_mismatch": 2,
+  "W_mbon": 0.9249889831474428,
+  "W_central": 0.6288228843933984
+ },
+ {
+  "active": 512,
+  "bias": 0.05,
+  "pair": "eg",
+  "probe": "z",
+  "class": "count_diff",
+  "mbon_spikes": [
+   77.0,
+   75.0
+  ],
+  "raster_mismatch": 10,
+  "W_mbon": 2.1701212294941934,
+  "W_central": 0.8487091799966454
+ },
+ {
+  "active": 512,
+  "bias": 0.08,
+  "pair": "eg",
+  "probe": "z",
+  "class": "count_diff",
+  "mbon_spikes": [
+   94.0,
+   93.0
+  ],
+  "raster_mismatch": 9,
+  "W_mbon": 2.0314719605893545,
+  "W_central": 0.7697720674079818
+ },
+ {
+  "active": 512,
+  "bias": 0.0,
+  "pair": "fh",
+  "probe": "f",
+  "class": "count_diff",
+  "mbon_spikes": [
+   82.0,
+   83.0
+  ],
+  "raster_mismatch": 3,
+  "W_mbon": 1.5201211091677764,
+  "W_central": 0.6667345239974414
+ },
+ {
+  "active": 512,
+  "bias": 0.02,
+  "pair": "fh",
+  "probe": "f",
+  "class": "count_diff",
+  "mbon_spikes": [
+   90.0,
+   87.0
+  ],
+  "raster_mismatch": 11,
+  "W_mbon": 2.499849522350923,
+  "W_central": 0.7783607599519753
+ },
+ {
+  "active": 512,
+  "bias": 0.05,
+  "pair": "fh",
+  "probe": "f",
+  "class": "count_diff",
+  "mbon_spikes": [
+   107.0,
+   109.0
+  ],
+  "raster_mismatch": 20,
+  "W_mbon": 2.78082510415532,
+  "W_central": 0.7585175445289511
+ },
+ {
+  "active": 512,
+  "bias": 0.08,
+  "pair": "fh",
+  "probe": "f",
+  "class": "count_diff",
+  "mbon_spikes": [
+   124.0,
+   122.0
+  ],
+  "raster_mismatch": 8,
+  "W_mbon": 2.0673220217766155,
+  "W_central": 0.9722652486484975
+ },
+ {
+  "active": 512,
+  "bias": 0.0,
+  "pair": "fh",
+  "probe": "z",
+  "class": "count_diff",
+  "mbon_spikes": [
+   63.0,
+   60.0
+  ],
+  "raster_mismatch": 7,
+  "W_mbon": 2.1947246535790343,
+  "W_central": 0.770179093226624
+ },
+ {
+  "active": 512,
+  "bias": 0.02,
+  "pair": "fh",
+  "probe": "z",
+  "class": "count_diff",
+  "mbon_spikes": [
+   64.0,
+   65.0
+  ],
+  "raster_mismatch": 5,
+  "W_mbon": 1.5755527371907523,
+  "W_central": 0.7814585443725885
+ },
+ {
+  "active": 512,
+  "bias": 0.05,
+  "pair": "fh",
+  "probe": "z",
+  "class": "count_diff",
+  "mbon_spikes": [
+   77.0,
+   75.0
+  ],
+  "raster_mismatch": 10,
+  "W_mbon": 2.1833520422160912,
+  "W_central": 0.8487091274027941
+ },
+ {
+  "active": 512,
+  "bias": 0.08,
+  "pair": "fh",
+  "probe": "z",
+  "class": "count_diff",
+  "mbon_spikes": [
+   94.0,
+   93.0
+  ],
+  "raster_mismatch": 9,
+  "W_mbon": 2.0704384966986926,
+  "W_central": 1.2970812999355472
+ }
+]

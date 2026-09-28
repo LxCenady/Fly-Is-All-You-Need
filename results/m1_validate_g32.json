@@ -1,0 +1,43 @@
+{
+  "gap_tokens": 32,
+  "floor": {
+    "mbon": 2.384185791015625e-07,
+    "central": 1.1920928955078125e-07,
+    "events_equal": true,
+    "n_pairs": 10
+  },
+  "restore": {
+    "mbon": 2.384185791015625e-07,
+    "central": 1.1920928955078125e-07,
+    "events_equal": true,
+    "n_pairs": 15
+  },
+  "neg_slow": {
+    "mbon": 1.0728836059570312e-06,
+    "central": 5.960464477539063e-08,
+    "events_equal": true,
+    "edge": 22950
+  },
+  "neg_fast": {
+    "mbon": 0.0002467036247253418,
+    "central": 5.960464477539063e-08,
+    "events_equal": true
+  },
+  "neg_wslot": {
+    "mbon": 0.8162240982055664,
+    "central": 0.2795405685901642,
+    "events_equal": false
+  },
+  "w_other_hash_constant": true,
+  "verdict": {
+    "restore_to_floor_ratio": 1.0,
+    "restore_within_floor": true,
+    "restore_bitwise": false,
+    "negatives_detected": {
+      "neg_slow": true,
+      "neg_fast": true,
+      "neg_wslot": true
+    },
+    "seconds": 21.7
+  }
+}

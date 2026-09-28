@@ -1,0 +1,164 @@
+[
+  {
+    "active": 512,
+    "points": {
+      "w1": {
+        "kc_frac_mean": 0.0012849956255468068,
+        "kc_frac_min": 0.0007381889763779527,
+        "kc_frac_max": 0.0022145669291338582,
+        "kc_jaccard_mean": 0.362060701644035,
+        "mbon_active_mean": 0.0
+      },
+      "w2": {
+        "kc_frac_mean": 0.5065069991251093,
+        "kc_frac_min": 0.3063484251968504,
+        "kc_frac_max": 0.7687007874015748,
+        "kc_jaccard_mean": 0.5505002712413316,
+        "mbon_active_mean": 7.777777777777778
+      },
+      "w4": {
+        "kc_frac_mean": 0.6415135608048993,
+        "kc_frac_min": 0.4195374015748031,
+        "kc_frac_max": 0.8654035433070866,
+        "kc_jaccard_mean": 0.6189772881563084,
+        "mbon_active_mean": 24.0
+      },
+      "w8": {
+        "kc_frac_mean": 0.6406933508311461,
+        "kc_frac_min": 0.44143700787401574,
+        "kc_frac_max": 0.9028051181102362,
+        "kc_jaccard_mean": 0.6280144650530064,
+        "mbon_active_mean": 26.88888888888889
+      },
+      "w16": {
+        "kc_frac_mean": 0.6611165791776028,
+        "kc_frac_min": 0.4608759842519685,
+        "kc_frac_max": 0.8924704724409449,
+        "kc_jaccard_mean": 0.6613965872967883,
+        "mbon_active_mean": 25.555555555555557
+      },
+      "w32": {
+        "kc_frac_mean": 0.6809930008748907,
+        "kc_frac_min": 0.437746062992126,
+        "kc_frac_max": 0.8794291338582677,
+        "kc_jaccard_mean": 0.6729635687909368,
+        "mbon_active_mean": 27.11111111111111
+      },
+      "probe": {
+        "kc_frac_mean": 0.8667705599300086,
+        "kc_frac_min": 0.8186515748031497,
+        "kc_frac_max": 0.9197834645669292,
+        "kc_jaccard_mean": 0.92625875194395,
+        "mbon_active_mean": 52.0
+      }
+    }
+  },
+  {
+    "active": 128,
+    "points": {
+      "w1": {
+        "kc_frac_mean": 5.468066491688539e-05,
+        "kc_frac_min": 0.0,
+        "kc_frac_max": 0.00024606299212598425,
+        "kc_jaccard_mean": 0.06666666666666667,
+        "mbon_active_mean": 0.0
+      },
+      "w2": {
+        "kc_frac_mean": 0.0011209536307961504,
+        "kc_frac_min": 0.00024606299212598425,
+        "kc_frac_max": 0.0034448818897637795,
+        "kc_jaccard_mean": 0.010984101992873922,
+        "mbon_active_mean": 0.0
+      },
+      "w4": {
+        "kc_frac_mean": 0.002405949256342957,
+        "kc_frac_min": 0.00024606299212598425,
+        "kc_frac_max": 0.005659448818897638,
+        "kc_jaccard_mean": 0.010093228148783705,
+        "mbon_active_mean": 0.0
+      },
+      "w8": {
+        "kc_frac_mean": 0.0024879702537182855,
+        "kc_frac_min": 0.00024606299212598425,
+        "kc_frac_max": 0.005659448818897638,
+        "kc_jaccard_mean": 0.010673753151256297,
+        "mbon_active_mean": 0.0
+      },
+      "w16": {
+        "kc_frac_mean": 0.0026246719160104987,
+        "kc_frac_min": 0.0004921259842519685,
+        "kc_frac_max": 0.0063976377952755905,
+        "kc_jaccard_mean": 0.011901067568959724,
+        "mbon_active_mean": 0.0
+      },
+      "w32": {
+        "kc_frac_mean": 0.002323928258967629,
+        "kc_frac_min": 0.00024606299212598425,
+        "kc_frac_max": 0.0054133858267716535,
+        "kc_jaccard_mean": 0.010525058035833899,
+        "mbon_active_mean": 0.0
+      },
+      "probe": {
+        "kc_frac_mean": 0.05643044619422572,
+        "kc_frac_min": 0.014763779527559055,
+        "kc_frac_max": 0.1621555118110236,
+        "kc_jaccard_mean": 0.06765247327211661,
+        "mbon_active_mean": 0.0
+      }
+    }
+  },
+  {
+    "active": 32,
+    "points": {
+      "w1": {
+        "kc_frac_mean": 0.0,
+        "kc_frac_min": 0.0,
+        "kc_frac_max": 0.0,
+        "kc_jaccard_mean": null,
+        "mbon_active_mean": 0.0
+      },
+      "w2": {
+        "kc_frac_mean": 5.468066491688539e-05,
+        "kc_frac_min": 0.0,
+        "kc_frac_max": 0.0004921259842519685,
+        "kc_jaccard_mean": 0.0,
+        "mbon_active_mean": 0.0
+      },
+      "w4": {
+        "kc_frac_mean": 5.468066491688539e-05,
+        "kc_frac_min": 0.0,
+        "kc_frac_max": 0.0004921259842519685,
+        "kc_jaccard_mean": 0.0,
+        "mbon_active_mean": 0.0
+      },
+      "w8": {
+        "kc_frac_mean": 5.468066491688539e-05,
+        "kc_frac_min": 0.0,
+        "kc_frac_max": 0.0004921259842519685,
+        "kc_jaccard_mean": 0.0,
+        "mbon_active_mean": 0.0
+      },
+      "w16": {
+        "kc_frac_mean": 5.468066491688539e-05,
+        "kc_frac_min": 0.0,
+        "kc_frac_max": 0.0004921259842519685,
+        "kc_jaccard_mean": 0.0,
+        "mbon_active_mean": 0.0
+      },
+      "w32": {
+        "kc_frac_mean": 5.468066491688539e-05,
+        "kc_frac_min": 0.0,
+        "kc_frac_max": 0.0004921259842519685,
+        "kc_jaccard_mean": 0.0,
+        "mbon_active_mean": 0.0
+      },
+      "probe": {
+        "kc_frac_mean": 0.0019138232720909882,
+        "kc_frac_min": 0.0,
+        "kc_frac_max": 0.003937007874015748,
+        "kc_jaccard_mean": 0.003485838779956427,
+        "mbon_active_mean": 0.0
+      }
+    }
+  }
+]

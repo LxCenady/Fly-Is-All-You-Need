@@ -1,0 +1,281 @@
+[
+ {
+  "active": 128,
+  "scale": 1.5,
+  "mode": "real",
+  "seed": 0,
+  "glom_code_mean_size": 130.12307692307692,
+  "input_code": "glom",
+  "kc_probe_frac": 0.02616469816272966,
+  "kc_jaccard": 0.03005720298951646,
+  "cue_spec_per_pair": [
+   17.249,
+   10.499,
+   14.073
+  ],
+  "own_kcid_scramble_eratio_median": 0.056074623342895674,
+  "own_kcid_scramble_ecos_median": 0.7156286535661089
+ },
+ {
+  "active": 128,
+  "scale": 1.5,
+  "mode": "pn_perm",
+  "seed": 1,
+  "n_pn_kc_edges": 22556,
+  "frac_label_changed": 0.9924188685937223,
+  "glom_code_mean_size": 130.12307692307692,
+  "input_code": "glom",
+  "kc_probe_frac": 0.023950131233595802,
+  "kc_jaccard": 0.03198150347173756,
+  "cue_spec_per_pair": [
+   12.677,
+   8.684,
+   9.675
+  ],
+  "own_kcid_scramble_eratio_median": 0.06349049866800638,
+  "own_kcid_scramble_ecos_median": 0.7082127888474541
+ },
+ {
+  "active": 128,
+  "scale": 1.5,
+  "mode": "pn_perm",
+  "seed": 2,
+  "n_pn_kc_edges": 22556,
+  "frac_label_changed": 0.9931725483241709,
+  "glom_code_mean_size": 130.12307692307692,
+  "input_code": "glom",
+  "kc_probe_frac": 0.024168853893263342,
+  "kc_jaccard": 0.0335026388259643,
+  "cue_spec_per_pair": [
+   12.03,
+   11.476,
+   8.478
+  ],
+  "own_kcid_scramble_eratio_median": 0.05938428306516419,
+  "own_kcid_scramble_ecos_median": 0.6529216140364688
+ },
+ {
+  "active": 128,
+  "scale": 1.5,
+  "mode": "pn_uniform",
+  "seed": 1,
+  "n_pn_kc_edges": 22556,
+  "frac_label_changed": 0.9988029792516404,
+  "glom_code_mean_size": 130.12307692307692,
+  "input_code": "glom",
+  "kc_probe_frac": 0.024414916885389326,
+  "kc_jaccard": 0.04406816157101299,
+  "cue_spec_per_pair": [
+   10.004,
+   8.102,
+   8.176
+  ],
+  "own_kcid_scramble_eratio_median": 0.06305972710334522,
+  "own_kcid_scramble_ecos_median": 0.7653322179235358
+ },
+ {
+  "active": 128,
+  "scale": 1.5,
+  "mode": "pn_uniform",
+  "seed": 2,
+  "n_pn_kc_edges": 22556,
+  "frac_label_changed": 0.9988029792516404,
+  "glom_code_mean_size": 130.12307692307692,
+  "input_code": "glom",
+  "kc_probe_frac": 0.024496937882764653,
+  "kc_jaccard": 0.03714585566914032,
+  "cue_spec_per_pair": [
+   7.307,
+   10.097,
+   8.071
+  ],
+  "own_kcid_scramble_eratio_median": 0.06510069255793803,
+  "own_kcid_scramble_ecos_median": 0.7575485086778663
+ },
+ {
+  "active": 160,
+  "scale": 1.5,
+  "mode": "real",
+  "seed": 0,
+  "glom_code_mean_size": 162.64615384615385,
+  "input_code": "glom",
+  "kc_probe_frac": 0.04806430446194226,
+  "kc_jaccard": 0.049304821481102004,
+  "cue_spec_per_pair": [
+   17.242,
+   4.676,
+   10.828
+  ],
+  "own_kcid_scramble_eratio_median": 0.1117282161093722,
+  "own_kcid_scramble_ecos_median": 0.9136745280407474
+ },
+ {
+  "active": 160,
+  "scale": 1.5,
+  "mode": "pn_perm",
+  "seed": 1,
+  "n_pn_kc_edges": 22556,
+  "frac_label_changed": 0.9924188685937223,
+  "glom_code_mean_size": 162.64615384615385,
+  "input_code": "glom",
+  "kc_probe_frac": 0.046724628171478565,
+  "kc_jaccard": 0.053768368611994063,
+  "cue_spec_per_pair": [
+   11.821,
+   3.779,
+   6.324
+  ],
+  "own_kcid_scramble_eratio_median": 0.10248531813179249,
+  "own_kcid_scramble_ecos_median": 0.9039176035898675
+ },
+ {
+  "active": 160,
+  "scale": 1.5,
+  "mode": "pn_perm",
+  "seed": 2,
+  "n_pn_kc_edges": 22556,
+  "frac_label_changed": 0.9931725483241709,
+  "glom_code_mean_size": 162.64615384615385,
+  "input_code": "glom",
+  "kc_probe_frac": 0.047517497812773396,
+  "kc_jaccard": 0.05358510871932419,
+  "cue_spec_per_pair": [
+   9.71,
+   4.67,
+   5.842
+  ],
+  "own_kcid_scramble_eratio_median": 0.1098061048669719,
+  "own_kcid_scramble_ecos_median": 0.9083115557763912
+ },
+ {
+  "active": 160,
+  "scale": 1.5,
+  "mode": "pn_uniform",
+  "seed": 1,
+  "n_pn_kc_edges": 22556,
+  "frac_label_changed": 0.9988029792516404,
+  "glom_code_mean_size": 162.64615384615385,
+  "input_code": "glom",
+  "kc_probe_frac": 0.04634186351706036,
+  "kc_jaccard": 0.059092661547239654,
+  "cue_spec_per_pair": [
+   7.588,
+   4.401,
+   8.127
+  ],
+  "own_kcid_scramble_eratio_median": 0.09886083683394166,
+  "own_kcid_scramble_ecos_median": 0.9083659082008102
+ },
+ {
+  "active": 160,
+  "scale": 1.5,
+  "mode": "pn_uniform",
+  "seed": 2,
+  "n_pn_kc_edges": 22556,
+  "frac_label_changed": 0.9988029792516404,
+  "glom_code_mean_size": 162.64615384615385,
+  "input_code": "glom",
+  "kc_probe_frac": 0.046451224846894144,
+  "kc_jaccard": 0.05661851233829504,
+  "cue_spec_per_pair": [
+   5.75,
+   4.69,
+   6.89
+  ],
+  "own_kcid_scramble_eratio_median": 0.10511895357206927,
+  "own_kcid_scramble_ecos_median": 0.9010382595932218
+ },
+ {
+  "active": 192,
+  "scale": 1.5,
+  "mode": "real",
+  "seed": 0,
+  "glom_code_mean_size": 194.30769230769232,
+  "input_code": "glom",
+  "kc_probe_frac": 0.0908792650918635,
+  "kc_jaccard": 0.08768444594164332,
+  "cue_spec_per_pair": [
+   6.81,
+   5.462,
+   4.465
+  ],
+  "own_kcid_scramble_eratio_median": 0.21613420050118876,
+  "own_kcid_scramble_ecos_median": 0.9539086832854435
+ },
+ {
+  "active": 192,
+  "scale": 1.5,
+  "mode": "pn_perm",
+  "seed": 1,
+  "n_pn_kc_edges": 22556,
+  "frac_label_changed": 0.9924188685937223,
+  "glom_code_mean_size": 194.30769230769232,
+  "input_code": "glom",
+  "kc_probe_frac": 0.0836887576552931,
+  "kc_jaccard": 0.08490529528372914,
+  "cue_spec_per_pair": [
+   6.019,
+   5.462,
+   3.508
+  ],
+  "own_kcid_scramble_eratio_median": 0.20786920100880796,
+  "own_kcid_scramble_ecos_median": 0.9643406663228955
+ },
+ {
+  "active": 192,
+  "scale": 1.5,
+  "mode": "pn_perm",
+  "seed": 2,
+  "n_pn_kc_edges": 22556,
+  "frac_label_changed": 0.9931725483241709,
+  "glom_code_mean_size": 194.30769230769232,
+  "input_code": "glom",
+  "kc_probe_frac": 0.08442694663167104,
+  "kc_jaccard": 0.08660684721937972,
+  "cue_spec_per_pair": [
+   6.402,
+   6.549,
+   3.895
+  ],
+  "own_kcid_scramble_eratio_median": 0.1963557782753953,
+  "own_kcid_scramble_ecos_median": 0.9630620673283036
+ },
+ {
+  "active": 192,
+  "scale": 1.5,
+  "mode": "pn_uniform",
+  "seed": 1,
+  "n_pn_kc_edges": 22556,
+  "frac_label_changed": 0.9988029792516404,
+  "glom_code_mean_size": 194.30769230769232,
+  "input_code": "glom",
+  "kc_probe_frac": 0.07791994750656167,
+  "kc_jaccard": 0.08970001933941235,
+  "cue_spec_per_pair": [
+   4.231,
+   3.565,
+   4.637
+  ],
+  "own_kcid_scramble_eratio_median": 0.16188156045108965,
+  "own_kcid_scramble_ecos_median": 0.9556110920196518
+ },
+ {
+  "active": 192,
+  "scale": 1.5,
+  "mode": "pn_uniform",
+  "seed": 2,
+  "n_pn_kc_edges": 22556,
+  "frac_label_changed": 0.9988029792516404,
+  "glom_code_mean_size": 194.30769230769232,
+  "input_code": "glom",
+  "kc_probe_frac": 0.07997047244094488,
+  "kc_jaccard": 0.08895492793163268,
+  "cue_spec_per_pair": [
+   4.054,
+   3.795,
+   4.336
+  ],
+  "own_kcid_scramble_eratio_median": 0.15895343121747788,
+  "own_kcid_scramble_ecos_median": 0.9534730384319592
+ }
+]
