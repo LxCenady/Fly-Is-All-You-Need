@@ -1,0 +1,31 @@
+{
+ "val_acc": 0.3934,
+ "val_bpc": 3.510243984233416,
+ "train_acc": 0.57445,
+ "temperature": 1.75,
+ "unigram_bpc": 4.736031502774111,
+ "bigram_bpc": 3.6240905620265655,
+ "bigram_acc": 0.2748,
+ "n_features": 4867,
+ "seconds": 1111.5,
+ "config": {
+  "out": "E:\\mechanism_20260928\\lm\\s192_biopulse_20k_skip3.json",
+  "train": 20000,
+  "val": 5000,
+  "active": 192,
+  "scale": 1.5,
+  "code": "random",
+  "mode": "biological",
+  "eta": 0.02,
+  "weight_tau": 16.0,
+  "features": "kc,mbon_v,mbon_spk,central,retr",
+  "lags": "0",
+  "skip": 3,
+  "buckets": 32768,
+  "l2": 0.01,
+  "epochs": 15,
+  "lr": 0.01,
+  "cache": "E:\\mechanism_20260928\\lm\\s192_biopulse_20k.npz",
+  "pulse": true
+ }
+}

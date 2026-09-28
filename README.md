@@ -1,59 +1,96 @@
 # Fly Is All You Need
 
-Mechanism analysis of a dopamine-gated memory in a connectome-constrained
-leaky integrate-and-fire model of the adult male *Drosophila* CNS
-(166,700 neurons; plasticity on the 61,210 Kenyon-cell -> MBON synapses).
+Independent research (high-school project) on a leaky integrate-and-fire model
+of the complete adult male *Drosophila* CNS connectome (MaleCNS v1.0,
+166,700 neurons), in two parts:
 
-The question is not how much the model can remember but **where a memory is
-stored, what retrieves it, what sets its lifetime and how it leaves the
-mushroom body**, answered with causal interventions (state transplants,
-weight scrambles that preserve the multiset of weight changes, wiring nulls,
-teacher swaps) and matched controls.
+1. **Language model** (`paper_lm/`) — the project started as an attempt to use
+   the frozen connectome as a reservoir for character-level language modelling
+   on TinyShakespeare, later with dopamine-gated plasticity on the 61,210
+   Kenyon-cell (KC) -> mushroom-body output neuron (MBON) synapses. Plasticity
+   wrote decodable information into the synapses but did not improve
+   prediction.
+2. **Mechanism study** (`paper/`) — grew out of that failure: where is a
+   mushroom-body memory stored, what retrieves it, what sets its lifetime, and
+   how does it reach downstream neurons? Answered with causal interventions
+   (state transplants, weight scrambles, wiring nulls, teacher swaps).
 
-## Main results (model-internal; not claims about the fly)
+The mechanism results were then used to revise the language model.
 
-| Question | Answer in this model | Evidence |
-|---|---|---|
-| What carries the memory after ~1 s? | The KC->MBON weights only; the fast state relaxes with the membrane time constant, no reverberation | transplant of synaptic vs fast state, `m1_cross.py` |
-| What sets its lifetime? | Exactly the prescribed synaptic decay; with decay off the readout is constant for 123 s | `m4_curve.py` |
-| When is the KC code sparse? | Only at small PN codes (160-192 of 675 PNs: 9-16 % of KCs, Jaccard 0.08-0.14); the legacy setting (512 PNs) activates 87 % of KCs | `sweep_opoint.py`, `kc_density.py` |
-| What retrieves it? | The identity of the written KCs (cue specificity 3.6-4.7 at sparse input, 1.06 at dense); random PN->KC wiring suffices | `m2_current.py`, `m3_pnkc.py` |
-| What makes different items' outputs different? | Coarse wiring only: body side and KC subtype on both sides of the KCs; within a subtype and side, KCs are interchangeable | `m3_kcmbon.py`, `m6_*.py` |
-| Role of the dopaminergic teacher | Chooses the compartment: with different teachers it explains 87 % of output variance, the item 5 % | `m7_teacher.py`, `m7_map.py` |
-| Interference between memories | Linear superposition in the weights, set by KC overlap (0.10-0.13 sparse vs 0.86-0.90 dense) | `m8_interference.py` |
-| How does it reach downstream? | Only by flipping MBON spikes (35/35 changed-raster cells vs 0/93 identical) | `m5_downstream.py`, `m5b_timing.py` |
+## Main findings (model-internal; not claims about the fly)
 
-Corrections to an earlier analysis of the same model (simulator bug that wrote
-to the wrong synapses, predictions true by construction, dense operating point)
-are listed in `mechanism/PAPER_OVERTURN_20260928.md` and in the paper.
+**Mechanism** — a mushroom-body memory has three addresses:
+
+| Question | Answer in this model |
+|---|---|
+| Carrier after ~1 s | KC->MBON weights only; fast activity decays with the membrane time constant |
+| Lifetime | exactly the prescribed synaptic decay; the network adds no forgetting or consolidation |
+| Retrieval key | identity of the written KCs, only when the KC code is sparse (160-192 of 675 PNs) |
+| Output identity | body side and KC subtype on both sides of the KCs; within those, KCs are interchangeable |
+| Write location | which dopaminergic neurons teach (87 % of output variance when teachers differ) |
+| Interference | linear superposition in the weights, set by KC overlap |
+| Downstream readout | only when the memory flips an MBON spike (35/35 vs 0/93 cells) |
+
+**Language model** — the earlier benchmark (42.55 % / 3.298 bits per
+character on 20k/5k) is matched by a hashed three-character context alone
+(42.9 % / 3.205). With sparse input, the brain adds to that context
+(20k/5k: 43.2 % / 3.146 with KC codes; 42.4 % / 3.110 with all features).
+These are single runs with settings chosen on the validation split; a
+multi-seed rerun with held-out selection is in progress.
+
+Every number is mapped to its script and output file in
+[`docs/CLAIMS_EVIDENCE.md`](docs/CLAIMS_EVIDENCE.md).
+
+## Known problems and corrections
+
+- Before a simulator fix (2026-09-17) the masked weight matrix was re-sorted
+  on the GPU after the plasticity module had cached synapse positions, so
+  plastic writes landed on the wrong synapses (`audit_20260928/`). All
+  plasticity results produced before the fix, including every plasticity
+  language-model run, are superseded; frozen results are unaffected.
+- The earlier language-model benchmark was essentially an n-gram score, and
+  its summary document quotes 42.71 % / 3.227 while the metrics file records
+  42.55 % / 3.298.
+- An intermediate conclusion of the mechanism study (output identity needs
+  individual KC wiring) was withdrawn after side-preserving controls.
+- Claim-by-claim corrections of the first paper draft:
+  `mechanism/PAPER_OVERTURN_20260928.md`.
 
 ## Layout
 
 ```
-mechanism/     experiment scripts (m1_core.py = validated snapshot/restore interface)
-               RESULTS_20260928.md      result register (every number -> JSON file)
-               PAPER_OVERTURN_20260928.md  claim-by-claim correction of the earlier draft
-results/       JSON outputs of every experiment (+ KC input clusters .npz)
-paper/         main.tex (IEEEtran), make_figures.py, figures/
-audit_20260928/  CSR canonicalisation bug: evidence scripts and outputs
+paper/            mechanism paper (IEEEtran main.tex, make_figures.py, figures/)
+paper_lm/         language-model report (main.tex)
+mechanism/        experiment scripts; m1_core.py = validated snapshot/restore interface
+                  lm_mech.py = revised language model; lm_select.py = held-out selection
+                  queue_runner.py = overnight job queue
+                  RESULTS_20260928.md = result register
+results/          JSON outputs (results/lm/: language model)
+audit_20260928/   evidence for the simulator bug
+docs/             CLAIMS_EVIDENCE.md, LITERATURE_INDEX.md
 ```
 
 ## Reproducing
 
 The scripts run on top of the `flybrain_lm` code base and the `flybrain`
-simulator package (with the CSR canonicalisation fix of 2026-09-17), which are
-**not included here**; paths in the scripts point to the original machine
+simulator package with the 2026-09-17 CSR canonicalisation fix; neither is
+included here, and paths point to the original machine
 (`D:\flybrain_lm_cuda`, `E:\mechanism_20260928`). A CUDA GPU (CuPy) is
-required for the simulations; `m6_structure.py` and the audit CSR check run on
-CPU. Figures are regenerated from `results/` with `paper/make_figures.py`
-(adjust the input path at the top).
+required for simulations (RTX 3070 Ti Laptop: ~40 tokens/s for one process,
+~70 tokens/s total with 3-4 processes). CPU-only: `m6_structure.py` and the
+audit CSR check.
 
-## Status
+## Data, citation and license
 
-Draft. The paper compiles on Overleaf with no errors or warnings. The
-connectome is MaleCNS v1.0 (Berg et al., Cell 2026). Related work and the
-novelty boundary are in `docs/LITERATURE_INDEX.md`.
+Connectome: MaleCNS v1.0 by FlyEM (HHMI Janelia), University of Cambridge, MRC
+LMB and Google Research, CC BY 4.0; cite Berg, S. et al. (2026), *Sexual
+dimorphism in the complete Drosophila male central nervous system
+connectome*, Cell 189(18), 5504-5526.e15. Code in this repository: MIT
+(see `LICENSE`).
 
-## License
+## Use of AI tools
 
-MIT (see `LICENSE`).
+This work used AI agents extensively (Anthropic Claude, OpenAI Codex,
+DeepSeek via OpenCode) to write and run code, run experiments, audit results
+and draft the papers; the author directed the research and is responsible for
+the content. See the statements in both papers.

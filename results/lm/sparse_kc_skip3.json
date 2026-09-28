@@ -1,0 +1,30 @@
+{
+ "val_acc": 0.421,
+ "val_bpc": 3.3445445475372293,
+ "train_acc": 0.7375,
+ "temperature": 1.7999999999999998,
+ "unigram_bpc": 4.656237029146567,
+ "bigram_bpc": 3.7468961102143714,
+ "bigram_acc": 0.2925,
+ "n_features": 4064,
+ "seconds": 1.4,
+ "config": {
+  "out": "E:\\mechanism_20260928\\lm\\sparse_kc_skip3.json",
+  "train": 6000,
+  "val": 2000,
+  "active": 512,
+  "scale": 1.0,
+  "code": "random",
+  "mode": "frozen",
+  "eta": 0.02,
+  "weight_tau": 16.0,
+  "features": "kc",
+  "lags": "0",
+  "skip": 3,
+  "buckets": 32768,
+  "l2": 0.001,
+  "epochs": 15,
+  "lr": 0.01,
+  "cache": "E:\\mechanism_20260928\\lm\\sparse_frozen_6k.npz"
+ }
+}

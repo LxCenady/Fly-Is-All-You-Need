@@ -27,46 +27,42 @@ mikey080602@gmail.com}}
 % =====================================================================
 \begin{abstract}
 We asked which constraints of the mushroom-body (MB) wiring determine where a
-dopamine-gated memory is stored, how it is read out, how long it lasts, and
-how it reaches the rest of the brain, using a leaky integrate-and-fire model of
-a whole adult male \textit{Drosophila} CNS connectome (166{,}700 neurons) with
-local plasticity on its 61{,}210 Kenyon-cell (KC) to MB-output-neuron (MBON)
-synapses. A validated snapshot-and-transplant interface shows that, from about
-one second after a write, the memory is carried entirely by the KC$\rightarrow$MBON
-weights: swapping the fast network state changes nothing, and the fast state
-relaxes with the single-neuron membrane time constant, with no reverberation.
-Retention is set entirely by the prescribed synaptic decay; removing the decay
-leaves the readout unchanged for over two minutes. The readout depends
-critically on input sparseness. At the input density used in earlier work
-(512 of 675 projection neurons per symbol), 87\% of KCs respond to every probe
-and the KC sets of different symbols overlap with Jaccard index 0.93, so the MB
-behaves as one decaying scalar store per MBON. At sparse input (160--192
-projection neurons; 9--16\% of KCs active; Jaccard 0.08--0.14), readout becomes
-cue-specific (the written item reads out 3.6--4.7 times more strongly than
-other probes, median over six pairs) and depends on KC identity: scrambling
-which KCs carry the written change, while preserving every MBON's weight
-changes exactly, removes 34--89\% of the cued readout. Cue specificity needs
-only sparseness: random PN$\rightarrow$KC wiring reproduces it. The identity
-of the output needs the real wiring, but only at two coarse levels: body side
-and KC subtype. Randomising the PN$\rightarrow$KC or KC$\rightarrow$MBON wiring
-makes the MBON outputs of different items nearly identical (mean pairwise
-cosine 0.76 against 0.96--0.99), whereas swapping KC output profiles freely
-among KCs of the same subtype and body side leaves it intact (0.75). With
-side-blind symbol codes, the sparse KC threshold amplifies small differences
-into lateralised storage (the left share of written KCs ranges from 0.04 to
-0.95 across items); with bilaterally symmetric glomerular codes, items instead
-differ in the KC subtypes they recruit ($\alpha\beta$ share $0.42\pm0.15$),
-which subtype-specific KC$\rightarrow$MBON routing turns into distinct outputs
-(0.88 against 0.96--0.99). With one teacher the dopamine gate is identical
-across items; with different teachers (PAM subsets, PPL) the teacher decides
-the compartment and explains 87\% of the output variance against 5\% for the
-item. Finally, downstream neurons receive the memory only when it flips
-at least one MBON spike (35 of 35 cells with changed MBON rasters against 0 of
-93 with identical rasters), which makes the effective readout discrete.
+dopamine-gated memory is stored, what retrieves it, how long it lasts and how
+it reaches the rest of the brain, using a leaky integrate-and-fire model of the
+adult male \textit{Drosophila} CNS connectome (166{,}700 neurons) with local
+plasticity on its 61{,}210 Kenyon-cell (KC) to MB-output-neuron (MBON)
+synapses. State transplants show that, from about one second after a write,
+the memory is carried only by the KC$\rightarrow$MBON weights, and its lifetime
+is exactly the prescribed synaptic decay. Retrieval depends on input
+sparseness: with dense input (512 of 675 projection neurons per symbol) 87\% of
+KCs respond to every probe and the MB acts as one scalar store per MBON; with
+sparse input (160--192) the written item reads out 3.6--4.7 times more
+strongly than other probes, and scrambling which KCs carry the change removes
+34--89\% of that readout. Random projection-neuron-to-KC wiring suffices for
+this cue. What distinguishes different items at the output needs the real
+wiring, but only its coarse organisation: randomising either wiring layer makes
+item outputs nearly identical (cosine 0.76 against 0.96--0.99), whereas swapping
+KCs within a subtype and body side does not. When different dopaminergic
+neurons teach, the teacher decides the compartment (87\% of output variance,
+against 5\% for the item). Interference between memories is linear and set by
+KC overlap, and downstream neurons receive a memory only when it changes an
+MBON spike (35 of 35 against 0 of 93 cells).
 \end{abstract}
 
 % =====================================================================
 \section{Introduction}
+This study grew out of an attempt to use the connectome as a frozen reservoir
+for character-level language modelling on TinyShakespeare \cite{lmcompanion}.
+Adding local KC$\rightarrow$MBON plasticity to that model wrote information
+into the synaptic state that could be decoded, yet the language readout did
+not improve. Those experiments were run on a simulator version later found to
+misplace plastic writes (Section~\ref{sec:corrections}), and their language
+scores turned out to be carried largely by an explicit hashed character-context
+head; but the question they raised, why information written into the MB is
+not read out, is the starting point here. The companion report
+\cite{lmcompanion} audits that history and uses the mechanisms found below to
+revise the language model.
+
 The MB stores associative memories as dopamine-gated, compartment-specific
 changes of KC$\rightarrow$MBON synapses \cite{hige2015,aso2014a,modi2020}.
 Its anatomy suggests a division of labour: an expansion from about 50
@@ -159,6 +155,8 @@ spike rasters. The \emph{operating point} is the PN code size $n_{PN}$ (of 675)
 and the drive scale; 512 at scale 1.0 is the legacy setting of earlier work.
 Drive saturates above scale 1.5 because PN spiking is binary.
 
+All parameters are collected in Table~\ref{tab:params}.
+
 \subsection{Snapshot, restore and transplant}
 The complete dynamical state is the voltage vector, the last spike set (the
 only transmission delay), the harness spike traces, the KC eligibility trace
@@ -170,6 +168,31 @@ $2.4\times10^{-7}$ at MBONs against $2.4\times10^{-7}$ between natural replays),
 while three injected errors were detected: $+10^{-3}$ on all MBON voltages
 ($\sim$1000$\times$ the floor), restoring $m$ without the matching $w$
 ($\sim3\times10^6\times$), and $+10^{-3}$ on a single synapse ($4$--$5\times$).
+
+\begin{table}[t]
+\caption{Model and protocol parameters (defaults; deviations are stated where
+used).}
+\label{tab:params}\centering\footnotesize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}ll@{}}\toprule
+Parameter & Value\\\midrule
+Time step / membrane $\tau$ & 20~ms / 100~ms\\
+Threshold / reset / refractory & 1 / 0 / none\\
+Gain $g$ / tonic $b$ / noise & 1.5 / 0.05 / 0 (deterministic)\\
+Token & 6 steps (120~ms); drive $d$ on step 1, $0.5d$ on steps 2--6\\
+Symbol code & fixed random set of PNs; only the current symbol injected\\
+PN code size & 512 of 675 (legacy), 160--192 (sparse); drive scale 1.5\\
+Plastic edges & 61{,}210 existing KC$\rightarrow$MBON entries\\
+Learning rate $\eta$ / clip & 0.02 / $|m|\le0.9$\\
+Weight decay $\tau_w$ & 16~s (4, 64~s and $\infty$ in Results B)\\
+Eligibility trace & $\tau=0.5$~s, not used in the update\\
+DAN gate valence & PAM $+1$, PPL $-1$, PPM $+0.5$ (hand-set)\\
+Teacher & $+2.0$ on all PAM, first step of each write token\\
+Write / gap & 32 tokens / $G$ silent tokens (plasticity off)\\
+Probe & drive $2.5d$, then 6 silent settle steps\\
+Readout & MBON (97) and 256 central MBON targets, settle window\\
+Replay floor & $\le2.4\times10^{-7}$ (MBON voltage)\\\bottomrule
+\end{tabular}
+\end{table}
 
 \subsection{Interventions and statistics}
 Weight scrambles permute the actual weight changes $\Delta w$ (not $m$) across
@@ -419,12 +442,14 @@ the PAM halves, $-0.06$ between PAM and PPL). Across the 24 item--teacher
 combinations, the teacher explained 87\% of the variance of the normalised
 output, the item 5\%, and their interaction 7\%; within a teacher, items
 remained as distinct as before (0.89--0.91). Consistent with the compartmental
-organisation of dopaminergic input \cite{aso2014a}, the dopaminergic system
+organisation of dopaminergic input \cite{aso2014a} and with the
+cell-type-specific writing rules of individual DAN types in vivo
+\cite{aso2016}, the dopaminergic system
 therefore decides \emph{where} a memory is stored, and the KC layer decides what is
 stored there and which cue retrieves it. The sign of the change is not a
 result: in this model PAM writes potentiate and PPL writes depress (100\% of
 changed synapses in each case) because of the hand-set valence signs, whereas
-in the fly coincident KC and dopaminergic activity depresses KC$\rightarrow$MBON
+in the fly coincident KC and dopaminergic activity predominantly depresses KC$\rightarrow$MBON
 synapses \cite{hige2015}. Re-running the location results with every DAN
 depressing its compartment gave the same values (cue specificity 4.71, 3.59
 and 1.07; item distinctness 0.885; teacher share 87\%). For single-teacher
@@ -443,7 +468,11 @@ $Y$ writes and those cue $X$ activates: 0.10--0.13 at sparse input against
 output direction (cosine 0.999); with different teachers it adds a new
 direction (0.88 sparse, 0.58 dense), because cue $X$ reads $Y$'s changes in
 other compartments through shared KCs. Separate compartments thus do not
-prevent interference; sparse KC codes do.
+prevent interference; sparse KC codes do. That sparse, high-dimensional KC
+codes reduce interference between associations has been shown in an abstract
+model of the fly circuit \cite{shen2023}; here the same effect appears in the
+whole-CNS connectome model, where it is exactly linear superposition in the
+weights and is quantified by the measured KC overlap.
 
 \begin{figure*}[t]\centering
 \includegraphics[width=0.95\textwidth]{figures/fig5_routing.pdf}
@@ -545,7 +574,8 @@ In this model, a mushroom-body memory has three addresses. The KC layer supplies
 the retrieval key: when input is sparse, only a cue that re-activates the
 written KCs retrieves the change, and random PN$\rightarrow$KC wiring suffices
 for this, as expected from random-expansion accounts
-\cite{caron2013,litwinkumar2017}. The output identity, in contrast, requires the
+\cite{caron2013,litwinkumar2017} and from the view of the PN$\rightarrow$KC
+expansion as a locality-sensitive hash \cite{dasgupta2017}. The output identity, in contrast, requires the
 real wiring, but only its coarse organisation: which hemisphere, and which KC
 subtype, a KC belongs to on both its input and its output side. Within a
 subtype and a side, KCs are interchangeable, consistent with random
@@ -590,7 +620,7 @@ regime's memory is largely subthreshold at the MBON; symbol codes are either
 side-blind or built from whole PN types, and neither is an odour response;
 teachers are artificial pulses on whole DAN groups; the default sign of
 plasticity (PAM potentiates, PPL depresses) is a model assumption opposite to
-the fly's DAN-induced depression; location results were unchanged under a
+the predominantly depressing effect of DANs in the fly; location results were unchanged under a
 depression-only rule, but the sign of stored changes is not interpretable. None of the results is a claim about memory in the
 fly.
 
@@ -673,6 +703,19 @@ pp.~1141--1149, 2024, doi: 10.1038/s41586-024-07819-w.
 \bibitem{li2026} Q. Li, W. Ping, K. Zhang, and C. Wang, ``Connectome-constrained
 modeling identifies neurons and synapses that sustain spontaneous activity in
 \textit{Drosophila},'' bioRxiv preprint, 2026, doi: 10.64898/2026.08.21.745055.
+\bibitem{aso2016} Y. Aso and G. M. Rubin, ``Dopaminergic neurons write and
+update memories with cell-type-specific rules,'' \textit{eLife}, vol.~5,
+e16135, 2016.
+\bibitem{shen2023} Y. Shen, S. Dasgupta, and S. Navlakha, ``Reducing
+catastrophic forgetting with associative learning: a lesson from fruit
+flies,'' \textit{Neural Comput.}, vol.~35, no.~11, pp.~1797--1819, 2023.
+\bibitem{dasgupta2017} S. Dasgupta, C. F. Stevens, and S. Navlakha, ``A neural
+algorithm for a fundamental computing problem,'' \textit{Science}, vol.~358,
+no.~6364, pp.~793--796, 2017.
+\bibitem{lmcompanion} Q. Li, ``Teaching a fly connectome to predict text:
+history, audit and mechanism-guided revision of a connectome-reservoir
+character language model,'' 2026. The language-model project from which the
+present study grew.
 \bibitem{olddraft} Earlier draft of this study (2026-09-20), superseded;
 see the correction register PAPER\_OVERTURN\_20260928.md.
 \end{thebibliography}

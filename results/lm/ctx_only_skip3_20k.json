@@ -1,0 +1,31 @@
+{
+ "val_acc": 0.1568,
+ "val_bpc": 4.692789812260053,
+ "train_acc": 0.15755,
+ "temperature": 1.0999999999999999,
+ "unigram_bpc": 4.736031502774111,
+ "bigram_bpc": 3.6240905620265655,
+ "bigram_acc": 0.2748,
+ "n_features": 0,
+ "seconds": 3.1,
+ "config": {
+  "out": "E:\\mechanism_20260928\\lm\\ctx_only_skip3_20k.json",
+  "train": 20000,
+  "val": 5000,
+  "active": 512,
+  "scale": 1.0,
+  "code": "random",
+  "mode": "frozen",
+  "eta": 0.02,
+  "weight_tau": 16.0,
+  "features": "none",
+  "lags": "0",
+  "skip": 3,
+  "buckets": 32768,
+  "l2": 0.01,
+  "epochs": 15,
+  "lr": 0.01,
+  "cache": "",
+  "pulse": false
+ }
+}
