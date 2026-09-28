@@ -1,0 +1,48 @@
+{
+ "val_acc": 0.4202,
+ "val_bpc": 3.179704336164753,
+ "train_acc": 0.59545,
+ "temperature": 1.5999999999999999,
+ "chars": "\n !$&',-.3:;?ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
+ "features": [
+  "kc",
+  "mbon_v",
+  "mbon_spk",
+  "central"
+ ],
+ "feature_dims": {
+  "kc": 4064,
+  "mbon_v": 97,
+  "mbon_spk": 97,
+  "central": 512
+ },
+ "brain": {
+  "pn_active": 160,
+  "drive_scale": 1.5,
+  "code": "random",
+  "code_seed": -1,
+  "mode": "frozen",
+  "simulator": "flybrain LIF, MaleCNS v1.0, protocol of mechanism/m1_core.py"
+ },
+ "readout": {
+  "l2": 0.01,
+  "epochs": 15,
+  "lr": 0.01,
+  "context_order": 3,
+  "buckets": 32768,
+  "E_dtype": "float16",
+  "fit": "numpy port of lm_mech.fit (CPU)"
+ },
+ "data": {
+  "corpus": "TinyShakespeare",
+  "train": [
+   0,
+   20000
+  ],
+  "val": [
+   20000,
+   25000
+  ]
+ },
+ "source_cache": "s160_o0_c-1.npz"
+}

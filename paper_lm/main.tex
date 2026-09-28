@@ -227,7 +227,10 @@ writes changes that are not item-specific.
 
 These gains over the n-gram are modest and come from single runs of one
 seed and one text segment, and the feature set and L2 strength were chosen
-by looking at the validation split, which flatters them. A rerun with
+by looking at the validation split, which flatters them. The readout fit is
+itself noisy: refitting the sparse-160 all-feature model on the same brain
+features with four different mini-batch orders gives 3.120--3.180 BPC
+(s.d.\ 0.026), comparable to the gains above. A rerun with
 selection on a separate held-out segment and several seeds and text offsets
 is in progress. They are the first in this project that exceed a
 context-only model, not evidence that the connectome models language.
