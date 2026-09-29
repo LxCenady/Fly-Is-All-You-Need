@@ -19,5 +19,6 @@ Produced by `mechanism/export_lm_model.py`.
 text must be computed by running the connectome (`mechanism/lm_mech.py`), which
 needs the flybrain package and the MaleCNS data. Readout fitting is noisy: refitting
 on the same features with other mini-batch orders gives 3.120–3.180 BPC, so this
-model's advantage over the context head alone is small and not yet established;
-the multi-seed rerun is in progress.
+model's advantage over the context head alone is small. Across 3 text segments x
+3 code draws the sparse brain lowers BPC by ~0.08 at this data size, but with
+100k training characters the gain falls to ~0.01 (see `paper_lm/`).

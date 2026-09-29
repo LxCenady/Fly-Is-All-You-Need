@@ -61,7 +61,9 @@ scores turned out to be carried largely by an explicit hashed character-context
 head; but the question they raised, why information written into the MB is
 not read out, is the starting point here. The companion report
 \cite{lmcompanion} audits that history and uses the mechanisms found below to
-revise the language model.
+revise the language model: with sparse input, the brain's features improved a
+context-only model in all 18 held-out cases with 20k training characters, with
+dense input in about half; with 100k characters the gain vanished.
 
 The MB stores associative memories as dopamine-gated, compartment-specific
 changes of KC$\rightarrow$MBON synapses \cite{hige2015,aso2014a,modi2020}.
@@ -329,7 +331,10 @@ MBON's weight-change distribution exactly, left the direction of the MBON
 current intact (cosine 0.90--0.98) but removed 34--89\% of its magnitude for
 the cued probe (Fig.~\ref{fig:addr}). The retrieval key is thus the identity
 of the KCs that were active at writing and are re-activated by the cue; it
-exists only when the KC code is sparse.
+exists only when the KC code is sparse. A repeat with twelve different write
+pairs gave the same picture: after the KC-identity scramble the cued probe kept
+a median 16\% (160 PNs) and 22\% (192) of its current magnitude against 85\% at
+512, with the direction preserved (cosine 0.92--1.00).
 
 \begin{figure*}[t]\centering
 \includegraphics[width=0.95\textwidth]{figures/fig4_addressing.pdf}
@@ -381,7 +386,10 @@ permuting PN inputs among PNs of the same type and side (0.72--0.77). The same
 swaps with the two sides mixed destroy it (0.90--0.95), and so does every
 earlier control that mixed the sides. Neither individual KC wiring nor any
 fine matching between a KC's inputs and outputs is required; body side and KC
-subtype are. A static model that sums the connectome output profiles of each
+subtype are. With three further shuffle seeds the side-and-subtype swap again
+kept distinctness (0.741--0.751 at 160 and 192 PNs), while the side-mixed swap
+(0.90--0.94), KC$\rightarrow$MBON randomisation (0.96--0.98) and
+PN$\rightarrow$KC randomisation (0.97--0.99) removed it. A static model that sums the connectome output profiles of each
 item's written KCs, weighted by their activity, reproduces the simulated
 distinctness (0.76 and 0.72 against 0.91--0.93 and 0.86--0.87 after
 within-subtype swapping), so the network dynamics add little to this step.
@@ -399,7 +407,8 @@ symmetric glomerular codes (all PNs of a set of PN types). Lateralisation then
 nearly vanishes (standard deviation 0.06--0.08), distinctness is reduced but
 remains clearly above the nulls (0.88 against 0.96--0.99 for either
 randomisation), and it now depends on KC subtype rather than on side:
-swapping output profiles within subtype with sides mixed keeps it (0.90), while
+swapping output profiles within subtype with sides mixed keeps it (0.89--0.90,
+reproduced with three new seeds), while
 keeping sides and mixing subtypes removes it (0.95--0.97). Items differ in the
 KC subtypes they recruit (share of the written activity across items:
 $\alpha\beta$ $0.42\pm0.15$, $\gamma$-main $0.36$--$0.38\pm0.11$,
@@ -583,7 +592,12 @@ glomerulus-to-KC convergence \cite{caron2013}. An item's output is the sum of
 the output profiles of the KCs it recruits, and items differ at the output to
 the extent that they recruit different mixtures of mushroom bodies and of KC
 subtypes, which the lobe-specific KC$\rightarrow$MBON organisation
-\cite{aso2014a,li2020} maps onto different MBONs. How strongly they do so
+\cite{aso2014a,li2020} maps onto different MBONs. In the connectome the mean
+output profiles of the three KC families ($\alpha\beta$, $\alpha'\beta'$,
+$\gamma$) are nearly orthogonal (cosine 0.01--0.20), as are those of the left
+and right mushroom bodies (0.00--0.06), so ``side and subtype'' amounts to
+``which lobe output channels'': the anatomy defines the channels, and the input
+code decides how an item is spread over them. How strongly they do so
 depends on the input: side-blind codes produce strongly lateralised storage,
 which is unlikely for real odours; bilaterally symmetric codes produce weaker,
 subtype-based distinctness. Both addresses depend on an operating point with a
@@ -609,6 +623,38 @@ are point neurons; a biophysical model of MBON-$\alpha$3 built from its EM
 architecture shows that dendritic integration of stochastic KC input shapes the
 MBON response \cite{hafez2023}, and how graded such a readout is in a
 compartmental model is open.
+
+Table~\ref{tab:status} separates what the simulations discovered from what
+the model builds in. Four of the seven findings follow, in whole or in part,
+from the model's rules or from our readout metric; their contribution is a
+quantification, not a mechanism. The two findings that depend on the wiring
+and the operating point, the KC retrieval key and the side-and-subtype output
+map, were reproduced across items, shuffle seeds, code sizes and code types;
+their sensitivity to gain, tonic drive and noise is being tested.
+
+\begin{table}[t]
+\caption{Status of the main findings.}
+\label{tab:status}\centering\footnotesize\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{@{}p{0.34\columnwidth}p{0.62\columnwidth}@{}}\toprule
+Finding & Status\\\midrule
+Memory on weights after $\sim$1\,s & Time scale set by the 100\,ms membrane
+constant; the transplant test is the evidence\\
+Lifetime = prescribed decay & By construction; shows only that no other
+forgetting emerges\\
+KC identity is the retrieval key & Emergent; depends on the sparse operating
+point (12 pairs, two sparse points)\\
+Side + subtype set output identity & Emergent from the wiring; amounts to the
+lobe/side output channels (several shuffle seeds, two code sizes and types)\\
+DAN chooses the compartment (87\%) & Largely by construction (rule applies
+DAN signal via DAN$\rightarrow$MBON edges); the connectome sets how little
+teachers overlap\\
+Interference additive, set by overlap & Additivity by construction of the
+current metric; overlap dependence expected from theory
+\cite{dasgupta2017,shen2023}\\
+Downstream sees memory only via spikes & By construction of spike-based
+synapses; the rarity of flips is the finding\\\bottomrule
+\end{tabular}
+\end{table}
 
 \paragraph*{Limitations}
 One connectome and one reconstruction; leaky integrate-and-fire neurons with

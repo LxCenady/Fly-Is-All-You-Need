@@ -74,6 +74,15 @@ def protocol_args(eta=0.02, weight_tau=16.0, noise_hz=0.0, seed=20260920):
     ns.repeats = 1
     ns.gap_tokens = 0
     ns.probe_sustain = None
+    # Sensitivity overrides (unset = reference protocol): MB_GAIN, MB_TONIC, MB_NOISE (Hz).
+    # With MB_NOISE > 0 the noise RNG is not part of the snapshot, so episodes see
+    # independent noise realisations.
+    if os.environ.get("MB_GAIN"):
+        ns.gain = float(os.environ["MB_GAIN"])
+    if os.environ.get("MB_TONIC"):
+        ns.tonic = float(os.environ["MB_TONIC"])
+    if os.environ.get("MB_NOISE"):
+        noise_hz = float(os.environ["MB_NOISE"])
     ns.eta, ns.weight_tau, ns.noise_hz = float(eta), float(weight_tau), float(noise_hz)
     ns.noise_grid = [float(noise_hz)]
     ns.graded_tol, ns.graded_ulp = 1e-6, 16

@@ -1,0 +1,33 @@
+{
+ "val_acc": 0.3796,
+ "val_bpc": 3.4378485752833203,
+ "train_acc": 0.79845,
+ "temperature": 2.0,
+ "unigram_bpc": 4.736031502774111,
+ "bigram_bpc": 3.6240905620265655,
+ "bigram_acc": 0.2748,
+ "n_features": 4770,
+ "seconds": 1132.0,
+ "config": {
+  "out": "E:\\mechanism_20260928\\night\\d512_o0_c-1.json",
+  "train": 20000,
+  "val": 5000,
+  "active": 512,
+  "scale": 1.0,
+  "code": "random",
+  "mode": "frozen",
+  "eta": 0.02,
+  "weight_tau": 16.0,
+  "features": "kc,mbon_v,mbon_spk,central",
+  "lags": "0",
+  "skip": 3,
+  "buckets": 32768,
+  "l2": 0.01,
+  "epochs": 15,
+  "lr": 0.01,
+  "cache": "E:\\mechanism_20260928\\night\\d512_o0_c-1.npz",
+  "offset": 0,
+  "code_seed": -1,
+  "pulse": false
+ }
+}

@@ -33,10 +33,13 @@ The mechanism results were then used to revise the language model.
 
 **Language model** — the earlier benchmark (42.55 % / 3.298 bits per
 character on 20k/5k) is matched by a hashed three-character context alone
-(42.9 % / 3.205). With sparse input, the brain adds to that context
-(20k/5k: 43.2 % / 3.146 with KC codes; 42.4 % / 3.110 with all features).
-These are single runs with settings chosen on the validation split; a
-multi-seed rerun with held-out selection is in progress.
+(42.9 % / 3.205). With sparse input, the brain adds to that context: over
+3 text segments x 3 PN-code draws, with readouts chosen on held-out training
+data, BPC drops by 0.078 +- 0.020 (160 PNs) and 0.076 +- 0.014 (192) in 9/9
+cases each, but only by 0.007 +- 0.019 with the old dense input (5/9). The
+gain is in calibration (BPC); top-1 accuracy is unchanged. With 100k
+training characters (one run) the gain falls to 0.01 BPC, within fit noise:
+the brain helps the n-gram only while data are scarce.
 
 Every number is mapped to its script and output file in
 [`docs/CLAIMS_EVIDENCE.md`](docs/CLAIMS_EVIDENCE.md).

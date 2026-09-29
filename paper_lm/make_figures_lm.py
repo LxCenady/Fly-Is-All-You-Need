@@ -35,7 +35,7 @@ def fig_timeline():
                                      f"{old['bpc']:.3f} BPC\n(+ hashed 3-char context)"),
         ("Phase 3\nMB plasticity", f"{dual['val_acc']:.1%} / {dual['bpc']:.3f} BPC\nwritten but not read"),
         ("Mechanism study", "memory on KC->MBON\nweights; sparse KC code\n= retrieval key; read out\nonly via MBON spikes"),
-        ("Audit + revision", "indexing bug found;\nbenchmark ~ n-gram;\nsparse input: brain\nadds to the n-gram"),
+        ("Audit + revision", "indexing bug found;\nbenchmark ~ n-gram;\nsparse brain adds to it\nonly with little data"),
     ]
     fig, ax = plt.subplots(figsize=(7.2, 1.9))
     ax.axis("off")
@@ -84,5 +84,31 @@ def fig_results():
     plt.close(fig)
 
 
+def fig_paired():
+    """Brain+context minus context-only BPC, holdout-selected, per cache
+    (3 text segments x 3 PN-code seeds), from night/select_*.json."""
+    night = Path(r"E:\mechanism_20260928\night")
+    groups = [("sparse 160", "s160", C1), ("sparse 192", "s192", C1), ("dense 512", "d512", GRAY)]
+    fig, ax = plt.subplots(figsize=(3.4, 2.3))
+    for i, (lab, tag, col) in enumerate(groups):
+        rs = j(night / f"select_{tag}.json")
+        d = [r["brain+context"]["val_bpc"] - r["context_only"]["val_bpc"] for r in rs]
+        offs = {0: -0.18, 300000: 0.0, 600000: 0.18}
+        for r, v in zip(rs, d):
+            ax.plot(i + offs[r["offset"]], v, "o", ms=4.5, color=col, mec="white", mew=0.8)
+        m = sum(d) / len(d)
+        ax.plot([i - 0.3, i + 0.3], [m, m], color=INK, lw=1.4)
+        wins = sum(v < 0 for v in d)
+        ax.text(i, 0.045, f"{m:+.3f}\n{wins}/9 better", ha="center", va="bottom", fontsize=6.3, color=INK2)
+    ax.axhline(0, color=MUTED, lw=0.8)
+    ax.set_xticks(range(len(groups)), [g[0] for g in groups])
+    ax.set_xlim(-0.6, len(groups) - 0.4); ax.set_ylim(-0.13, 0.09)
+    ax.set_ylabel("BPC change from adding the brain\n(below 0 = brain helps)")
+    ax.grid(axis="y", color=GRID, lw=0.5)
+    fig.tight_layout()
+    fig.savefig(OUT / "fig2_paired.pdf"); fig.savefig(OUT / "fig2_paired.png", dpi=200)
+    plt.close(fig)
+
+
 if __name__ == "__main__":
-    fig_timeline(); fig_results(); print("ok")
+    fig_timeline(); fig_results(); fig_paired(); print("ok")

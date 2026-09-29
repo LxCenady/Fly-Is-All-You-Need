@@ -1,0 +1,74 @@
+[
+ {
+  "cache": "E:\\mechanism_20260928\\night\\d512_100k.npz",
+  "offset": 0,
+  "train": 100000,
+  "val": 20000,
+  "selected": {
+   "features": "nokc",
+   "l2": 0.03
+  },
+  "holdout_ranking": [
+   {
+    "bpc": 2.7599,
+    "features": "nokc",
+    "l2": 0.03
+   },
+   {
+    "bpc": 2.7718,
+    "features": "nokc",
+    "l2": 0.005
+   },
+   {
+    "bpc": 2.7757,
+    "features": "nokc",
+    "l2": 0.01
+   },
+   {
+    "bpc": 3.4826,
+    "features": "kc",
+    "l2": 0.03
+   },
+   {
+    "bpc": 3.6922,
+    "features": "all",
+    "l2": 0.03
+   },
+   {
+    "bpc": 3.708,
+    "features": "kc",
+    "l2": 0.01
+   },
+   {
+    "bpc": 3.9653,
+    "features": "kc",
+    "l2": 0.005
+   },
+   {
+    "bpc": 4.2349,
+    "features": "all",
+    "l2": 0.005
+   },
+   {
+    "bpc": 6.993,
+    "features": "all",
+    "l2": 0.01
+   }
+  ],
+  "brain+context": {
+   "val_acc": 0.47035,
+   "val_bpc": 2.7255017668717434,
+   "temperature": 1.5
+  },
+  "brain_only": {
+   "val_acc": 0.26655,
+   "val_bpc": 3.872821592400708,
+   "temperature": 0.95
+  },
+  "context_only": {
+   "val_acc": 0.48855,
+   "val_bpc": 2.6817875606407364,
+   "temperature": 1.4
+  }
+ }
+]

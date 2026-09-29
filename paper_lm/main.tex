@@ -35,10 +35,16 @@ alone, with no brain, reaches 42.9\% / 3.205 BPC on our 20k/5k split: the
 earlier benchmark was essentially an n-gram score. The mechanism study showed
 that the input used so far activates most Kenyon cells (KCs) for every symbol.
 With sparse projection-neuron (PN) codes instead, the brain adds information
-beyond the n-gram: on 20k/5k, KC codes plus the context head reach 43.2\% /
-3.146 BPC, and all brain features 42.4\% / 3.110 BPC, the first results in the
-project that improve on a context-only model. Plasticity with a uniform
-teaching signal made prediction worse.
+beyond the n-gram when training data are small. In a check with readout settings chosen on held-out training
+data, over three text segments and three PN-code draws, adding the brain to the
+context head lowered BPC by 0.078 $\pm$ 0.020 (sparse 160 PNs) and 0.076
+$\pm$ 0.014 (192) in 9 of 9 cases each, but by only 0.007 $\pm$ 0.019 with the
+earlier dense input (5 of 9). The gain is in probability calibration, not in
+top-1 accuracy, which did not change, and it shrinks with more data: with
+100k training characters (one run) it fell to at most 0.01 BPC, within
+readout-fit noise. The brain helps the n-gram when data are scarce but does not add
+information that a larger n-gram table cannot learn. Plasticity with a
+uniform teaching signal made prediction worse.
 \end{abstract}
 
 % =====================================================================
@@ -181,8 +187,10 @@ softmax whose hashed context table is initialised from smoothed counts on the
 training rows; temperature is set on the last 10\% of the training rows; one
 continuous stream; train = the first $N$ characters, validation = the next $M$.
 
+\subsection{Exploratory runs}
 \begin{table}[t]
-\caption{Revised model. Brain features: KC counts (4{,}064), MBON voltage and
+\caption{Exploratory single runs of the revised model (one segment, one code
+draw; settings chosen on the validation split). Brain features: KC counts (4{,}064), MBON voltage and
 spikes (97 each), 256 MBON-target central neurons (trace and voltage).}
 \label{tab:res}\centering\footnotesize\setlength{\tabcolsep}{3pt}
 \begin{tabular}{@{}lcc@{}}\toprule
@@ -204,36 +212,74 @@ Sparse 192: all features + context & 43.2\% & 3.147\\\bottomrule
 \end{tabular}
 \end{table}
 
+Table~\ref{tab:res} lists the exploratory runs. They suggested that sparse
+input lets the brain improve on the context head, but they came from one
+segment and one code draw, with the feature set and L2 strength chosen by
+looking at the validation split. The readout fit is also noisy: refitting one
+model on the same brain features with four mini-batch orders gives
+3.120--3.180 BPC (s.d.\ 0.026), comparable to the apparent gains. Plasticity
+with a PAM pulse on every character wrote the synapses (modulation up to 0.17)
+but made prediction worse, as expected from the mechanism study, where a
+teaching signal that is the same for every item writes changes that are not
+item-specific.
+
+\subsection{Held-out check over segments and code draws}
+We therefore repeated the frozen runs for three PN codes (sparse 160, sparse
+192, dense 512) on three text segments (starting at characters 0, 300{,}000
+and 600{,}000; 20k train / 5k validation each) with three random PN-code
+draws, 27 simulations in all. For each, the readout (feature set: all, KC only,
+or MBON and central only; L2 $5\cdot10^{-3}$, $10^{-2}$ or $3\cdot10^{-2}$) was
+chosen on the last 10\% of the training characters and evaluated once on
+validation, together with the context head alone on the same split
+(Fig.~\ref{fig:paired}).
+
 \begin{figure}[t]\centering
-\includegraphics[width=\columnwidth]{figures/fig2_results20k.pdf}
-\caption{Validation BPC on the 20k/5k split (accuracy in brackets). Dashed:
-context head alone; dotted: bigram. Gray: earlier frozen reference; orange:
-n-gram only; blue: revised models. Settings were chosen on the validation
-split (see text).}
-\label{fig:res}
+\includegraphics[width=\columnwidth]{figures/fig2_paired.pdf}
+\caption{Change in validation BPC when the brain is added to the context
+head, per text segment (left to right within a group: offsets 0, 300k, 600k)
+and PN-code draw. Readouts chosen on held-out training data. Bars: means.}
+\label{fig:paired}
 \end{figure}
 
-Table~\ref{tab:res} and Fig.~\ref{fig:res} summarise the results. On the small 6k/2k split the
-sparse brain alone predicts better than the context head alone. With more
-data the n-gram context becomes stronger and the brain alone falls behind it
-(38.8\% / 3.229 against 42.9\% / 3.205), but combined with the context head
-the sparse brain improves on it: the KC code adds 0.3 accuracy points and
-0.06 BPC, all features 0.10 BPC. Dense input, which the earlier project used,
-adds nothing even at 6k/2k. The KC code carries most of the brain's
-contribution. Plasticity with a PAM pulse on every character wrote the
-synapses (modulation up to 0.17) but made prediction worse, as expected from
-the mechanism study, where a teaching signal that is the same for every item
-writes changes that are not item-specific.
+With sparse input the brain lowered BPC in every case: by 0.078 $\pm$ 0.020
+(160 PNs) and 0.076 $\pm$ 0.014 (192), mean $\pm$ s.d.\ over 9 cases (context
+head alone 3.097 BPC on average; brain plus context 3.019 and 3.021). With the
+earlier dense input the change was $-0.007 \pm 0.019$, an increase in 4 of 9
+cases. Because every sparse case improves, the effect is larger than the
+readout-fit noise above. Accuracy, however, did not improve: 44.6\% and 44.5\%
+with the sparse brain against 44.5\% for the context head alone, and 43.5\%
+with dense input, lower in all 9 cases. The brain therefore makes the
+probabilities better calibrated rather than changing the most likely
+character. On its own the sparse brain is far weaker than the n-gram (33.3\% /
+3.50 BPC; dense 27.6\% / 3.85).
 
-These gains over the n-gram are modest and come from single runs of one
-seed and one text segment, and the feature set and L2 strength were chosen
-by looking at the validation split, which flatters them. The readout fit is
-itself noisy: refitting the sparse-160 all-feature model on the same brain
-features with four different mini-batch orders gives 3.120--3.180 BPC
-(s.d.\ 0.026), comparable to the gains above. A rerun with
-selection on a separate held-out segment and several seeds and text offsets
-is in progress. They are the first in this project that exceed a
-context-only model, not evidence that the connectome models language.
+The held-out selection preferred MBON and central features over KC counts in
+17 of 18 sparse cases. This turned out to be a preprocessing artefact. Most
+KCs fire in only a handful of training characters, so standardising their
+counts produces huge values when they fire at validation ($|z|>20$ in 15\% of
+validation rows). In an ablation on the three sparse-160 segments with fixed
+L2 ($5\cdot10^{-3}$), KC counts alone lowered BPC by 0.094 relative to the
+context head, and by 0.107 when the standardised values were clipped at
+$\pm3$. MBON and central features together gave 0.073, the subthreshold MBON
+voltage alone 0.041 (same direction in all three segments). The KC code thus
+carries at least as much of the brain's contribution as the downstream
+neurons. In the sparse regime the MBONs never fired during the language-model
+runs, so the central neurons did not receive mushroom-body output; their
+contribution comes from other pathways.
+
+\subsection{More data}
+With 100k training and 20k validation characters (segment 0, one code draw,
+one run per condition) the context head alone reaches 48.9\% / 2.681 BPC. With
+the held-out-selected readout the sparse brain made it worse (2.698); with
+clipped KC features it was 2.671 (48.4\%), a change of $-0.010$ BPC, within
+the readout-fit noise; dense KC features gave 2.996. The brain's gain over the
+n-gram therefore does not survive a five-fold increase in training data. The
+most likely reading is that the sparse brain features carry mostly short-range
+context: with little data they smooth the sparse n-gram table, and with more
+data the table learns the same information itself. These are the first results in this project
+that improve on a context-only model; they are not evidence that the
+connectome models language, and they do not persist with more training
+data (below).
 
 % =====================================================================
 \section{Discussion}
@@ -243,12 +289,17 @@ regime was changed. The mechanism study explained why: dense input erases the
 Kenyon-cell code that makes the mushroom body informative, and information
 written into KC$\rightarrow$MBON synapses reaches downstream neurons only when
 it flips an MBON spike. Using these facts turned the brain from a redundant
-feature set into one that adds information to an n-gram context. The model
+feature set into one that adds information to an n-gram context, consistently
+across text segments and code draws, though only in calibration (BPC), not in
+top-1 accuracy, and only while training data are scarce: at 100k characters
+the gain was gone. For the original goal this is a negative result: with a
+linear readout, the frozen connectome does not supply sequence information
+beyond what counts of three-character contexts provide. The model
 still does not understand language; it predicts local character structure.
 
-\paragraph*{Limitations} One connectome; one corpus segment; short splits;
-single seeds; readout settings tuned on the validation split for the 20k/5k
-table (L2 and feature set), which makes the best numbers optimistic; the
+\paragraph*{Limitations} One connectome; one corpus; short splits (20k
+characters); one readout fit per case; the exploratory table was tuned on the
+validation split (the held-out check was not); the
 revised protocol differs from the earlier one in input pathway, gain and
 sampling, so comparisons with the earlier numbers are approximate.
 
