@@ -118,3 +118,21 @@ one spec entry for one run. Models store their full spec, so they can be reloade
 | [`gpf/connectome/specs/malecns-v1.json`](gpf/connectome/specs/malecns-v1.json) | the adult fly CNS (166,700 neurons), GPF-1's protocol |
 | [`examples/celegans/`](examples/celegans/) | a different species: the whole C. elegans worm (Cook et al. 2019), with gap junctions and a hand-chosen operating point. Its result has the same pattern as the fly's. |
 | [`examples/toy_connectome/`](examples/toy_connectome/) | a made-up network, showing the CSV format end to end |
+
+Two species, same benchmark (TinyShakespeare, 20k training / 5k validation, one seed, validation BPC):
+
+| | Fly (MaleCNS v1.0) | Worm (C. elegans, Cook 2019) |
+|---|---|---|
+| Kneser-Ney 5-gram | 2.680 | 2.680 |
+| context table only | 3.205 | 3.205 |
+| + real connectome | 3.122 | 3.147 |
+| + rewired, whole network | 3.139 | 3.106 |
+| + rewired, within cell classes | 3.122 | 3.180 |
+| character 2 back decoded (all features) | 84% | 80% |
+
+The fly run reproduces the paper's memory span. From the Kenyon cells the character k back is
+decoded in 100, 90, 59, 36 and 25% of cases for k = 0–4 (paper: 99.9, 90–92, 57–60, 35–38,
+24–26). In the class-preserving rewiring the figures are 100, 95, 62, 38 and 25%, exactly the
+paper's. With the whole network rewired, the Kenyon cells fall silent (decoding at chance), as
+in the paper. The BPC values differ from the paper's by up to 0.02 because the bench clips
+every feature group, not only the Kenyon cells.
