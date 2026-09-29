@@ -1,3 +1,5 @@
+<p align="center"><img src="gpf/assets/gpf-app-icon.svg" width="112" alt="GPF logo"></p>
+
 # GPF: Generative Pretrained Fly
 
 **A text generator whose brain is a simulated fruit fly.**
@@ -15,13 +17,13 @@ behind it is in [`paper_lm/`](../paper_lm).
 
 ## Get it
 
-**Windows:** download `gpf-lite-0.2-windows-x64.exe` from
+**Windows:** download `gpf-lite-…-windows-x64.exe` from
 [Releases](https://github.com/LxCenady/Fly-Is-All-You-Need/releases) and double-click it.
 GPF opens in your browser.
 
-**Ubuntu / Debian:** download `gpf-lite_0.2_amd64.deb`, then
+**Ubuntu / Debian:** download `gpf-lite_…_amd64.deb`, then
 ```
-sudo apt install ./gpf-lite_0.2_amd64.deb
+sudo apt install ./gpf-lite_*_amd64.deb
 gpf
 ```
 
@@ -70,6 +72,12 @@ connectome** (about 260 MB, CC BY 4.0, FlyEM / HHMI Janelia and partners) into `
 (set `FLY_DATA` to put it elsewhere). It is the exact data GPF-1 was trained on; the
 checksums match. GPF-1 runs at about 20–30 characters per second on a laptop GPU.
 
+**Watch it think.** While GPF-1 writes, the *Inside the fly* panel on the right shows the brain
+from the front: every neuron is a faint dot, and the ones firing on the current character
+light up (odour-input neurons cyan, Kenyon cells yellow, mushroom-body outputs green,
+dopamine neurons magenta), with live counts per group. The look follows the dashboard that
+ships with fly.ai. Hide it with the button in the header if your GPU is struggling.
+
 ## Run from source
 
 ```
@@ -82,5 +90,6 @@ python -m gpf                     # terminal UI
 
 - Fly brain simulation: [flybrain](https://github.com/alextitonis/fly.ai) (MIT).
 - Connectome: MaleCNS v1.0, S. Berg et al., *Cell* 189(18), 2026 (CC BY 4.0).
+- Brain view: after the fly.ai dashboard (`sshfighter/fly_dashboard.py`, MIT).
 - Text: TinyShakespeare from Andrej Karpathy's char-rnn; Shakespeare is public domain.
 - Full licence list: [NOTICE.md](NOTICE.md).

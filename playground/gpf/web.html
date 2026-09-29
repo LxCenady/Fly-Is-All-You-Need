@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>GPF</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiI+PHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIHJ4PSIyMiIgZmlsbD0iIzEwYTM3ZiIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDUwIDUwKSBzY2FsZSgwLjcyKSB0cmFuc2xhdGUoLTUwIC01MCkiPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xMC41MDMgLTEwLjUwMykgc2NhbGUoMS4yMTAxKSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjMuNiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PHBhdGggZD0iTTc3LjAyMCAzOS42MTMgTDYzLjUxMCA0Ny40MTMgTDUwLjAwMCAzOS42MTMgTDUwLjAwMCAyNC4wMTMgTDYzLjUxMCAxNi4yMTMgTDc3LjAyMCAyNC4wMTMgWiIvPjxwYXRoIGQ9Ik04Ny41MjAgNTcuODAwIEw3NC4wMTAgNjUuNjAwIEw2MC41MDAgNTcuODAwIEw2MC41MDAgNDIuMjAwIEw3NC4wMTAgMzQuNDAwIEw4Ny41MjAgNDIuMjAwIFoiLz48cGF0aCBkPSJNNzcuMDIwIDc1Ljk4NyBMNjMuNTEwIDgzLjc4NyBMNTAuMDAwIDc1Ljk4NyBMNTAuMDAwIDYwLjM4NyBMNjMuNTEwIDUyLjU4NyBMNzcuMDIwIDYwLjM4NyBaIi8+PHBhdGggZD0iTTUwLjAwMCA3NS45ODcgTDM2LjQ5MCA4My43ODcgTDIyLjk4MCA3NS45ODcgTDIyLjk4MCA2MC4zODcgTDM2LjQ5MCA1Mi41ODcgTDUwLjAwMCA2MC4zODcgWiIvPjxwYXRoIGQ9Ik0zOS41MDAgNTcuODAwIEwyNS45OTAgNjUuNjAwIEwxMi40ODAgNTcuODAwIEwxMi40ODAgNDIuMjAwIEwyNS45OTAgMzQuNDAwIEwzOS41MDAgNDIuMjAwIFoiLz48cGF0aCBkPSJNNTAuMDAwIDM5LjYxMyBMMzYuNDkwIDQ3LjQxMyBMMjIuOTgwIDM5LjYxMyBMMjIuOTgwIDI0LjAxMyBMMzYuNDkwIDE2LjIxMyBMNTAuMDAwIDI0LjAxMyBaIi8+PC9nPjwvZz48L3N2Zz4=">
 <style>
 :root {
   --bg: #ffffff; --panel: #f7f7f8; --panel2: #ececf1; --ink: #0d0d0d; --ink2: #5d5d6b;
@@ -63,6 +64,8 @@ header .sub { color: var(--muted); font-size: 13px; }
 .msg.user .bubble { background: var(--user); border-radius: 18px; padding: 10px 16px; max-width: 75%; white-space: pre-wrap; }
 .avatar { flex: 0 0 30px; height: 30px; border-radius: 50%; border: 1px solid var(--line); display: grid; place-items: center; }
 .avatar svg { width: 18px; height: 18px; }
+.avatar svg g { stroke-width: 5.5; }
+.brand svg g { stroke-width: 4.4; }
 .bot { flex: 1; min-width: 0; }
 .bot .who { font-size: 12.5px; color: var(--muted); margin-bottom: 2px; }
 .bot .text { white-space: pre-wrap; word-wrap: break-word; }
@@ -86,6 +89,31 @@ header .sub { color: var(--muted); font-size: 13px; }
 .send svg { width: 18px; height: 18px; }
 .hint { max-width: 780px; margin: 7px auto 0; text-align: center; font-size: 12px; color: var(--muted); }
 
+/* brain view (drawn after the live brain view of the fly.ai dashboard) */
+#brainpane { width: 390px; flex: 0 0 390px; background: #0b0e13; color: #cfd8e3; border-left: 1px solid var(--line);
+             display: flex; flex-direction: column; padding: 14px; gap: 10px; overflow-y: auto; }
+#brainpane[hidden] { display: none; }
+.bp-title { font-weight: 600; font-size: 15px; color: #eef3f8; }
+.bp-sub { font-size: 12px; color: #7d8fa6; }
+.bp-canvas { position: relative; border-radius: 12px; overflow: hidden; background: #070a0e; min-height: 220px; }
+.bp-canvas canvas { display: block; width: 100%; }
+.bp-empty { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 20px;
+            font-size: 13px; color: #7d8fa6; }
+.bp-now { font-size: 14px; min-height: 22px; }
+.bp-now .key { display: inline-block; min-width: 26px; padding: 1px 7px; margin-left: 4px; border-radius: 6px;
+               background: #1b2533; font: 600 14px ui-monospace, Menlo, Consolas, monospace; text-align: center; color: #fff; }
+.bp-stats { display: grid; grid-template-columns: auto 1fr auto; gap: 4px 10px; font-size: 12.5px; align-items: center; }
+.bp-stats .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+.bp-stats .bar { height: 6px; border-radius: 3px; background: #1b2533; overflow: hidden; }
+.bp-stats .bar i { display: block; height: 100%; }
+.bp-stats .num { font-variant-numeric: tabular-nums; color: #9fb6cf; text-align: right; }
+.bp-note { font-size: 12px; color: #7d8fa6; line-height: 1.45; }
+.bp-credit { font-size: 11px; color: #5d6f86; margin-top: auto; }
+.bp-toggle { margin-left: auto; border: 1px solid var(--line); background: var(--bg); border-radius: 999px; padding: 4px 12px;
+             font-size: 13px; cursor: pointer; color: var(--ink2); }
+.bp-toggle[hidden] { display: none; }
+@media (max-width: 1100px) { #brainpane { position: fixed; right: 0; top: 0; bottom: 0; z-index: 6; box-shadow: 0 0 40px rgba(0,0,0,.4); } }
+
 @media (max-width: 760px) {
   aside { position: fixed; inset: 0 auto 0 0; z-index: 5; transform: translateX(-100%); transition: transform .2s; }
   aside.open { transform: none; box-shadow: 0 0 40px rgba(0,0,0,.3); }
@@ -97,11 +125,7 @@ header .sub { color: var(--muted); font-size: 13px; }
 <body>
 <aside id="side">
   <div class="brand">
-    <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
-      <ellipse cx="16" cy="19" rx="4.2" ry="7"/><circle cx="16" cy="9.5" r="3"/>
-      <path d="M12.5 15c-4-3-8-3-9.5-1 1 3 5 4 9.5 3M19.5 15c4-3 8-3 9.5-1-1 3-5 4-9.5 3"/>
-      <path d="M12 21l-4 3M20 21l4 3M12 18l-4.5 0M20 18l4.5 0M14 7l-2-3M18 7l2-3"/>
-    </svg>
+    <svg viewBox="0 0 100 100" aria-hidden="true"><g transform="translate(-10.503 -10.503) scale(1.2101)" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linejoin="round"><path d="M77.020 39.613 L63.510 47.413 L50.000 39.613 L50.000 24.013 L63.510 16.213 L77.020 24.013 Z"/><path d="M87.520 57.800 L74.010 65.600 L60.500 57.800 L60.500 42.200 L74.010 34.400 L87.520 42.200 Z"/><path d="M77.020 75.987 L63.510 83.787 L50.000 75.987 L50.000 60.387 L63.510 52.587 L77.020 60.387 Z"/><path d="M50.000 75.987 L36.490 83.787 L22.980 75.987 L22.980 60.387 L36.490 52.587 L50.000 60.387 Z"/><path d="M39.500 57.800 L25.990 65.600 L12.480 57.800 L12.480 42.200 L25.990 34.400 L39.500 42.200 Z"/><path d="M50.000 39.613 L36.490 47.413 L22.980 39.613 L22.980 24.013 L36.490 16.213 L50.000 24.013 Z"/></g></svg>
     <div>GPF<small>Generative Pretrained Fly</small></div>
   </div>
   <button class="newchat" id="newchat">＋ New chat</button>
@@ -121,6 +145,7 @@ header .sub { color: var(--muted); font-size: 13px; }
   <header>
     <button id="menu" aria-label="Menu">☰</button>
     <span class="title" id="htitle">GPF</span><span class="sub" id="hsub"></span>
+    <button class="bp-toggle" id="bptoggle" hidden>Hide brain</button>
   </header>
   <div id="chat"><div class="thread" id="thread"></div></div>
   <div class="composer-wrap">
@@ -134,6 +159,23 @@ header .sub { color: var(--muted); font-size: 13px; }
     <div class="hint">GPF continues your text; it is not a chatbot. The fly remembers about four characters, so it writes the worst Shakespeare here.</div>
   </div>
 </main>
+
+<section id="brainpane" hidden>
+  <div>
+    <div class="bp-title">Inside the fly</div>
+    <div class="bp-sub">Every dot is one of 166,700 neurons. Each frame is one character: 120 ms of simulated time.</div>
+  </div>
+  <div class="bp-canvas"><canvas id="bc"></canvas>
+    <div class="bp-empty" id="bpempty">Send a prompt to watch GPF-1's neurons fire.</div></div>
+  <div class="bp-now" id="bpnow"></div>
+  <div class="bp-stats" id="bpstats"></div>
+  <div class="bp-note">Each letter switches on its own set of projection neurons (PN). They excite a few
+    Kenyon cells (KC), the fly's sparse memory code. The memory's output neurons (MBON) rarely fire,
+    which is why the fly remembers only the last few letters.</div>
+  <div class="bp-credit">Brain view drawn after the live dashboard in
+    <a href="https://github.com/alextitonis/fly.ai" target="_blank" rel="noopener" style="color:inherit">fly.ai</a>
+    (flybrain, MIT). Soma positions from MaleCNS v1.0.</div>
+</section>
 
 <script>
 const $ = s => document.querySelector(s);
@@ -166,7 +208,92 @@ function renderHeader() {
   const m = models.find(x => x.key === current);
   $("#htitle").textContent = m ? m.name : "GPF";
   $("#hsub").textContent = m ? "· " + m.desc : "";
+  updatePane();
 }
+
+/* ---- brain view: after the fly.ai dashboard (faint dots for every neuron, amber glow for spikes) ---- */
+const GCOL = ["#f59e0b", "#22d3ee", "#facc15", "#4ade80", "#e879f9"];   // other, PN, KC, MBON, DAN
+const GROW = [["PN", 1, "projection neurons"], ["KC", 2, "Kenyon cells"], ["MBON", 3, "output neurons"],
+              ["DAN", 4, "dopamine neurons"], ["other", 0, "everything else"]];
+let bmap = null, paneOpen = true;
+const bc = $("#bc"), base = document.createElement("canvas"), glow = document.createElement("canvas");
+
+function b64bytes(s) { const bin = atob(s), a = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) a[i] = bin.charCodeAt(i); return a; }
+function updatePane() {
+  const isFly = current === "brain";
+  $("#bptoggle").hidden = !isFly;
+  $("#bptoggle").textContent = paneOpen ? "Hide brain" : "Show brain";
+  const show = isFly && paneOpen;
+  const was = !$("#brainpane").hidden;
+  $("#brainpane").hidden = !show;
+  if (show && !was && bmap) { sizeCanvas(); drawBase(); composite(); }
+}
+function setupMap(m) {
+  bmap = { n: m.n, xy: new Uint16Array(b64bytes(m.xy).buffer), g: b64bytes(m.group), w: m.w, h: m.h,
+           scale: m.scale, labels: m.labels, totals: m.totals };
+  $("#bpempty").style.display = "none";
+  sizeCanvas(); drawBase(); composite();
+}
+function sizeCanvas() {
+  const W = bc.clientWidth || 360, H = Math.round(W * bmap.h / bmap.w), dpr = window.devicePixelRatio || 1;
+  for (const c of [bc, base, glow]) { c.width = Math.round(W * dpr); c.height = Math.round(H * dpr); }
+  bc.style.height = H + "px";
+  bmap.f = (W * dpr) / (bmap.scale * bmap.w); bmap.dpr = dpr;
+}
+function drawBase() {
+  const g = base.getContext("2d"), { xy, n, f, dpr } = bmap, s = 1.3 * dpr;
+  g.fillStyle = "#070a0e"; g.fillRect(0, 0, base.width, base.height);
+  g.fillStyle = "rgba(150,170,190,0.13)";
+  for (let i = 0; i < n; i++) g.fillRect(xy[2 * i] * f, xy[2 * i + 1] * f, s, s);
+  g.font = `${10.5 * dpr}px ui-sans-serif, system-ui, sans-serif`; g.textAlign = "center";
+  g.lineWidth = 3 * dpr; g.strokeStyle = "rgba(7,10,14,0.85)"; g.fillStyle = "rgba(215,226,238,0.8)";
+  const placed = [];                                                 // skip labels that would overlap
+  for (const l of bmap.labels) {
+    const w = g.measureText(l.text).width, h = 12 * dpr;
+    const x = Math.min(Math.max(l.u / bmap.w * base.width, w / 2 + 4 * dpr), base.width - w / 2 - 4 * dpr);
+    const y = Math.max(l.v / bmap.h * base.height - 9 * dpr, h + 2 * dpr);
+    const box = [x - w / 2, y - h, x + w / 2, y + 3 * dpr];
+    if (placed.some(b => box[0] < b[2] && box[2] > b[0] && box[1] < b[3] && box[3] > b[1])) continue;
+    placed.push(box); g.strokeText(l.text, x, y); g.fillText(l.text, x, y);
+  }
+  glow.getContext("2d").clearRect(0, 0, glow.width, glow.height);
+}
+function composite() {
+  const c = bc.getContext("2d");
+  c.globalCompositeOperation = "source-over"; c.drawImage(base, 0, 0);
+  c.globalCompositeOperation = "lighter"; c.drawImage(glow, 0, 0);
+  c.globalCompositeOperation = "source-over";
+}
+function drawAct(ev) {
+  if (!bmap || $("#brainpane").hidden) return;
+  const g = glow.getContext("2d"), { xy, f, dpr } = bmap;
+  g.globalCompositeOperation = "destination-out";                   // fade older frames
+  g.fillStyle = "rgba(0,0,0,0.35)"; g.fillRect(0, 0, glow.width, glow.height);
+  g.globalCompositeOperation = "source-over";
+  const ids = new Uint32Array(b64bytes(ev.act).buffer), byGroup = [[], [], [], [], []];
+  for (const id of ids) byGroup[bmap.g[id]].push(id);
+  byGroup.forEach((list, k) => {                                     // circuit cells larger and glowing, on top
+    const s = (k === 0 ? 2.4 : 4) * dpr, o = s / 2;
+    g.fillStyle = GCOL[k];
+    g.shadowColor = k === 0 ? "transparent" : GCOL[k]; g.shadowBlur = k === 0 ? 0 : 7 * dpr;
+    for (const id of list) g.fillRect(xy[2 * id] * f - o, xy[2 * id + 1] * f - o, s, s);
+  });
+  g.shadowBlur = 0;
+  composite();
+  const key = ev.ch === "\n" ? "↵" : ev.ch === " " ? "␣" : ev.ch;
+  $("#bpnow").innerHTML = `${ev.phase === "read" ? "reading" : "writing"} <span class="key"></span>`;
+  $("#bpnow .key").textContent = key;
+  $("#bpstats").innerHTML = GROW.map(([name, k, label]) => {
+    const on = ev.active[name] || 0, tot = bmap.totals[name] || 1;
+    const pct = Math.min(100, 100 * on / tot);
+    return `<span><i class="dot" style="background:${GCOL[k]}"></i> ${name}</span>` +
+           `<span class="bar" title="${label}"><i style="width:${pct.toFixed(1)}%;background:${GCOL[k]}"></i></span>` +
+           `<span class="num">${on.toLocaleString()} / ${tot.toLocaleString()}</span>`;
+  }).join("") + `<span></span><span class="num" style="text-align:left">${ev.spikes.toLocaleString()} spikes this character</span><span></span>`;
+}
+$("#bptoggle").onclick = () => { paneOpen = !paneOpen; updatePane(); };
+window.addEventListener("resize", () => { if (bmap && !$("#brainpane").hidden) { sizeCanvas(); drawBase(); composite(); } });
 function renderEmpty() {
   const t = $("#thread"); t.innerHTML = "";
   const e = document.createElement("div"); e.className = "empty";
@@ -219,7 +346,8 @@ async function send(text) {
     const res = await fetch("/api/generate", {
       method: "POST", headers: {"Content-Type": "application/json"}, signal: controller.signal,
       body: JSON.stringify({model: current, prompt, n: +$("#n").value, temp: +$("#temp").value,
-                            topk: +$("#topk").value, seed: +$("#seed").value})
+                            topk: +$("#topk").value, seed: +$("#seed").value,
+                            brainview: current === "brain" && paneOpen, need_map: !bmap})
     });
     const reader = res.body.getReader(), dec = new TextDecoder(); let buf = "";
     while (true) {
@@ -231,6 +359,8 @@ async function send(text) {
         if (!line.startsWith("data: ")) continue;
         const ev = JSON.parse(line.slice(6));
         if (ev.c !== undefined) { status.textContent = ""; acc += ev.c; pending += ev.c; }
+        else if (ev.act !== undefined) drawAct(ev);
+        else if (ev.brainmap) setupMap(ev.brainmap);
         else if (ev.status) status.textContent = ev.status;
         else if (ev.error) { status.textContent = ""; node.querySelector(".meta").innerHTML = `<span class="error"></span>`;
                              node.querySelector(".error").textContent = "Error: " + ev.error; }

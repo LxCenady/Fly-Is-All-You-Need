@@ -145,6 +145,16 @@ class BrainModel(CharModel):
         self.rt.reset()
         self.hist = []
 
+    # activity view for the web UI
+    def map_payload(self):
+        return self.rt.map_payload()
+
+    def record_activity(self, on=True):
+        self.rt.record_activity = bool(on)
+
+    def activity(self):
+        return self.rt.last_activity
+
     def feed(self, t):
         x = self.rt.step_token(int(t))
         z = (x - self.mu) / self.sd
@@ -174,13 +184,19 @@ def sample(logits, temp, topk, rng):
     return int(rng.choice(len(p), p=p))
 
 
-def generate(model, prompt, n, temp=0.8, topk=0, seed=0, on_char=None, stop=lambda: False):
-    """Reset, inject the prompt character by character, then write n characters."""
+def generate(model, prompt, n, temp=0.8, topk=0, seed=0, on_char=None, stop=lambda: False, on_feed=None):
+    """Reset, inject the prompt character by character, then write n characters.
+    on_char(c): each written character.  on_feed(c, phase): after the model has taken in a
+    character, phase "read" (prompt) or "write" (its own output)."""
     rng = np.random.default_rng(seed)
     model.reset()
     ids = encode(prompt) or [IDX["\n"]]
     for t in ids:
+        if stop():
+            return ""
         logits = model.feed(t)
+        if on_feed:
+            on_feed(VOCAB[t], "read")
     out = []
     for _ in range(n):
         if stop():
@@ -190,4 +206,6 @@ def generate(model, prompt, n, temp=0.8, topk=0, seed=0, on_char=None, stop=lamb
         if on_char:
             on_char(VOCAB[t])
         logits = model.feed(t)
+        if on_feed:
+            on_feed(VOCAB[t], "write")
     return "".join(out)

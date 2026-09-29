@@ -23,7 +23,7 @@ jobs:
         run: |
           pip install numpy pyinstaller
           pyinstaller --noconfirm --onefile --name gpf \
-            --add-data "gpf/data:gpf/data" --add-data "gpf/web.html:gpf" \
+            --add-data "gpf/data:gpf/data" --add-data "gpf/web.html:gpf" --add-data "gpf/logo.svg:gpf" \
             --hidden-import gpf.web --hidden-import gpf.models --hidden-import gpf.brain --hidden-import gpf.__main__ \
             --exclude-module textual --exclude-module torch gpf_app.py
       - name: Assemble .deb
@@ -31,6 +31,10 @@ jobs:
           VER="${GITHUB_REF_NAME#gpf-v}"; [ "$VER" = "$GITHUB_REF_NAME" ] && VER="0.0.0"
           P=pkg
           mkdir -p $P/DEBIAN $P/usr/bin $P/usr/share/applications $P/usr/share/doc/gpf
+          for s in 48 64 128 256 512; do
+            install -Dm 0644 playground/gpf/assets/gpf-icon-$s.png $P/usr/share/icons/hicolor/${s}x${s}/apps/gpf.png
+          done
+          install -Dm 0644 playground/gpf/assets/gpf-app-icon.svg $P/usr/share/icons/hicolor/scalable/apps/gpf.svg
           install -m 0755 playground/dist/gpf $P/usr/bin/gpf
           install -m 0644 playground/NOTICE.md $P/usr/share/doc/gpf/copyright
           cat > $P/usr/share/applications/gpf.desktop <<EOF
@@ -39,6 +43,7 @@ jobs:
           Name=GPF (Generative Pretrained Fly)
           Comment=Continue a prompt with a character model; opens in your browser
           Exec=gpf
+          Icon=gpf
           Terminal=true
           Categories=Education;Science;
           EOF
@@ -86,7 +91,8 @@ jobs:
         run: |
           pip install numpy pyinstaller
           pyinstaller --noconfirm --onefile --name gpf \
-            --add-data "gpf/data;gpf/data" --add-data "gpf/web.html;gpf" \
+            --add-data "gpf/data;gpf/data" --add-data "gpf/web.html;gpf" --add-data "gpf/logo.svg;gpf" \
+            --icon gpf/assets/gpf.ico \
             --hidden-import gpf.web --hidden-import gpf.models --hidden-import gpf.brain --hidden-import gpf.__main__ \
             --exclude-module textual --exclude-module torch gpf_app.py
           VER="${GITHUB_REF_NAME#gpf-v}"; [ "$VER" = "$GITHUB_REF_NAME" ] && VER="0.0.0"

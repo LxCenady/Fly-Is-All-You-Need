@@ -5,16 +5,22 @@ Standard library only (http.server); text is streamed to the page as server-sent
 """
 from __future__ import annotations
 
+import base64
 import json
-import os
 import threading
 import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
+import numpy as np
+
 from .models import MODELS, generate
 
 PAGE = (Path(__file__).parent / "web.html").read_text(encoding="utf-8")
+LOGO = (Path(__file__).parent / "logo.svg")
+MAX_DOTS = 8000                     # most neurons drawn per character in the brain view
+_rng = np.random.default_rng(0)
+_cache: dict = {}
 _models: dict = {}
 _lock = threading.Lock()            # one generation at a time (the connectome model is one GPU state)
 
@@ -57,6 +63,8 @@ class Handler(BaseHTTPRequestHandler):
             self._send(200, PAGE, "text/html; charset=utf-8")
         elif self.path == "/api/models":
             self._send(200, json.dumps(model_list()), "application/json")
+        elif self.path == "/logo.svg" and LOGO.exists():
+            self._send(200, LOGO.read_bytes(), "image/svg+xml")
         else:
             self._send(404, "not found", "text/plain")
 
@@ -73,6 +81,8 @@ class Handler(BaseHTTPRequestHandler):
             temp = max(0.05, min(float(req.get("temp", 0.7)), 2.0))
             topk = max(0, min(int(req.get("topk", 0)), 65))
             seed = int(req.get("seed", 0))
+            brainview = bool(req.get("brainview", False))
+            need_map = bool(req.get("need_map", False))
         except (ValueError, TypeError) as e:
             self._send(400, json.dumps({"error": str(e)}), "application/json"); return
 
@@ -96,13 +106,33 @@ class Handler(BaseHTTPRequestHandler):
                     emit({"status": "loading " + key + "..."})
                     _models[key] = MODELS[key][1](lambda m: emit({"status": m}))
                 model = _models[key]
+                watch = brainview and hasattr(model, "map_payload")
+                on_feed = None
+                if hasattr(model, "record_activity"):
+                    model.record_activity(watch)
+                if watch:
+                    if need_map:
+                        if "map" not in _cache:
+                            _cache["map"] = model.map_payload()
+                        emit({"brainmap": _cache["map"]})
+
+                    def on_feed(c, phase):
+                        a = model.activity()
+                        if a is None:
+                            return
+                        ids = a["ids"]
+                        if len(ids) > MAX_DOTS:                       # cap what is drawn, like the fly.ai view
+                            ids = np.sort(_rng.choice(ids, MAX_DOTS, replace=False))
+                        emit({"act": base64.b64encode(ids.astype(np.uint32).tobytes()).decode(),
+                              "ch": c, "phase": phase, "spikes": a["spikes"], "active": a["active"]})
                 emit({"status": "reading your prompt..."})
                 t0 = time.time(); count = [0]
 
                 def on_char(c):
                     count[0] += 1; emit({"c": c})
 
-                generate(model, prompt, n, temp, topk, seed, on_char=on_char, stop=lambda: gone[0])
+                generate(model, prompt, n, temp, topk, seed, on_char=on_char, stop=lambda: gone[0],
+                         on_feed=on_feed)
                 dt = time.time() - t0
                 emit({"done": True, "chars": count[0], "seconds": round(dt, 2),
                       "rate": round((count[0] + len(prompt)) / max(dt, 1e-9), 1), "model": model.name})

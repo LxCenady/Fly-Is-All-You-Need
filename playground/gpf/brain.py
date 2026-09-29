@@ -93,7 +93,49 @@ class FlyRuntime:
         self.kc_slot, self.mbon_slot, self.central_slot = (self._slots(brain, ids) for ids in (kc, mbon, central))
         self.record = xp.asarray(np.concatenate([mbon, central]).astype(np.int64))
         self.decay = np.float32(np.exp(-brain.dt / p["trace_tau"]))
+        # activity view (web UI): neuron groups of the memory circuit, recorded only when asked
+        self.group = np.zeros(brain.n, np.uint8)              # 0 other, 1 PN, 2 KC, 3 MBON, 4 DAN
+        self.group[pn], self.group[kc], self.group[mbon], self.group[np.flatnonzero(dan_mask)] = 1, 2, 3, 4
+        self.superclass = ss
+        self.record_activity = False
+        self.last_activity = None
         self.reset()
+
+    GROUPS = ["other", "PN", "KC", "MBON", "DAN"]
+
+    def map_payload(self, max_px: int = 4095) -> dict:
+        """Soma positions of every neuron, projected like the fly.ai dashboard (x flipped, x-z
+        plane, as seen from above/behind), quantised to uint16, plus group codes and region labels."""
+        import base64
+        pos = np.asarray(self.brain.positions, np.float64)
+        x, z = -pos[:, 0], pos[:, 2]
+        for a in (x, z):
+            bad = ~np.isfinite(a)
+            a[bad] = np.nanmedian(a)
+        x0, x1 = np.percentile(x, [0.2, 99.8]); z0, z1 = np.percentile(z, [0.2, 99.8])
+        span = max(x1 - x0, z1 - z0)
+        u = np.clip((x - x0) / span, 0, 1); v = np.clip((z - z0) / span, 0, 1)
+        q = np.stack([u, v], 1) * max_px
+        b64 = lambda a: base64.b64encode(np.ascontiguousarray(a).tobytes()).decode()
+
+        def centroid(mask):
+            return [round(float(u[mask].mean()), 4), round(float(v[mask].mean()), 4)] if mask.any() else None
+        side = u < np.median(u)
+        labels = []                          # the page skips any label that would overlap an earlier one
+        for name, mask, sides in (("mushroom body", self.group == 2, (~side,)),       # priority order
+                                  ("optic lobe", self.superclass == "ol_intrinsic", (side, ~side)),
+                                  ("antennal lobe", self.group == 1, (side,))):
+            for s in sides:
+                c = centroid(mask & s)
+                if c:
+                    labels.append({"text": name, "u": c[0], "v": c[1]})
+        c = centroid(self.superclass == "vnc_intrinsic")
+        if c:
+            labels.append({"text": "ventral nerve cord", "u": c[0], "v": c[1]})
+        return {"n": int(len(u)), "scale": max_px, "w": round(float((x1 - x0) / span), 4),
+                "h": round(float((z1 - z0) / span), 4), "xy": b64(q.astype(np.uint16)),
+                "group": b64(self.group), "groups": self.GROUPS, "labels": labels,
+                "totals": {g: int((self.group == i).sum()) for i, g in enumerate(self.GROUPS)}}
 
     @staticmethod
     def _slots(brain, ids):
@@ -153,9 +195,12 @@ class FlyRuntime:
         mbon_counts = xp.zeros(len(self.mbon), xp.float32)
         central_counts = xp.zeros(len(self.central), xp.float32)
         nm = len(self.mbon); vm, vc = [], []
+        fired_steps = []
         for step in range(p["k"]):
             b.v[self.codes[int(token)], 0] += np.float32(p["drive"] * (1.0 if step == 0 else p["sustain"]))
             fired, v_pre = self._step()
+            if self.record_activity:
+                fired_steps.append(fired)
             v_pre = xp.asnumpy(v_pre[:, 0]).astype(np.float32)
             vm.append(v_pre[:nm]); vc.append(v_pre[nm:])
             self.trace_central *= self.decay
@@ -163,6 +208,12 @@ class FlyRuntime:
             self._add(fired, self.central_slot, self.trace_central, central_counts)
             self._add(fired, self.mbon_slot, self.trace_mbon, mbon_counts)
             self._add(fired, self.kc_slot, kc_counts)
+        if self.record_activity:
+            spikes = int(sum(int(f.size) for f in fired_steps))
+            ids = xp.asnumpy(xp.unique(xp.concatenate(fired_steps))) if spikes else np.zeros(0, np.int64)
+            active = np.bincount(self.group[ids], minlength=len(self.GROUPS)) if len(ids) else np.zeros(5, int)
+            self.last_activity = {"ids": ids.astype(np.uint32), "spikes": spikes,
+                                  "active": {g: int(active[i]) for i, g in enumerate(self.GROUPS)}}
         return np.concatenate([xp.asnumpy(kc_counts), np.asarray(vm, np.float32).mean(0),
                                xp.asnumpy(mbon_counts), xp.asnumpy(self.trace_central),
                                np.asarray(vc, np.float32).mean(0)]).astype(np.float32)
