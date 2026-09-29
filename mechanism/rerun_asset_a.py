@@ -24,7 +24,9 @@ from pathlib import Path
 
 import numpy as np
 
-LM = Path(r"D:\flybrain_lm_cuda\lm")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import paths  # noqa: E402
+LM = paths.HARNESS / "lm"
 sys.path.insert(0, str(LM))
 sys.path.insert(0, str(LM.parent))
 import sitecustomize  # noqa: F401,E402  (CuPy include path for NVRTC)
@@ -32,7 +34,7 @@ import mb_plasticity_capacity as cap  # noqa: E402
 from memory_capacity_probe import fit_discrete_capacity  # noqa: E402
 from mb_plasticity import KCMBONPlasticity  # noqa: E402
 
-ASSET_A = Path(r"D:\flybrain_lm_cuda\models\research_results"
+ASSET_A = (paths.LEGACY / "research_results"
                r"\mb_plasticity_vocab65_biological_formal.json")
 
 _instances: list = []

@@ -157,7 +157,7 @@ function renderModels() {
     d.className = "model" + (m.key === current ? " selected" : "") + (m.available ? "" : " disabled");
     d.innerHTML = `<div class="name"></div><div class="desc"></div>`;
     d.querySelector(".name").textContent = m.name;
-    d.querySelector(".desc").textContent = m.available ? m.desc : "Needs the flybrain simulator and a GPU on this machine.";
+    d.querySelector(".desc").textContent = m.available ? m.desc : "Needs flybrain (pip install \"flybrain[gpu]\") and an NVIDIA GPU.";
     if (m.available) d.onclick = () => { current = m.key; renderModels(); renderHeader(); };
     box.appendChild(d);
   }

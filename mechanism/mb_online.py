@@ -27,7 +27,8 @@ import time
 
 import numpy as np
 
-sys.path.insert(0, r"D:\苍蝇。\mechanism")
+from pathlib import Path  # noqa: E402
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 import m1_core as C  # noqa: E402
 import mb_persistent_memory_probe as pmp  # noqa: E402
 

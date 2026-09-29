@@ -18,12 +18,14 @@ import sys
 
 import numpy as np
 from scipy import sparse
+
+import paths  # noqa: E402  (mechanism/paths.py: data and output locations)
 from scipy.cluster.vq import kmeans2
 
 rng = np.random.default_rng(0)
-m = np.load(r"D:\flybrain_lm_cuda\data\brain.npz", allow_pickle=True)
+m = np.load(paths.data_dir() / "brain.npz", allow_pickle=True)
 ct = m["cell_type"].astype(str)
-W = sparse.load_npz(r"D:\flybrain_lm_cuda\data\weights.npz").tocsr()     # rows = post
+W = sparse.load_npz(paths.data_dir() / "weights.npz").tocsr()     # rows = post
 sup = m["superclass"].astype(str)
 W = (sparse.diags((np.char.find(sup, "sensory") < 0).astype(np.float32)) @ W).tocsr()
 kc = np.flatnonzero(np.char.find(ct, "KC") >= 0)
@@ -101,7 +103,7 @@ for k in (5, 20, 80, 300):
                                   "cluster_sizes_min_med_max": [int(np.bincount(lab).min()),
                                                                 int(np.median(np.bincount(lab))),
                                                                 int(np.bincount(lab).max())]}
-np.savez(r"E:\mechanism_20260928\kc_input_clusters.npz", kc=kc,
+np.savez(paths.out("kc_input_clusters.npz"), kc=kc,
          **{f"k{k}": v for k, v in clusters.items()}, subtype=sub)
 
 # effective PN-type -> MBON map through KCs, and its specificity vs null

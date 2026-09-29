@@ -6,11 +6,13 @@ Sets (all with the context head, z clipped at +-3, 3 segments, 20k/5k):
 Usage: lm_controls2.py OUT.json
 """
 import json
+import os
 import sys
 
 import numpy as np
 
-sys.path.insert(0, r"D:\苍蝇。\mechanism")
+from pathlib import Path  # noqa: E402
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 import lm_controls as K  # noqa: E402
 
 
@@ -18,7 +20,7 @@ def main(out):
     res = {}
     for off in (0, 300000, 600000):
         x_ids, y, cx = K.data(off, 25000)
-        kc = np.load(rf"{K.NIGHT}\s160_o{off}_c-1.npz")["kc"]
+        kc = np.load(os.path.join(K.NIGHT, f"s160_o{off}_c-1.npz"))["kc"]
         oh4 = K.onehot_lags(x_ids, 4)
         rx = K.randexp(x_ids)
         sets = [("onehot4", oh4, 5e-3), ("onehot8", K.onehot_lags(x_ids, 8), 5e-3),

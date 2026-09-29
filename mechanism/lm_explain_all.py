@@ -7,7 +7,8 @@ import sys
 
 import numpy as np
 
-sys.path.insert(0, r"D:\苍蝇。\mechanism")
+from pathlib import Path  # noqa: E402
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 import lm_controls as K  # noqa: E402
 import lm_explain as X  # noqa: E402
 

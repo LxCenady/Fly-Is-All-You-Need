@@ -1,74 +1,86 @@
 # GPF: Generative Pretrained Fly
 
+**A text generator whose brain is a simulated fruit fly.**
 *Pretrained by evolution. Fine-tuned on 20k characters of Shakespeare.*
 
-A small terminal app from the *Fly-Is-All-You-Need* project. (The name is a joke: the only
-pretraining the fly connectome ever had is evolution, and it writes much worse than a GPT.) Pick a character model,
-type a prompt, and watch it write on. The prompt is fed to the model one character at a
-time (that is how the context gets in), then the model samples the next character, feeds
-it back, and so on, the way early character-level language models were demonstrated.
+Type the start of a line and GPF writes on, one character at a time, like the early
+text generators that came before ChatGPT. The star of the show is **GPF-1**, a complete
+fruit-fly brain (166,700 simulated neurons, wired exactly as in the real animal) that
+reads your text letter by letter and guesses what comes next.
 
-**Easiest:** download a self-contained *GPF Lite* build from the
-[releases page](https://github.com/LxCenady/Fly-Is-All-You-Need/releases): `gpf-lite-*-windows-x64.exe`
-(double-click; it opens in your browser) or `gpf-lite_*_amd64.deb` (`sudo apt install ./gpf-lite_*.deb`,
-then run `gpf`). They bundle Python and numpy and contain the n-gram and GRU models; the connectome
-model needs the full setup below.
+Is it any good? No. The fly writes the worst Shakespeare in the app, and that is the point.
+Put it side by side with a simple word-statistics model and a small neural network and you
+can see for yourself how much (and how little) a real brain's wiring gives you. The research
+behind it is in [`paper_lm/`](../paper_lm).
 
-From source:
+## Get it
+
+**Windows:** download `gpf-lite-0.2-windows-x64.exe` from
+[Releases](https://github.com/LxCenady/Fly-Is-All-You-Need/releases) and double-click it.
+GPF opens in your browser.
+
+**Ubuntu / Debian:** download `gpf-lite_0.2_amd64.deb`, then
+```
+sudo apt install ./gpf-lite_0.2_amd64.deb
+gpf
+```
+
+Nothing else to install: Python and everything GPF needs are inside. (Your antivirus may take
+a second look at the .exe the first time; it is an unsigned app built by GitHub Actions from
+this repository.)
+
+## Using it
+
+- Pick a model on the left, type the start of a line (or click a suggestion) and press Enter.
+- **Temperature** sets how adventurous the writing is. Low is safe and repetitive; high is
+  wild and full of made-up words.
+- **Characters to write** sets the length. **Stop** ends a reply early.
+- **Feed the whole conversation back as context** lets the model continue from everything
+  so far instead of only your last message.
+- GPF continues text. It is not a chatbot and will not answer questions.
+
+Prefer the terminal? `gpf --cli --model gru --prompt "ROMEO:\n" --n 300`
+
+## The models
+
+| Model | What it is | Speed | In the Lite download |
+|---|---|---|---|
+| **GPF-1 (fly connectome)** | The whole fruit-fly brain, simulated for every character | ~20–30 characters/s, needs an NVIDIA GPU | no, see below |
+| Kneser-Ney 7-gram | Classic word-statistics model: which character usually follows the last six | instant | yes |
+| Kneser-Ney 5-gram, 20k | The same idea, trained on exactly the text the fly saw | instant | yes |
+| GRU | A small trained neural network, the best writer here | instant | yes |
+
+## Running the fly (GPF-1)
+
+GPF-1 is built on **[flybrain](https://github.com/alextitonis/fly.ai)** by Alex Titonis
+(MIT License). flybrain simulates the complete fruit-fly nervous system and is a **required
+dependency**: without it, GPF-1 does not run. The Lite downloads leave it out and show GPF-1
+as unavailable.
+
+To run GPF-1 you need an **NVIDIA GPU** with a recent driver, and flybrain with GPU support:
 
 ```
 pip install -r requirements.txt
-python -m gpf --web               # chat-style web UI on http://127.0.0.1:8765 (local only)
-python -m gpf                     # terminal UI (ctrl+g generate, esc stop, ctrl+q quit)
-python -m gpf --cli --model gru --prompt "ROMEO:\n" --n 300 --temp 0.7
+pip install "flybrain[gpu]==0.1.0"
+python -m gpf --web               # then pick GPF-1 on the left
 ```
 
-## Models
+The first time GPF-1 starts, flybrain downloads its prebuilt copy of the **MaleCNS v1.0
+connectome** (about 260 MB, CC BY 4.0, FlyEM / HHMI Janelia and partners) into `~/fly-data`
+(set `FLY_DATA` to put it elsewhere). It is the exact data GPF-1 was trained on; the
+checksums match. GPF-1 runs at about 20–30 characters per second on a laptop GPU.
 
-| key | model | needs |
-|---|---|---|
-| `kn7` | Kneser-Ney character 7-gram, fitted at start-up on 1M characters of TinyShakespeare (~10 s) | numpy |
-| `kn5-20k` | Kneser-Ney 5-gram on 20k characters, the same data the connectome readout saw | numpy |
-| `gru` | 1-layer GRU (hidden 256) trained on 1M characters with torch; bundled weights, inference in numpy | numpy |
-| `brain` | the whole MaleCNS v1.0 connectome (166,700 leaky integrate-and-fire neurons) simulated one character at a time on the GPU, with the trained linear readout bundled here | CUDA GPU, the `flybrain` simulator, the MaleCNS data and this project's `mechanism/` code (set `FLYBRAIN_HOME` and `GPF_MECHANISM`) |
+## Run from source
 
-The `brain` model is the point of the exercise and also the weakest writer. On a laptop GPU
-it produces about 20 characters per second, because each character runs the full
-connectome for 120 ms of simulated time. Its text is Shakespeare-shaped but mostly not real
-words, worse than a 5-gram trained on the same 20k characters. The accompanying report
-(`paper_lm/`) explains why. With this input protocol and a linear readout, the connectome
-behaves like a fading memory of about the last four characters, which is no more than a
-5-gram knows. A degree-preserving rewired connectome does as well as the real one.
-
-## Sample (prompt `ROMEO:`, temperature 0.7, seed 0)
-
-**brain (20k characters)**
 ```
-ha  turn tr the shalf the you.
-
-LARTIUS:
-I' the as fragent Roman now I
-thrirlywerGere: yetty truduse,
-```
-**kn5-20k**
-```
-Shadow't.
-I
-tencorn answeryments of my lord friends you must have breast valive: and the rivesticurse to the re's
-```
-**kn7**
-```
-O, 'twas us
-fellow of the young Princes have the triumph? And blessing thou owed not speak; I would make me but the way
-```
-**gru**
-```
-Shall I put was the bastards prepare to make the state and a far thoughts;
-And so look unto any fury now of all
+pip install -r requirements.txt   # numpy, plus textual for the terminal UI
+python -m gpf --web               # web UI at http://127.0.0.1:8765 (your computer only)
+python -m gpf                     # terminal UI
 ```
 
-## Data
+## Credits
 
-`data/tinyshakespeare.txt` is the TinyShakespeare corpus (Karpathy, char-rnn; the text is
-Shakespeare, public domain). `data/brain_readout_20k/` is the readout from
-`models/lm_s160` in the repository.
+- Fly brain simulation: [flybrain](https://github.com/alextitonis/fly.ai) (MIT).
+- Connectome: MaleCNS v1.0, S. Berg et al., *Cell* 189(18), 2026 (CC BY 4.0).
+- Text: TinyShakespeare from Andrej Karpathy's char-rnn; Shakespeare is public domain.
+- Full licence list: [NOTICE.md](NOTICE.md).

@@ -1,10 +1,8 @@
 """Character models for the playground.  KN and GRU need only numpy (+ torch for the GRU);
-the connectome model needs the flybrain simulator, the MaleCNS data and a CUDA GPU."""
+the connectome model (GPF-1, gpf/brain.py) needs flybrain with GPU support and an NVIDIA GPU."""
 from __future__ import annotations
 
 import json
-import os
-import sys
 import time
 from collections import defaultdict
 from pathlib import Path
@@ -122,51 +120,33 @@ class GRUModel(CharModel):
 
 # ------------------------------------------------------------------ connectome
 class BrainModel(CharModel):
-    """The MaleCNS v1.0 connectome simulated one character at a time + the trained readout.
-    Needs FLYBRAIN_HOME (default D:\\flybrain_lm_cuda: simulator, data, sitecustomize) and
-    GPF_MECHANISM (default D:\\苍蝇。\\mechanism: m1_core, lm_mech)."""
+    """GPF-1: the MaleCNS v1.0 connectome simulated one character at a time (gpf/brain.py,
+    needs flybrain with GPU support) + the trained linear readout bundled in data/."""
 
     def __init__(self, readout: str = "brain_readout_20k", log=print):
-        home = Path(os.environ.get("FLYBRAIN_HOME", r"D:\flybrain_lm_cuda"))
-        mech = Path(os.environ.get("GPF_MECHANISM", r"D:\苍蝇。\mechanism"))
-        if not home.exists() or not mech.exists():
-            raise RuntimeError("connectome simulator not found: set FLYBRAIN_HOME and GPF_MECHANISM")
-        os.chdir(home)
-        for p in (str(home), str(mech)):
-            if p not in sys.path:
-                sys.path.insert(0, p)
-        import m1_core as C
-        import mb_persistent_memory_probe as pmp
-        self.C, self.pmp = C, pmp
+        from . import brain as fly
+        if not fly.available():
+            raise RuntimeError("GPF-1 needs flybrain with GPU support (CuPy, CUDA 12) and an NVIDIA GPU")
         rd = DATA / readout
         meta = json.loads((rd / "model.json").read_text(encoding="utf-8"))
         d = np.load(rd / "readout.npz")
         self.W, self.E, self.b = d["W"], d["E"].astype(np.float32), d["b"]
         self.mu, self.sd = d["mu"], d["sd"]
         self.Tcal, self.clip = float(meta["temperature"]), meta.get("clip")
-        args, chars = C.protocol_args()
-        assert list(chars) == VOCAB, "vocabulary mismatch"
+        assert meta["chars"] == "".join(VOCAB), "vocabulary mismatch"
         b = meta["brain"]
-        args.active, args.drive, args.probe_drive = b["pn_active"], 1.0 * b["drive_scale"], 2.5 * b["drive_scale"]
-        log("building the connectome simulation (166,700 neurons)...")
-        self.st = C.build(args); self.st["enc"].drive = args.drive
-        self.args = args
-        self.name = f"Connectome brain (MaleCNS v1.0, readout {readout})"
+        log("building the connectome simulation (166,700 neurons; the first run downloads ~260 MB)...")
+        self.rt = fly.FlyRuntime(V, {"active": b["pn_active"], "drive": 1.0 * b["drive_scale"]})
+        self.name = "GPF-1 (fly connectome)"
         log(f"{self.name} ready")
         self.reset()
 
     def reset(self):
-        self.C.reset(self.st, self.args)
+        self.rt.reset()
         self.hist = []
 
     def feed(self, t):
-        st = self.st
-        self.pmp._advance_token(st, self.args, int(t), allow_plastic=False, pulse_dan=False,
-                                record_profile=True, settle_steps=0)
-        prof = st["_last_probe_profile"]
-        x = np.concatenate([st["_last_kc_counts"].astype(np.float32), prof["v_pre_mbon"].mean(0),
-                            st["_last_mbon_counts"].astype(np.float32), st["trace_central"].get(),
-                            prof["v_pre_central"].mean(0)]).astype(np.float32)
+        x = self.rt.step_token(int(t))
         z = (x - self.mu) / self.sd
         if self.clip:
             z = np.clip(z, -self.clip, self.clip)
@@ -181,7 +161,7 @@ MODELS = {
     "kn7": ("Kneser-Ney 7-gram, 1M chars", lambda log: KNModel(7, 1_000_000, log)),
     "kn5-20k": ("Kneser-Ney 5-gram, 20k chars (same data as the brain)", lambda log: KNModel(5, 20_000, log)),
     "gru": ("GRU, 1M chars", lambda log: GRUModel(log=log)),
-    "brain": ("Connectome brain (GPU + simulator required)", lambda log: BrainModel(log=log)),
+    "brain": ("GPF-1 (fly connectome; needs flybrain + NVIDIA GPU)", lambda log: BrainModel(log=log)),
 }
 
 

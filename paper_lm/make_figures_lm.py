@@ -13,8 +13,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 OUT = Path(__file__).parent / "figures"; OUT.mkdir(exist_ok=True)
-LM = Path(r"E:\mechanism_20260928\lm")
-OLD = Path(r"D:\flybrain_lm_cuda\models")
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "mechanism"))
+import paths  # noqa: E402
+LM = paths.OUT / "lm"
+OLD = paths.LEGACY
 C1, C2, GRAY, INK, INK2, MUTED, GRID = "#2a78d6", "#eb6834", "#898781", "#0b0b0b", "#52514e", "#898781", "#e4e3df"
 plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 7.5, "axes.edgecolor": MUTED,
                      "axes.labelcolor": INK2, "xtick.color": MUTED, "ytick.color": MUTED,
@@ -88,7 +91,7 @@ def fig_results():
 def fig_paired():
     """Brain+context minus context-only BPC, holdout-selected, per cache
     (3 text segments x 3 PN-code seeds), from night/select_*.json."""
-    night = Path(r"E:\mechanism_20260928\night")
+    night = paths.OUT / "night"
     groups = [("sparse 160", "s160", C1), ("sparse 192", "s192", C1), ("dense 512", "d512", GRAY)]
     fig, ax = plt.subplots(figsize=(3.4, 2.3))
     for i, (lab, tag, col) in enumerate(groups):
@@ -114,7 +117,7 @@ def fig_paired():
 def fig_curve():
     """Learning curve: BPC with and without the sparse brain (KC counts, clipped z)
     against training size; same 20k validation characters (lm_controls.json, A2)."""
-    d = j(Path(r"E:\mechanism_20260928\night") / "lm_controls.json")["A2"]
+    d = j(paths.OUT / "night" / "lm_controls.json")["A2"]
     N = [r["train"] for r in d["ctx_only"]]
     ctx = [r["bpc"] for r in d["ctx_only"]]; brain = [r["bpc"] for r in d["brain_kc"]]
     fig, axes = plt.subplots(1, 2, figsize=(3.5, 1.9), gridspec_kw={"width_ratios": [1.2, 1]})
@@ -139,7 +142,7 @@ def fig_curve():
 def fig_memory():
     """Left: decoding the character k steps back from the KC code (real, rewired within
     classes, fully rewired).  Right: BPC change from adding brain features to KN n-grams."""
-    E = Path(r"E:\mechanism_20260928")
+    E = paths.OUT
     real = j(E / "lm_explain_real.json"); conn = j(E / "lm_explain_conn.json")
     groups = [("real", [real[k] for k in real], C1, "o"),
               ("rewired, classes kept", [conn[k] for k in conn if "class" in k], C2, "s"),
@@ -169,7 +172,7 @@ def fig_memory():
 
 def fig_online():
     """Online pilot: accuracy by occurrence of the word, content vs random teacher, 5 seeds."""
-    E = Path(r"E:\mechanism_20260928")
+    E = paths.OUT
     runs = [j(p) for p in sorted(E.glob("mb_online_v2_s*.json")) if "frozen" in j(p)]
     fig, ax = plt.subplots(figsize=(3.5, 1.8))
     for cond, col, mk, lab in (("content", C1, "o", "teacher = class of next character"),

@@ -1,4 +1,4 @@
-"""Summarise the overnight queue (E:\\mechanism_20260928\\night) into SUMMARY.md.
+"""Summarise the overnight queue (FLY_OUT/night) into SUMMARY.md.
 
 Safe to run on partial results: missing files are listed, not guessed.
 Paired statistic: delta = BPC(brain+context) - BPC(context only) on the same
@@ -8,7 +8,8 @@ import json
 import statistics as st
 from pathlib import Path
 
-N = Path(r"E:\mechanism_20260928\night")
+import paths  # noqa: E402
+N = paths.OUT / "night"
 OUT = N / "SUMMARY.md"
 CODES = ["s160", "s192", "d512"]
 OFFS = [0, 300000, 600000]

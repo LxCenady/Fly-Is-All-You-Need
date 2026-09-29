@@ -5,7 +5,8 @@ Transforms: 'std' = lm_mech standardisation (sd + 1e-6); 'clip' = standardise th
 import json
 import sys
 import numpy as np
-sys.path.insert(0, r"D:\苍蝇。\mechanism")
+from pathlib import Path  # noqa: E402
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 import lm_mech as L
 import m1_core as C
 
@@ -71,7 +72,7 @@ res = {}
 for off, CODE in ((0, "s160"), (0, "d512")):
     ids = np.asarray([chars.index(c) for c in text[off: off + NTR + NVAL + 1]], np.int64)
     y = ids[1:]; cx = L.ctx_ids(ids[:-1], 3, NB, vocab)
-    z = np.load(rf"E:\mechanism_20260928\night\{CODE}_100k.npz")
+    z = np.load(__import__("paths").OUT / "night" / f"{CODE}_100k.npz")
     for name, fs, mode in SETS:
         X = None if fs is None else np.concatenate([z[f] for f in fs], 1)
         acc, bpc = evaluate(X, mode, y, cx)
@@ -82,4 +83,5 @@ print("\nmean delta BPC vs ctx_only (per-offset deltas):")
 for name in res:
     d = np.array([b for _, b in res[name]]) - base
     print(f"  {name:16s} {d.mean():+.3f}  {np.round(d, 3).tolist()}")
-json.dump(res, open(r"E:\mechanism_20260928\night\kc_ablate_100k.json", "w"), indent=1)
+import paths  # noqa: E402
+json.dump(res, open(paths.out("night", "kc_ablate_100k.json"), "w"), indent=1)

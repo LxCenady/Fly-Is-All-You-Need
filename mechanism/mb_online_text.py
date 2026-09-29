@@ -15,7 +15,8 @@ import time
 
 import numpy as np
 
-sys.path.insert(0, r"D:\苍蝇。\mechanism")
+from pathlib import Path  # noqa: E402
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 import m1_core as C  # noqa: E402
 import mb_online as O  # noqa: E402
 import mb_persistent_memory_probe as pmp  # noqa: E402
@@ -29,7 +30,7 @@ def main(out, offset, cond, seed=0):
     strength = O.calibrate(groups, ids)
     groups = [g for g in groups if strength[g] >= 1.0]
     K = len(groups)
-    raw =open(r"D:\flybrain_lm_cuda\corpus\tinyshakespeare.txt", encoding="utf-8").read()
+    raw =open(C.CORPUS, encoding="utf-8").read()
     seq = raw[offset: offset + 25000]
     freq = {c: raw[:1_000_000].count(c) for c in chars}
     order = sorted(chars, key=lambda c: -freq[c])

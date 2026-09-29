@@ -35,7 +35,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 import m1_core as C  # noqa: E402
 import mb_persistent_memory_probe as pmp  # noqa: E402
 
-CORPUS = Path(r"D:\flybrain_lm_cuda\corpus\tinyshakespeare.txt")
+CORPUS = C.CORPUS
 
 
 def collect(st, args, ids, bio, feats, pulse=False):

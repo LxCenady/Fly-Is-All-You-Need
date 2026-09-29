@@ -13,8 +13,10 @@ import sys
 import time
 from pathlib import Path
 
-PY = r"D:\flybrain_lm_cuda\.venv\Scripts\python.exe"
-CWD = r"D:\flybrain_lm_cuda"
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import paths  # noqa: E402
+PY = paths.PYTHON
+CWD = str(paths.MECH)
 
 
 _START = dt.datetime.now()

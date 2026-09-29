@@ -2,9 +2,11 @@
 import numpy as np
 from scipy import sparse
 
-m = np.load(r"D:\flybrain_lm_cuda\data\brain.npz", allow_pickle=True)
+import paths  # noqa: E402  (mechanism/paths.py: data and output locations)
+
+m = np.load(paths.data_dir() / "brain.npz", allow_pickle=True)
 ct = m["cell_type"].astype(str)
-W = sparse.load_npz(r"D:\flybrain_lm_cuda\data\weights.npz").tocsr()   # rows = post
+W = sparse.load_npz(paths.data_dir() / "weights.npz").tocsr()   # rows = post
 Wc = W.tocsc()
 kc = np.char.find(ct, "KC") >= 0
 pn = np.char.find(ct, "PN") >= 0

@@ -5,7 +5,11 @@ from scipy import sparse
 import cupy as cp
 from cupyx.scipy import sparse as cusparse
 
-DATA = r"D:\flybrain_lm_cuda\data"
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "mechanism"))
+import paths  # noqa: E402
+DATA = str(paths.data_dir())
 meta = np.load(DATA + r"\brain.npz")
 W = sparse.load_npz(DATA + r"\weights.npz")
 sensory = np.char.find(meta["superclass"].astype(str), "sensory") >= 0

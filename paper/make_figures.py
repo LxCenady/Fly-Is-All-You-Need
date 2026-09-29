@@ -13,7 +13,10 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
-E = Path(r"E:\mechanism_20260928")
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "mechanism"))
+import paths  # noqa: E402
+E = paths.OUT
 OUT = Path(__file__).parent / "figures"
 OUT.mkdir(exist_ok=True)
 C1, C2, C3 = "#2a78d6", "#eb6834", "#1baf7a"

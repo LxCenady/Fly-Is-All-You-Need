@@ -3,9 +3,11 @@ cosine between subtype profiles, and within-subtype profile spread (CPU, connect
 import numpy as np
 from scipy import sparse
 
-m = np.load(r"D:\flybrain_lm_cuda\data\brain.npz", allow_pickle=True)
+import paths  # noqa: E402  (mechanism/paths.py: data and output locations)
+
+m = np.load(paths.data_dir() / "brain.npz", allow_pickle=True)
 ct = m["cell_type"].astype(str)
-W = sparse.load_npz(r"D:\flybrain_lm_cuda\data\weights.npz").tocsr()
+W = sparse.load_npz(paths.data_dir() / "weights.npz").tocsr()
 kc = np.flatnonzero(np.char.find(ct, "KC") >= 0)
 mb = np.flatnonzero(np.char.find(ct, "MBON") >= 0)
 OUT = W[mb][:, kc].T.toarray()

@@ -15,7 +15,11 @@ of the complete adult male *Drosophila* CNS connectome (MaleCNS v1.0,
    how does it reach downstream neurons? Answered with causal interventions
    (state transplants, weight scrambles, wiring nulls, teacher swaps).
 
-The mechanism results were then used to revise the language model.
+The mechanism results were then used to revise and test the language model.
+
+**Try it:** [GPF, the Generative Pretrained Fly](playground/) continues a prompt with the
+fly connectome or with n-gram/GRU comparison models (downloads on the
+[Releases](https://github.com/LxCenady/Fly-Is-All-You-Need/releases) page).
 
 ## Main findings (model-internal; not claims about the fly)
 
@@ -31,15 +35,17 @@ The mechanism results were then used to revise the language model.
 | Interference | linear superposition in the weights, set by KC overlap |
 | Downstream readout | only when the memory flips an MBON spike (35/35 vs 0/93 cells) |
 
-**Language model** — the earlier benchmark (42.55 % / 3.298 bits per
-character on 20k/5k) is matched by a hashed three-character context alone
-(42.9 % / 3.205). With sparse input, the brain adds to that context: over
-3 text segments x 3 PN-code draws, with readouts chosen on held-out training
-data, BPC drops by 0.078 +- 0.020 (160 PNs) and 0.076 +- 0.014 (192) in 9/9
-cases each, but only by 0.007 +- 0.019 with the old dense input (5/9). The
-gain is in calibration (BPC); top-1 accuracy is unchanged. With 100k
-training characters (one run) the gain falls to 0.01 BPC, within fit noise:
-the brain helps the n-gram only while data are scarce.
+**Language model** — a clear negative result. The earlier benchmark (42.55 % /
+3.298 bits per character) was matched by a hashed three-character context
+alone. With sparse input the brain beats that weak context head (18/18
+held-out cases), but a Kneser-Ney 5-gram (2.47-2.68 BPC) beats every brain
+model, and adding the brain to it makes prediction worse. The frozen
+connectome's KC code remembers about four characters (the character two back
+is decoded in 57-60 % of cases, four back in 24-26 %), and degree-preserving
+rewired connectomes do as well as the real one. A content-dependent
+dopaminergic teacher (a GRU-like write gate) lets the mushroom body learn
+associations online within two or three exposures, but on real text it adds
+nothing beyond the 5-gram.
 
 Every number is mapped to its script and output file in
 [`docs/CLAIMS_EVIDENCE.md`](docs/CLAIMS_EVIDENCE.md).
@@ -63,33 +69,44 @@ Every number is mapped to its script and output file in
 
 ```
 paper/            mechanism paper (IEEEtran main.tex, make_figures.py, figures/)
-paper_lm/         language-model report (main.tex)
-mechanism/        experiment scripts; m1_core.py = validated snapshot/restore interface
+paper_lm/         language-model report (main.tex, make_figures_lm.py, figures/)
+mechanism/        experiment scripts; paths.py = where inputs and outputs live
+                  m1_core.py = validated snapshot/restore interface
                   lm_mech.py = revised language model; lm_select.py = held-out selection
-                  queue_runner.py = overnight job queue
-                  RESULTS_20260928.md = result register
-results/          JSON outputs (results/lm/: language model)
+                  queue_runner.py = job queue; RESULTS_20260928.md = result register
+harness/          experiment harness from the earlier project stage (15 modules used by mechanism/)
+playground/       GPF, the Generative Pretrained Fly (web UI, terminal UI, packages)
+results/          JSON outputs (results/lm/, results/lm_limits/, results/sens/, results/apl/)
 audit_20260928/   evidence for the simulator bug
 docs/             CLAIMS_EVIDENCE.md, LITERATURE_INDEX.md
 ```
 
 ## Reproducing
 
-The scripts run on top of the `flybrain_lm` code base and the `flybrain`
-simulator package with the 2026-09-17 CSR canonicalisation fix; neither is
-included here, and paths point to the original machine
-(`D:\flybrain_lm_cuda`, `E:\mechanism_20260928`). A CUDA GPU (CuPy) is
-required for simulations (RTX 3070 Ti Laptop: ~40 tokens/s for one process,
-~70 tokens/s total with 3-4 processes). CPU-only: `m6_structure.py` and the
-audit CSR check.
+```
+pip install "flybrain[gpu]==0.1.0" scipy
+python mechanism/lm_mech.py --out outputs/test.json --train 900 --val 100 --active 160 --scale 1.5
+```
+
+- **Simulator:** [flybrain](https://github.com/alextitonis/fly.ai) (MIT) with GPU support
+  and an NVIDIA GPU. On first use it downloads the MaleCNS v1.0 connectome (~260 MB) into
+  `~/fly-data`; its checksums match the data used here.
+- **Paths:** nothing is hard-coded. `mechanism/paths.py` reads `FLY_DATA`, `FLY_OUT`
+  (default `outputs/`), `FLY_HARNESS`, `FLY_CORPUS`, `FLY_LEGACY` and `FLY_PYTHON` from the
+  environment or from a git-ignored `mechanism/paths_local.json`.
+- **Speed:** RTX 3070 Ti Laptop, about 40 characters/s for one process, about 70/s in
+  total with 3-4 processes. CPU-only: `m6_structure.py`, `subtype_lobe.py`, the language-model
+  analyses on cached features, and the audit CSR check.
+- **Figures:** `paper/make_figures.py` and `paper_lm/make_figures_lm.py` read the
+  experiment outputs from `FLY_OUT`; the JSON results they use are in `results/`.
 
 ## Data, citation and license
 
 Connectome: MaleCNS v1.0 by FlyEM (HHMI Janelia), University of Cambridge, MRC
 LMB and Google Research, CC BY 4.0; cite Berg, S. et al. (2026), *Sexual
 dimorphism in the complete Drosophila male central nervous system
-connectome*, Cell 189(18), 5504-5526.e15. Code in this repository: MIT
-(see `LICENSE`).
+connectome*, Cell 189(18), 5504-5526.e15. Simulator: flybrain by Alex Titonis (MIT).
+Code in this repository: MIT (see `LICENSE`).
 
 ## Use of AI tools
 

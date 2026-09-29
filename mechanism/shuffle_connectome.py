@@ -17,7 +17,8 @@ from pathlib import Path
 import numpy as np
 from scipy import sparse
 
-SRC = Path(r"D:\flybrain_lm_cuda\data")
+import paths  # noqa: E402
+SRC = paths.data_dir()
 
 
 def classes():

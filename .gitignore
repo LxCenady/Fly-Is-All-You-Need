@@ -2,3 +2,6 @@
 __pycache__/
 *.pyc
 .claude/
+mechanism/paths_local.json
+outputs/
+legacy/

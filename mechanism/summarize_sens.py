@@ -1,10 +1,11 @@
-"""Summarise the sensitivity queue (E:\\mechanism_20260928\\sens) -> SENS_SUMMARY.md."""
+"""Summarise the sensitivity queue (FLY_OUT/sens) -> SENS_SUMMARY.md."""
 import json
 from pathlib import Path
 
 import numpy as np
 
-S = Path(r"E:\mechanism_20260928\sens")
+import paths  # noqa: E402
+S = paths.OUT / "sens"
 VARS = ["base", "gain1.2", "gain1.8", "tonic0.03", "tonic0.08", "noise2", "noise5"]
 
 

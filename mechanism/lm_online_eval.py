@@ -16,11 +16,12 @@ from pathlib import Path
 
 import numpy as np
 
-sys.path.insert(0, r"D:\苍蝇。\mechanism")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 import lm_controls as K  # noqa: E402
 import lm_explain as X  # noqa: E402
 
-D = Path(r"E:\mechanism_20260928\mbtext")
+import paths  # noqa: E402
+D = paths.OUT / "mbtext"
 NTR, NVAL = 20000, 5000
 
 

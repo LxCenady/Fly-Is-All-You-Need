@@ -13,19 +13,22 @@ A2  Learning curve on the 100k cache (segment 0): train on the first N character
 Usage: lm_controls.py OUT.json
 """
 import json
+import os
 import sys
 import time
 
 import numpy as np
 
-sys.path.insert(0, r"D:\苍蝇。\mechanism")
+from pathlib import Path  # noqa: E402
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 import lm_mech as L  # noqa: E402
 import m1_core as C  # noqa: E402
 
 NB, L2 = 32768, 5e-3
 _, chars = C.protocol_args(); V = len(chars)
 TEXT = L.CORPUS.read_text(encoding="utf-8")
-NIGHT = r"E:\mechanism_20260928\night"
+import paths  # noqa: E402
+NIGHT = str(paths.OUT / "night")
 
 
 def fit(Z, cx, y, seed=0):
@@ -116,7 +119,7 @@ def main(out):
     t0 = time.time()
     for off in (0, 300000, 600000):                                   # A1
         x_ids, y, cx = data(off, 25000)
-        z = np.load(rf"{NIGHT}\s160_o{off}_c-1.npz")
+        z = np.load(os.path.join(NIGHT, f"s160_o{off}_c-1.npz"))
         for name, X in (("ctx_only", None), ("brain_kc", z["kc"]), ("onehot4", onehot_lags(x_ids, 4)),
                         ("randexp", randexp(x_ids))):
             r = evaluate(X, y, cx, 20000, 20000, 25000)
@@ -128,7 +131,7 @@ def main(out):
             if name == "ctx_only":
                 X = None
             elif name == "brain_kc":
-                X = np.load(rf"{NIGHT}\s160_100k.npz")["kc"]
+                X = np.load(os.path.join(NIGHT, f"s160_100k.npz"))["kc"]
             else:
                 X = randexp(x_ids)
             r = evaluate(X, y, cx, N, 100000, 120000)

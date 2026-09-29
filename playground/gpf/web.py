@@ -20,15 +20,9 @@ _lock = threading.Lock()            # one generation at a time (the connectome m
 
 
 def brain_available() -> bool:
-    """The connectome model needs the simulator code and data, flybrain and cupy importable."""
-    import importlib.util
-    home = Path(os.environ.get("FLYBRAIN_HOME", r"D:\flybrain_lm_cuda"))
-    mech = Path(os.environ.get("GPF_MECHANISM", r"D:\苍蝇。\mechanism"))
-    try:
-        mods = all(importlib.util.find_spec(m) is not None for m in ("flybrain", "cupy"))
-    except (ImportError, ValueError):
-        mods = False
-    return home.exists() and mech.exists() and mods
+    """GPF-1 needs flybrain (GPU build) importable; see gpf/brain.py."""
+    from .brain import available
+    return available()
 
 
 def model_list():

@@ -3,7 +3,11 @@ import json, sys
 import numpy as np
 from scipy import sparse
 
-DATA = r"D:\flybrain_lm_cuda\data"
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "mechanism"))
+import paths  # noqa: E402
+DATA = str(paths.data_dir())
 meta = np.load(DATA + r"\brain.npz")
 W = sparse.load_npz(DATA + r"\weights.npz")
 sup = meta["superclass"].astype(str)

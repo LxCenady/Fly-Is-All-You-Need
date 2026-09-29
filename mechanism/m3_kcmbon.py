@@ -78,7 +78,7 @@ def rewire_kcmbon(st, args, seed, level="all"):
         elif level == "profile_type_side":
             lab = np.char.add(np.char.add(ct[kcs], "|"), side[kcs])
         elif level.startswith("profile_cluster"):
-            z = np.load(r"E:\mechanism_20260928\kc_input_clusters.npz")
+            z = np.load(C.paths.OUT / "kc_input_clusters.npz")
             cmap = dict(zip(z["kc"].tolist(), z["k" + level[len("profile_cluster"):]].tolist()))
             lab = np.asarray([f"c{cmap[int(k)]}" if int(k) in cmap else f"solo{int(k)}" for k in kcs])
         elif level == "profile_strength":

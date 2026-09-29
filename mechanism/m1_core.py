@@ -29,9 +29,11 @@ from pathlib import Path
 
 import numpy as np
 
-LM = Path(r"D:\flybrain_lm_cuda\lm")
-sys.path.insert(0, str(LM))
-sys.path.insert(0, str(LM.parent))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import paths  # noqa: E402
+
+paths.use_harness()                       # harness lm/ modules + its sitecustomize (CuPy hook)
+LM = paths.HARNESS / "lm"
 import sitecustomize  # noqa: F401,E402
 import mb_e5a_kinetics_v2 as v2  # noqa: E402
 import mb_e4b_sequential as e4b  # noqa: E402
@@ -57,8 +59,8 @@ if os.environ.get("MB_SIGN") == "depress" and not getattr(_KP, "_sign_patched", 
     _KP.__init__ = _init_depress
     _KP._sign_patched = True
 
-DATA = Path(os.environ.get("MB_DATA", r"D:\flybrain_lm_cuda\data"))   # MB_DATA: shuffled-connectome controls
-CORPUS = Path(r"D:\flybrain_lm_cuda\corpus\tinyshakespeare.txt")
+DATA = paths.data_dir()          # FLY_DATA (MB_DATA for rewired-connectome controls); see paths.py
+CORPUS = paths.CORPUS
 SETTLE = slice(6, 12)          # frozen settle window [6, 11] of the probe profile
 
 

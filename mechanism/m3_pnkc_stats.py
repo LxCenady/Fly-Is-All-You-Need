@@ -14,7 +14,7 @@ from math import comb
 
 import numpy as np
 
-for f in sorted(glob.glob(r"E:\mechanism_20260928\m3_pnkc_glom_s*.json")):
+for f in sorted(glob.glob(str(__import__("paths").OUT / "m3_pnkc_glom_s*.json"))):
     rows = json.load(open(f, encoding="utf-8"))
     for active in sorted({r["active"] for r in rows}):
         rs = [r for r in rows if r["active"] == active]

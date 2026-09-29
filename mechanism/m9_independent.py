@@ -13,7 +13,8 @@ import sys
 
 import numpy as np
 
-sys.path.insert(0, r"D:\苍蝇。\mechanism")
+from pathlib import Path  # noqa: E402
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 import m1_core as C  # noqa: E402
 
 PAIRS = [("a", "c"), ("b", "d"), ("e", "g"), ("f", "h"), ("i", "k"), ("j", "l")]

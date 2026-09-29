@@ -3,7 +3,7 @@ import glob
 import json
 
 rows = []
-for f in sorted(glob.glob(r"E:\mechanism_20260928\sweep_s*.json")):
+for f in sorted(glob.glob(str(__import__("paths").OUT / "sweep_s*.json"))):
     rows += json.load(open(f, encoding="utf-8"))
 rows.sort(key=lambda r: (r["scale"], r["active"]))
 print("scale active | KC frac w2 w8 w32 probe | KC Jacc w32 probe | MBON act w32 probe | "
