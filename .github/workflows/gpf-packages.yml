@@ -24,7 +24,7 @@ jobs:
           pip install numpy pyinstaller
           pyinstaller --noconfirm --onefile --name gpf \
             --add-data "gpf/data:gpf/data" --add-data "gpf/web.html:gpf" --add-data "gpf/logo.svg:gpf" \
-            --hidden-import gpf.web --hidden-import gpf.models --hidden-import gpf.brain --hidden-import gpf.__main__ \
+            --hidden-import gpf.web --hidden-import gpf.models --hidden-import gpf.brain --hidden-import gpf.__main__ --hidden-import gpf.train \
             --exclude-module textual --exclude-module torch gpf_app.py
       - name: Assemble .deb
         run: |
@@ -68,6 +68,9 @@ jobs:
           sudo apt-get install -y ./gpf-lite_*_amd64.deb
           gpf --cli --model kn5-20k --prompt "ROMEO:\n" --n 80
           gpf --cli --model gru --prompt "JULIET:\n" --n 80
+          head -c 30000 playground/gpf/data/tinyshakespeare.txt > /tmp/t.txt
+          GPF_MODELS=/tmp/gpfm gpf train kn --data /tmp/t.txt --name ci-kn --order 4
+          GPF_MODELS=/tmp/gpfm gpf --cli --model user:ci-kn --prompt "ROMEO:\n" --n 60
           (gpf --no-browser &) ; sleep 3
           curl -sf http://127.0.0.1:8765/api/models | tee /dev/stderr | grep -q '"gru"'
           curl -sfN -X POST http://127.0.0.1:8765/api/generate \
@@ -93,7 +96,7 @@ jobs:
           pyinstaller --noconfirm --onefile --name gpf \
             --add-data "gpf/data;gpf/data" --add-data "gpf/web.html;gpf" --add-data "gpf/logo.svg;gpf" \
             --icon gpf/assets/gpf.ico \
-            --hidden-import gpf.web --hidden-import gpf.models --hidden-import gpf.brain --hidden-import gpf.__main__ \
+            --hidden-import gpf.web --hidden-import gpf.models --hidden-import gpf.brain --hidden-import gpf.__main__ --hidden-import gpf.train \
             --exclude-module textual --exclude-module torch gpf_app.py
           VER="${GITHUB_REF_NAME#gpf-v}"; [ "$VER" = "$GITHUB_REF_NAME" ] && VER="0.0.0"
           cp dist/gpf.exe "../gpf-lite-${VER}-windows-x64.exe"
@@ -102,6 +105,9 @@ jobs:
         run: |
           ./gpf-lite-*-windows-x64.exe --cli --model gru --prompt "ROMEO:\n" --n 80
           ./gpf-lite-*-windows-x64.exe --cli --model kn5-20k --prompt "JULIET:\n" --n 80
+          head -c 30000 playground/gpf/data/tinyshakespeare.txt > t.txt
+          GPF_MODELS=./gpfm ./gpf-lite-*-windows-x64.exe train kn --data t.txt --name ci-kn --order 4
+          GPF_MODELS=./gpfm ./gpf-lite-*-windows-x64.exe --cli --model user:ci-kn --prompt "ROMEO:\n" --n 60
       - uses: actions/upload-artifact@v4
         with: {name: gpf-exe, path: "gpf-lite-*-windows-x64.exe"}
       - name: Attach to release

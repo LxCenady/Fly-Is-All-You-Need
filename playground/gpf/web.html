@@ -37,6 +37,9 @@ aside { width: 280px; background: var(--panel); border-right: 1px solid var(--li
 .model.disabled { opacity: .45; cursor: not-allowed; }
 .model .name { font-weight: 600; font-size: 14px; }
 .model .desc { font-size: 12.5px; color: var(--ink2); margin-top: 2px; }
+#models { display: flex; flex-direction: column; gap: 8px; }
+.hint { font-size: 12px; color: var(--muted); margin: 2px 2px 0; }
+.hint code { font-size: 11.5px; }
 .setting label { display: flex; justify-content: space-between; font-size: 13px; color: var(--ink2); }
 .setting input[type=range] { width: 100%; accent-color: var(--accent); }
 .toggle { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; color: var(--ink2); cursor: pointer; }
@@ -194,7 +197,13 @@ bindRange("#seed", "#sv", v => v);
 
 function renderModels() {
   const box = $("#models"); box.innerHTML = "";
+  let mine = false;
   for (const m of models) {
+    if (m.user && !mine) {
+      mine = true;
+      const t = document.createElement("div"); t.className = "section-title"; t.textContent = "Your models";
+      t.style.marginTop = "8px"; box.appendChild(t);
+    }
     const d = document.createElement("div");
     d.className = "model" + (m.key === current ? " selected" : "") + (m.available ? "" : " disabled");
     d.innerHTML = `<div class="name"></div><div class="desc"></div>`;
@@ -203,7 +212,13 @@ function renderModels() {
     if (m.available) d.onclick = () => { current = m.key; renderModels(); renderHeader(); };
     box.appendChild(d);
   }
+  if (!mine) {
+    const h = document.createElement("div"); h.className = "hint";
+    h.innerHTML = "Train your own on any text: <code>python -m gpf train</code>";
+    box.appendChild(h);
+  }
 }
+function isBrain(key) { const m = models.find(x => x.key === key); return !!(m && m.brain); }
 function renderHeader() {
   const m = models.find(x => x.key === current);
   $("#htitle").textContent = m ? m.name : "GPF";
@@ -221,7 +236,7 @@ const bc = $("#bc"), base = document.createElement("canvas"), glow = document.cr
 function b64bytes(s) { const bin = atob(s), a = new Uint8Array(bin.length);
   for (let i = 0; i < bin.length; i++) a[i] = bin.charCodeAt(i); return a; }
 function updatePane() {
-  const isFly = current === "brain";
+  const isFly = isBrain(current);
   $("#bptoggle").hidden = !isFly;
   $("#bptoggle").textContent = paneOpen ? "Hide brain" : "Show brain";
   const show = isFly && paneOpen;
@@ -347,7 +362,7 @@ async function send(text) {
       method: "POST", headers: {"Content-Type": "application/json"}, signal: controller.signal,
       body: JSON.stringify({model: current, prompt, n: +$("#n").value, temp: +$("#temp").value,
                             topk: +$("#topk").value, seed: +$("#seed").value,
-                            brainview: current === "brain" && paneOpen, need_map: !bmap})
+                            brainview: isBrain(current) && paneOpen, need_map: !bmap})
     });
     const reader = res.body.getReader(), dec = new TextDecoder(); let buf = "";
     while (true) {

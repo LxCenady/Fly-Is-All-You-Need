@@ -48,8 +48,9 @@ pilot, a content-dependent dopaminergic teacher, a write gate like a GRU's,
 let the mushroom body learn next-character associations online within two or
 three exposures on a synthetic task (balanced accuracy 26\% against 7.8\% with
 a random teacher and 6.7\% chance); on real text it also learned, but added
-nothing to the 5-gram. A small terminal application lets readers
-compare the models by continuing a prompt.
+nothing to the 5-gram. A small application lets readers compare the models by
+continuing a prompt, watch the simulated brain's activity, and train their own
+models on any text.
 \end{abstract}
 
 % =====================================================================
@@ -180,7 +181,7 @@ sparse code the mushroom body relies on.
 \end{itemize}
 
 % =====================================================================
-\section{Mechanism-guided revision}
+\section{Mechanism-guided revision}\label{sec:revision}
 Three changes follow from the mechanism study: (1) sparse PN codes (160 or 192
 of 675 PNs, drive 1.5), where KC codes are sparse and symbol-specific;
 (2) readouts that include the sparse KC code and the subthreshold MBON voltage,
@@ -444,8 +445,8 @@ hundred or so characters can learn, the 5-gram already knows.
 % =====================================================================
 \section{Playground}
 To make these results tangible we wrote GPF, the ``Generative Pretrained
-Fly'', a terminal application (distributed with the repository) that continues
-a prompt with a chosen model, GPT-style. The name is a joke: the connectome's
+Fly'', a small application (browser and terminal interfaces, distributed with the
+repository) that continues a prompt with a chosen model, GPT-style. The name is a joke: the connectome's
 only pretraining is evolution, and only its linear readout was trained, on 20k
 characters. The prompt is fed one character at a time, then the
 model samples a character, feeds it back and continues. The connectome model
@@ -457,7 +458,25 @@ trained on the same 20k characters writes slightly better nonsense, a 7-gram
 on a million characters writes plausible fragments (``O, 'twas us / fellow
 of the young Princes have the triumph?''), and a GRU on a million characters
 writes the most coherent text (``Shall I put was the bastards prepare to make
-the state and a far thoughts'').
+the state and a far thoughts''). While the connectome model writes, a view of
+the whole brain (after the dashboard of the simulator's own project) shows which
+neurons fire on each character, grouped as projection neurons, KCs, MBONs and
+dopaminergic neurons. It makes the quiet regime noted in the Limitations
+visible: on each character the driven projection neurons fire, a small
+fraction of KCs follows, and the MBONs stay silent.
+
+GPF also trains new models on any text file with one command (\texttt{gpf train},
+for a Kneser-Ney model, a GRU or the connectome readout). Every run reports the
+new model's validation BPC next to baselines on the same split; for the
+connectome these are the same readout without brain features and a 5-gram, the
+comparisons that decided this report. Retraining the bundled connectome model
+this way produced brain features identical to those of the research code up to
+float32 rounding (at most $2\times10^{-7}$ in voltages; spike counts equal). With
+the tool's default clipped features the validation score was then identical
+(3.122 BPC from either feature set). The unclipped readout of the bundled model
+(3.180) moved to 3.165 under that rounding alone, and to 3.120--3.180 under
+different minibatch orders, the readout-fit noise described in
+Section~\ref{sec:revision}.
 
 % =====================================================================
 \section{Discussion}

@@ -86,6 +86,43 @@ python -m gpf --web               # web UI at http://127.0.0.1:8765 (your comput
 python -m gpf                     # terminal UI
 ```
 
+## Train your own
+
+Give GPF any text file (a book, your chat logs, code, another language) and train one of the
+three model types on it:
+
+```
+python -m gpf train kn    --data my.txt --name my-ngram     # seconds; numpy only
+python -m gpf train gru   --data my.txt --name my-gru       # minutes; needs torch (GPU if available)
+python -m gpf train brain --data my.txt --name my-fly       # ~10 min per 25k chars; flybrain + NVIDIA GPU
+```
+
+The last part of the text is held out for validation, and each run ends with a small report:
+how many bits per character the new model needs on the held-out text (lower is better),
+next to simple baselines on the same split. For the fly, that includes the same readout
+without the brain and a 5-gram, so you can see whether the brain actually helped on your
+text. (In our Shakespeare experiments it helps a little over the weak context table and
+not over the 5-gram.)
+
+Your models are saved in `~/.gpf/models/<name>/` (set `GPF_MODELS` to change this). They
+show up under **Your models** in the web UI and in the terminal UI, and as
+`--model user:<name>` on the command line. All options are listed by
+`python -m gpf train --help`. Useful ones:
+
+| Option | For | Default |
+|---|---|---|
+| `--train-chars`, `--val-chars` | how much text to train and validate on | all but the last 10%; fly: 20,000 / 5,000 |
+| `--max-vocab` | keep the N most frequent characters (others are dropped) | 256 |
+| `--order` | n-gram length | 5 |
+| `--hidden`, `--max-steps`, `--lr` | GRU size, training length, learning rate | 256, 20,000, 0.003 |
+| `--pn-active`, `--drive` | how many of the fly's 675 input neurons each character drives, and how hard | 160, 1.5 |
+| `--l2`, `--clip`, `--context-order` | readout regularisation, feature clipping, context-table length | 0.01, 3, 3 |
+| `--keep-features` | save the simulated brain activity so a rerun (with `--overwrite`) only refits the readout | off |
+| `--config params.json` | the same options from a JSON file | |
+
+The Lite downloads can train n-gram models (`gpf train kn ...`). The GRU needs torch and
+the fly needs flybrain, so train those from source.
+
 ## Credits
 
 - Fly brain simulation: [flybrain](https://github.com/alextitonis/fly.ai) (MIT).

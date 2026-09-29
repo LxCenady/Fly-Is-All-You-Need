@@ -14,7 +14,7 @@ from pathlib import Path
 
 import numpy as np
 
-from .models import MODELS, generate
+from .models import MODELS, generate, refresh_models
 
 PAGE = (Path(__file__).parent / "web.html").read_text(encoding="utf-8")
 LOGO = (Path(__file__).parent / "logo.svg")
@@ -32,17 +32,18 @@ def brain_available() -> bool:
 
 
 def model_list():
-    info = {
-        "brain": ("GPF-1 (fly connectome)", "166,700 simulated neurons per character, GPU. Pretrained by evolution."),
-        "kn7": ("Kneser-Ney 7-gram", "Counts of 7-character sequences in 1M characters. Instant."),
-        "kn5-20k": ("Kneser-Ney 5-gram, 20k", "Trained on the same 20k characters as the fly. Fair comparison."),
-        "gru": ("GRU", "A small trained recurrent network, 1M characters. The best writer here."),
-    }
+    """Built-in models first, then the user's own (python -m gpf train ...); re-scanned on every
+    call so a model trained while the server runs shows up after a page reload."""
+    refresh_models()
+    brain_ok = None
     out = []
-    for key in ("brain", "kn7", "kn5-20k", "gru"):
-        name, desc = info[key]
-        ok = brain_available() if key == "brain" else True
-        out.append({"key": key, "name": name, "desc": desc, "available": ok})
+    for key, (label, _, desc, needs_brain) in MODELS.items():
+        if needs_brain and brain_ok is None:
+            brain_ok = brain_available()
+        name = {"brain": "GPF-1 (fly connectome)", "kn7": "Kneser-Ney 7-gram",
+                "kn5-20k": "Kneser-Ney 5-gram, 20k", "gru": "GRU"}.get(key, label)
+        out.append({"key": key, "name": name, "desc": desc, "available": bool(brain_ok) if needs_brain else True,
+                    "user": key.startswith("user:"), "brain": needs_brain})
     return out
 
 

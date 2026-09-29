@@ -217,3 +217,24 @@ class FlyRuntime:
         return np.concatenate([xp.asnumpy(kc_counts), np.asarray(vm, np.float32).mean(0),
                                xp.asnumpy(mbon_counts), xp.asnumpy(self.trace_central),
                                np.asarray(vc, np.float32).mean(0)]).astype(np.float32)
+
+
+# ------------------------------------------------------------------ substrates
+# A substrate turns one character into a feature vector by running a simulated nervous system.
+# It needs reset(), step_token(token) -> 1-D float32 features, and optionally map_payload(),
+# record_activity and last_activity for the web UI's brain view.  Models record the substrate
+# they were trained on (model.json: brain.substrate); a new connectome or simulator is added
+# by registering one more factory here.
+SUBSTRATES = {
+    "flybrain-malecns-v1": lambda vocab_size, spec: FlyRuntime(
+        vocab_size, {"active": spec["pn_active"], "drive": float(spec["drive_scale"]),
+                     "encoder_seed": spec.get("encoder_seed", PROTOCOL["encoder_seed"])}),
+}
+DEFAULT_SUBSTRATE = "flybrain-malecns-v1"
+
+
+def make_substrate(vocab_size: int, spec: dict):
+    name = spec.get("substrate", DEFAULT_SUBSTRATE)
+    if name not in SUBSTRATES:
+        raise ValueError(f"unknown substrate {name!r}; known: {', '.join(SUBSTRATES)}")
+    return SUBSTRATES[name](vocab_size, spec)

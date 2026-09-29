@@ -2,6 +2,7 @@
 
 Double-click / run without arguments: start the web UI on a free local port and open it in the
 browser.  gpf --cli ...  : command-line generation (see gpf/__main__.py).
+gpf train ...  : train your own model (see gpf/train.py; the Lite build trains n-grams only).
 """
 import socket
 import sys
@@ -21,6 +22,10 @@ def free_port(preferred=8765):
 
 
 def main():
+    if sys.argv[1:2] == ["train"]:
+        from gpf.train import main as train_main
+        train_main(sys.argv[2:])
+        return
     if "--cli" in sys.argv:
         from gpf.__main__ import cli
         cli(sys.argv[1:])

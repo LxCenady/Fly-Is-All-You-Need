@@ -1,5 +1,7 @@
 """python -m gpf            -> terminal UI
-python -m gpf --cli --model brain --prompt "ROMEO:\\n" --n 300 --temp 0.7"""
+python -m gpf --web      -> web UI
+python -m gpf --cli --model brain --prompt "ROMEO:\\n" --n 300 --temp 0.7
+python -m gpf train kn|gru|brain --data my.txt --name my-model   (see gpf/train.py)"""
 import argparse
 import sys
 
@@ -16,6 +18,8 @@ def cli(argv):
     ap.add_argument("--topk", type=int, default=0)
     ap.add_argument("--seed", type=int, default=0)
     a = ap.parse_args(argv)
+    if hasattr(sys.stdout, "reconfigure"):        # any script, also when piped on Windows
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     model = MODELS[a.model][1](print)
     prompt = a.prompt.replace("\\n", "\n")
     print(prompt, end="", flush=True)
@@ -23,13 +27,20 @@ def cli(argv):
     print()
 
 
-if __name__ == "__main__":
-    if "--web" in sys.argv:
+def run(argv):
+    if argv[:1] == ["train"]:
+        from .train import main as train_main
+        train_main(argv[1:])
+    elif "--web" in argv:
         from .web import main as web_main
-        port = int(sys.argv[sys.argv.index("--port") + 1]) if "--port" in sys.argv else 8765
+        port = int(argv[argv.index("--port") + 1]) if "--port" in argv else 8765
         web_main(port)
-    elif "--cli" in sys.argv:
-        cli(sys.argv[1:])
+    elif "--cli" in argv:
+        cli(argv)
     else:
         from .tui import main
         main()
+
+
+if __name__ == "__main__":
+    run(sys.argv[1:])
