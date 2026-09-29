@@ -24,7 +24,11 @@ def cli(argv):
 
 
 if __name__ == "__main__":
-    if "--cli" in sys.argv:
+    if "--web" in sys.argv:
+        from .web import main as web_main
+        port = int(sys.argv[sys.argv.index("--port") + 1]) if "--port" in sys.argv else 8765
+        web_main(port)
+    elif "--cli" in sys.argv:
         cli(sys.argv[1:])
     else:
         from .tui import main

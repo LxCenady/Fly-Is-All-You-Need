@@ -1,3 +1,2 @@
 numpy
-textual
-torch            # only for the GRU model
+textual          # only for the terminal UI (python -m gpf)

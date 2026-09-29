@@ -92,32 +92,32 @@ class KNModel(CharModel):
 
 # ------------------------------------------------------------------ GRU
 class GRUModel(CharModel):
-    def __init__(self, weights: str = "gru_1000000.pt", log=print):
-        import torch
+    """1-layer GRU (hidden 256) trained with torch; inference in numpy, same equations as
+    torch.nn.GRU:  r = s(W_ir x + b_ir + W_hr h + b_hr),  z = s(W_iz x + b_iz + W_hz h + b_hz),
+    n = tanh(W_in x + b_in + r * (W_hn h + b_hn)),  h' = (1 - z) * n + z * h."""
 
-        class GRU(torch.nn.Module):
-            def __init__(self, e=32, h=256):
-                super().__init__()
-                self.emb = torch.nn.Embedding(V, e); self.rnn = torch.nn.GRU(e, h, batch_first=True)
-                self.out = torch.nn.Linear(h, V)
-
-            def forward(self, x, h=None):
-                o, h = self.rnn(self.emb(x), h)
-                return self.out(o), h
-
-        self.torch = torch
-        self.net = GRU(); self.net.load_state_dict(torch.load(DATA / weights)); self.net.eval()
+    def __init__(self, weights: str = "gru_1000000.npz", log=print):
+        w = np.load(DATA / weights)
+        self.emb = w["emb_weight"].astype(np.float64)
+        self.Wih, self.Whh = w["rnn_weight_ih_l0"].astype(np.float64), w["rnn_weight_hh_l0"].astype(np.float64)
+        self.bih, self.bhh = w["rnn_bias_ih_l0"].astype(np.float64), w["rnn_bias_hh_l0"].astype(np.float64)
+        self.Wo, self.bo = w["out_weight"].astype(np.float64), w["out_bias"].astype(np.float64)
+        self.H = self.Whh.shape[1]
         self.name = "GRU (hidden 256, trained on 1M chars)"
         log(f"{self.name} loaded")
         self.reset()
 
     def reset(self):
-        self.h = None
+        self.h = np.zeros(self.H)
 
     def feed(self, t):
-        with self.torch.no_grad():
-            lg, self.h = self.net(self.torch.tensor([[int(t)]]), self.h)
-        return lg[0, 0].numpy().astype(np.float64)
+        H, x, h = self.H, self.emb[int(t)], self.h
+        gi, gh = self.Wih @ x + self.bih, self.Whh @ h + self.bhh
+        sig = lambda a: 1.0 / (1.0 + np.exp(-a))
+        r = sig(gi[:H] + gh[:H]); z = sig(gi[H:2 * H] + gh[H:2 * H])
+        n = np.tanh(gi[2 * H:] + r * gh[2 * H:])
+        self.h = (1.0 - z) * n + z * h
+        return self.Wo @ self.h + self.bo
 
 
 # ------------------------------------------------------------------ connectome

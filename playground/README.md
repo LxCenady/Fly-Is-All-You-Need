@@ -8,8 +8,17 @@ type a prompt, and watch it write on. The prompt is fed to the model one charact
 time (that is how the context gets in), then the model samples the next character, feeds
 it back, and so on, the way early character-level language models were demonstrated.
 
+**Easiest:** download a self-contained *GPF Lite* build from the
+[releases page](https://github.com/LxCenady/Fly-Is-All-You-Need/releases): `gpf-lite-*-windows-x64.exe`
+(double-click; it opens in your browser) or `gpf-lite_*_amd64.deb` (`sudo apt install ./gpf-lite_*.deb`,
+then run `gpf`). They bundle Python and numpy and contain the n-gram and GRU models; the connectome
+model needs the full setup below.
+
+From source:
+
 ```
 pip install -r requirements.txt
+python -m gpf --web               # chat-style web UI on http://127.0.0.1:8765 (local only)
 python -m gpf                     # terminal UI (ctrl+g generate, esc stop, ctrl+q quit)
 python -m gpf --cli --model gru --prompt "ROMEO:\n" --n 300 --temp 0.7
 ```
@@ -20,7 +29,7 @@ python -m gpf --cli --model gru --prompt "ROMEO:\n" --n 300 --temp 0.7
 |---|---|---|
 | `kn7` | Kneser-Ney character 7-gram, fitted at start-up on 1M characters of TinyShakespeare (~10 s) | numpy |
 | `kn5-20k` | Kneser-Ney 5-gram on 20k characters, the same data the connectome readout saw | numpy |
-| `gru` | 1-layer GRU (hidden 256) trained on 1M characters (bundled weights) | torch |
+| `gru` | 1-layer GRU (hidden 256) trained on 1M characters with torch; bundled weights, inference in numpy | numpy |
 | `brain` | the whole MaleCNS v1.0 connectome (166,700 leaky integrate-and-fire neurons) simulated one character at a time on the GPU, with the trained linear readout bundled here | CUDA GPU, the `flybrain` simulator, the MaleCNS data and this project's `mechanism/` code (set `FLYBRAIN_HOME` and `GPF_MECHANISM`) |
 
 The `brain` model is the point of the exercise and also the weakest writer. On a laptop GPU

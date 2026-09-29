@@ -1,0 +1,105 @@
+name: gpf-packages
+
+# Builds self-contained GPF Lite packages (Python runtime + numpy + models bundled):
+#   Windows: gpf-lite-<ver>-windows-x64.exe      Linux: gpf-lite_<ver>_amd64.deb
+# Each package is installed/run and smoke-tested before it is attached to the release.
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  linux-deb:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - name: Build binary
+        working-directory: playground
+        run: |
+          pip install numpy pyinstaller
+          pyinstaller --noconfirm --onefile --name gpf \
+            --add-data "gpf/data:gpf/data" --add-data "gpf/web.html:gpf" \
+            --hidden-import gpf.web --hidden-import gpf.models --hidden-import gpf.__main__ \
+            --exclude-module textual --exclude-module torch gpf_app.py
+      - name: Assemble .deb
+        run: |
+          VER="${GITHUB_REF_NAME#gpf-v}"; [ "$VER" = "$GITHUB_REF_NAME" ] && VER="0.0.0"
+          P=pkg
+          mkdir -p $P/DEBIAN $P/usr/bin $P/usr/share/applications $P/usr/share/doc/gpf
+          install -m 0755 playground/dist/gpf $P/usr/bin/gpf
+          install -m 0644 playground/NOTICE.md $P/usr/share/doc/gpf/copyright
+          cat > $P/usr/share/applications/gpf.desktop <<EOF
+          [Desktop Entry]
+          Type=Application
+          Name=GPF (Generative Pretrained Fly)
+          Comment=Continue a prompt with a character model; opens in your browser
+          Exec=gpf
+          Terminal=true
+          Categories=Education;Science;
+          EOF
+          cat > $P/DEBIAN/control <<EOF
+          Package: gpf-lite
+          Version: $VER
+          Architecture: amd64
+          Maintainer: Quanxi Li <noreply@github.com>
+          Section: science
+          Priority: optional
+          Homepage: https://github.com/LxCenady/Fly-Is-All-You-Need
+          Description: GPF, the Generative Pretrained Fly (lite edition)
+           Continue a prompt, GPT-style, with Kneser-Ney n-gram or GRU character
+           models of Shakespeare, in the browser or on the command line.
+           Self-contained: bundles its own Python runtime and numpy.
+          EOF
+          sed -i 's/^          //' $P/DEBIAN/control $P/usr/share/applications/gpf.desktop
+          dpkg-deb --build --root-owner-group $P "gpf-lite_${VER}_amd64.deb"
+          dpkg-deb --info "gpf-lite_${VER}_amd64.deb"
+      - name: Install and smoke-test
+        run: |
+          sudo apt-get install -y ./gpf-lite_*_amd64.deb
+          gpf --cli --model kn5-20k --prompt "ROMEO:\n" --n 80
+          gpf --cli --model gru --prompt "JULIET:\n" --n 80
+          (gpf --no-browser &) ; sleep 3
+          curl -sf http://127.0.0.1:8765/api/models | tee /dev/stderr | grep -q '"gru"'
+          curl -sfN -X POST http://127.0.0.1:8765/api/generate \
+            -H 'Content-Type: application/json' -d '{"model":"kn7","prompt":"O, ","n":40}' | grep -q '"done": true'
+      - uses: actions/upload-artifact@v4
+        with: {name: gpf-deb, path: "gpf-lite_*_amd64.deb"}
+      - name: Attach to release
+        if: startsWith(github.ref, 'refs/tags/gpf-v')
+        env: {GH_TOKEN: "${{ github.token }}"}
+        run: gh release upload "$GITHUB_REF_NAME" gpf-lite_*_amd64.deb --clobber
+
+  windows-exe:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - name: Build exe
+        working-directory: playground
+        shell: bash
+        run: |
+          pip install numpy pyinstaller
+          pyinstaller --noconfirm --onefile --name gpf \
+            --add-data "gpf/data;gpf/data" --add-data "gpf/web.html;gpf" \
+            --hidden-import gpf.web --hidden-import gpf.models --hidden-import gpf.__main__ \
+            --exclude-module textual --exclude-module torch gpf_app.py
+          VER="${GITHUB_REF_NAME#gpf-v}"; [ "$VER" = "$GITHUB_REF_NAME" ] && VER="0.0.0"
+          cp dist/gpf.exe "../gpf-lite-${VER}-windows-x64.exe"
+      - name: Smoke-test
+        shell: bash
+        run: |
+          ./gpf-lite-*-windows-x64.exe --cli --model gru --prompt "ROMEO:\n" --n 80
+          ./gpf-lite-*-windows-x64.exe --cli --model kn5-20k --prompt "JULIET:\n" --n 80
+      - uses: actions/upload-artifact@v4
+        with: {name: gpf-exe, path: "gpf-lite-*-windows-x64.exe"}
+      - name: Attach to release
+        if: startsWith(github.ref, 'refs/tags/gpf-v')
+        shell: bash
+        env: {GH_TOKEN: "${{ github.token }}"}
+        run: gh release upload "$GITHUB_REF_NAME" gpf-lite-*-windows-x64.exe --clobber
