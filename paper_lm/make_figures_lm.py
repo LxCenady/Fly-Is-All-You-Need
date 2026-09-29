@@ -110,5 +110,30 @@ def fig_paired():
     plt.close(fig)
 
 
+def fig_curve():
+    """Learning curve: BPC with and without the sparse brain (KC counts, clipped z)
+    against training size; same 20k validation characters (lm_controls.json, A2)."""
+    d = j(Path(r"E:\mechanism_20260928\night") / "lm_controls.json")["A2"]
+    N = [r["train"] for r in d["ctx_only"]]
+    ctx = [r["bpc"] for r in d["ctx_only"]]; brain = [r["bpc"] for r in d["brain_kc"]]
+    fig, axes = plt.subplots(1, 2, figsize=(3.5, 1.9), gridspec_kw={"width_ratios": [1.2, 1]})
+    ax = axes[0]
+    ax.plot(N, ctx, "o-", color=C2, ms=3.5, lw=1.2, label="context head only")
+    ax.plot(N, brain, "s-", color=C1, ms=3.5, lw=1.2, label="+ sparse brain (KC)")
+    ax.set_xscale("log"); ax.set_xlabel("training characters"); ax.set_ylabel("validation BPC")
+    ax.legend(fontsize=5.8, frameon=False, loc="lower left"); ax.grid(color=GRID, lw=0.5)
+    ax = axes[1]
+    dd = [b - c for b, c in zip(brain, ctx)]
+    ax.plot(N, dd, "s-", color=C1, ms=3.5, lw=1.2)
+    for n, v in zip(N, dd):
+        ax.text(n * 1.15, v - 0.012, f"{v:+.2f}", ha="left", va="top", fontsize=5.5, color=INK2)
+    ax.axhline(0, color=MUTED, lw=0.8)
+    ax.set_xscale("log"); ax.set_xlim(3500, 2.6e5); ax.set_ylim(-0.4, 0.05); ax.set_xlabel("training characters")
+    ax.set_ylabel("BPC change from brain"); ax.grid(color=GRID, lw=0.5)
+    fig.tight_layout()
+    fig.savefig(OUT / "fig3_curve.pdf"); fig.savefig(OUT / "fig3_curve.png", dpi=200)
+    plt.close(fig)
+
+
 if __name__ == "__main__":
-    fig_timeline(); fig_results(); fig_paired(); print("ok")
+    fig_timeline(); fig_results(); fig_paired(); fig_curve(); print("ok")

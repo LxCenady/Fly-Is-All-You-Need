@@ -255,7 +255,67 @@ def fig7():
     save(fig, "fig7_output_map")
 
 
+# ---- Fig 8: sensitivity to gain, tonic drive and noise ---------------------
+SENS_VARS = [("base", "reference"), ("gain1.2", "gain 1.2"), ("gain1.8", "gain 1.8"),
+             ("tonic0.03", "tonic 0.03"), ("tonic0.08", "tonic 0.08"), ("noise2", "noise 2 Hz"),
+             ("noise5", "noise 5 Hz")]
+
+
+def _spec_overlap(pt):
+    cells = pt["cells"]
+    spec = []
+    for pair in {tuple(c["pair"]) for c in cells}:
+        cs = {c["probe"]: c["I_x_norm"] for c in cells if tuple(c["pair"]) == pair}
+        others = [x for p, x in cs.items() if p != pair[0]]
+        if others and np.mean(others) > 0:
+            spec.append(cs[pair[0]] / np.mean(others))
+    ov = [c["overlap"] / max(c["kc_probe_active"], 1) for c in cells if c["probe"] == c["pair"][1]]
+    return float(np.median(ov)), float(np.median(spec))
+
+
+def fig8():
+    fig, axes = plt.subplots(1, 2, figsize=(W * 2, 2.3))
+    ax = axes[0]
+    for pt_i, (col, mk, lab) in enumerate(((C1, "o", "160 PNs"), (MUTED, "s", "512 PNs"))):
+        xs, ys = [], []
+        for v, name in SENS_VARS:
+            pt = load(f"sens/m2_{v}.json")[pt_i]
+            x, y = _spec_overlap(pt)
+            xs.append(x); ys.append(y)
+            if pt_i == 0:
+                off = {"gain 1.8": (-30, -10), "noise 2 Hz": (4, 4)}.get(name, (4, 2))
+                ax.annotate(name, (x, y), xytext=off, textcoords="offset points", fontsize=6, color=INK2)
+        ax.plot(xs, ys, mk, color=col, label=lab, ls="none")
+    ax.axhline(1, color=MUTED, lw=0.8, ls="--")
+    ax.set_xlabel("KC overlap between items (fraction of probe KCs)")
+    ax.set_ylabel("cue specificity")
+    ax.set_title("Retrieval key tracks KC sparseness", loc="left")
+    ax.legend(loc="upper right")
+    ax = axes[1]
+    for tag, mk, lab in (("route160r", "o", "160 PNs, random codes"), ("route192g", "D", "192 PNs, glomerular codes")):
+        real, swap, perm = [], [], []
+        for v, _ in SENS_VARS:
+            g = {r["mode"]: r for r in load(f"sens/{tag}_{v}.json")}
+            real.append(g["real"]["item_cos_mean"]); swap.append(g["profile_type_side"]["item_cos_mean"])
+            perm.append(g["kc_perm"]["item_cos_mean"])
+        ax.plot(real, swap, mk, color=C1, ls="none")
+        ax.plot(real, perm, mk, color=MUTED, mfc="none", ls="none")
+    lim = (0.55, 1.0)
+    ax.plot(lim, lim, color=INK2, lw=0.8)
+    ax.set_xlim(lim); ax.set_ylim(lim)
+    ax.set_xlabel("item cosine, real wiring (lower = more distinct)")
+    ax.set_ylabel("item cosine after shuffle")
+    ax.set_title("Output map survives side+subtype swaps", loc="left")
+    from matplotlib.lines import Line2D
+    h = [Line2D([], [], marker="o", ls="none", color=INK2, label="160 PNs, random codes"),
+         Line2D([], [], marker="D", ls="none", color=INK2, label="192 PNs, glomerular codes"),
+         Line2D([], [], marker="s", ls="none", color=C1, label="side+subtype swap"),
+         Line2D([], [], marker="s", ls="none", color=MUTED, mfc="none", label="KC$\\rightarrow$MBON random")]
+    ax.legend(handles=h, loc="lower right", fontsize=6)
+    save(fig, "fig8_sensitivity")
+
+
 if __name__ == "__main__":
-    for f in (fig1, fig2, fig3, fig4, fig5, fig6, fig7):
+    for f in (fig1, fig2, fig3, fig4, fig5, fig6, fig7, fig8):
         f()
         print("ok", f.__name__)

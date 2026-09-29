@@ -101,8 +101,37 @@ def build(args, condition="intact"):
     p = st["plastic"]
     live = p.xp.asnumpy(st["brain"]._W.indices[p.edge_pos_gpu]).astype(np.int64)
     assert np.array_equal(live, p.edge_pre_ids), "KC->MBON identity drift"
+    if os.environ.get("MB_LESION"):
+        st["_lesion"] = _apl_lesion(st, os.environ["MB_LESION"])
     st["_other_mask"] = _other_positions(st)
     return st
+
+
+def _apl_lesion(st, mode):
+    """MB_LESION=apl_off: zero APL->KC edges.  MB_LESION=apl_fbX: scale KC->APL edges by X.
+    CSR rows are postsynaptic, indices presynaptic (checked above for KC->MBON)."""
+    m = np.load(DATA / "brain.npz", allow_pickle=True)
+    ct = m["cell_type"].astype(str)
+    is_kc = np.char.find(ct, "KC") >= 0
+    is_apl = np.char.find(ct, "APL") >= 0
+    W = st["brain"]._W
+    xp = st["brain"].xp
+    indptr = xp.asnumpy(W.indptr); indices = xp.asnumpy(W.indices)
+    rows = np.repeat(np.arange(len(indptr) - 1), np.diff(indptr))
+    if mode == "apl_off":
+        sel = is_kc[rows] & is_apl[indices]
+        before = float(xp.asnumpy(W.data[xp.asarray(np.flatnonzero(sel))]).sum())
+        W.data[xp.asarray(np.flatnonzero(sel))] = 0
+    elif mode.startswith("apl_fb"):
+        sel = is_apl[rows] & is_kc[indices]
+        before = float(xp.asnumpy(W.data[xp.asarray(np.flatnonzero(sel))]).sum())
+        W.data[xp.asarray(np.flatnonzero(sel))] *= float(mode[6:])
+    else:
+        raise ValueError(mode)
+    assert not np.any(sel[xp.asnumpy(st["plastic"].edge_pos_gpu)]), "lesion touched KC->MBON"
+    info = {"mode": mode, "n_apl": int(is_apl.sum()), "edges": int(sel.sum()), "weight_before": before}
+    print("lesion", info, flush=True)
+    return info
 
 
 def _other_positions(st):

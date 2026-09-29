@@ -175,7 +175,7 @@ while three injected errors were detected: $+10^{-3}$ on all MBON voltages
 \caption{Model and protocol parameters (defaults; deviations are stated where
 used).}
 \label{tab:params}\centering\footnotesize\setlength{\tabcolsep}{3pt}
-\begin{tabular}{@{}ll@{}}\toprule
+\begin{tabular}{@{}p{0.34\columnwidth}p{0.62\columnwidth}@{}}\toprule
 Parameter & Value\\\midrule
 Time step / membrane $\tau$ & 20~ms / 100~ms\\
 Threshold / reset / refractory & 1 / 0 / none\\
@@ -641,7 +641,38 @@ between items rose (Spearman $\rho=-0.96$ over the seven settings) (overlap 0.05
 0.94; specificity 9.9, 9.3, 4.7, 2.8, 2.9, 2.0, 1.95), whichever parameter
 raised it. Higher gain, stronger tonic drive and noise all densify the KC code
 and weaken the key; the dependence on sparseness, not on a particular
-parameter setting, is the robust result.
+parameter setting, is the robust result (Fig.~\ref{fig:sens}).
+
+In the fly, KC sparseness depends on feedback inhibition from the APL neuron
+\cite{lin2014}. In the model it does not. The connectome's KC$\rightarrow$APL
+synapses sum to a weight of 1.8 (APL$\rightarrow$KC: $-378$), and removing
+APL$\rightarrow$KC inhibition left every number at 160 PNs unchanged (it
+densified the already dense 512-PN code slightly: probe KCs 3{,}446 to 3{,}757,
+specificity 1.06 to 1.00). Scaling KC$\rightarrow$APL by 100 or 1{,}000
+sparsened the KC code (probe KCs 437 to 169 and 135) and sharpened the key
+(specificity 4.7 to 10.5 and 8.9), as expected from \cite{lin2014}, but did not
+rescue dense input (specificity 1.24; the side-and-subtype swap still kept the
+output map). Sparseness in this model is therefore set by the input, not by
+the APL loop: a point-neuron APL with synapse-count weights is too weak, and
+the non-spiking, local inhibition of the real APL is not captured.
+
+Finally, to rule out another bookkeeping error of the kind described in
+Section~\ref{sec:corrections}, we recomputed the MBON input current in a
+second implementation that reads weight changes directly from the live
+connectivity matrix, selecting KC$\rightarrow$MBON entries by cell type rather
+than through the plasticity module's slot tables. For six pairs at 160 and 512
+PNs the two implementations agreed exactly in all 36 cells.
+
+\begin{figure*}[t]\centering
+\includegraphics[width=0.95\textwidth]{figures/fig8_sensitivity.pdf}
+\caption{Sensitivity to gain, tonic drive and membrane noise. Left: cue
+specificity of the written item (median over six write pairs) against the KC
+overlap between items, for seven parameter settings; dashed: no specificity.
+Right: mean pairwise cosine of item outputs with the real wiring against the
+same after swapping KC output profiles within subtype and side (filled) or
+randomising KC$\rightarrow$MBON wiring (open), for the seven settings and two
+input codes; points on the diagonal keep the output map.}
+\label{fig:sens}\end{figure*}
 
 \begin{table}[t]
 \caption{Status of the main findings.}
@@ -668,11 +699,28 @@ synapses; the rarity of flips is the finding\\\bottomrule
 \end{tabular}
 \end{table}
 
+\paragraph*{Predictions}
+The model makes four predictions that experiments in the fly could test.
+(1) Retrieval specificity should fall smoothly as the overlap between the KC
+sets of two stimuli rises, whatever raises it (stronger PN drive, weaker
+inhibition, more similar odours); the model gives the shape of this relation
+(Fig.~\ref{fig:sens}). Impaired discrimination after blocking the inhibitory
+APL neuron \cite{lin2014} is the qualitative case. (2) Silencing one KC family
+after training should remove the part of a memory expressed by that family's
+lobe MBONs and leave the rest, and the effect of a memory on MBON output should
+depend on how an odour's KC response is divided between families, not on
+which individual KCs respond. (3) A stimulus delivered to one side only should
+be stored and retrieved largely in one mushroom body. (4) Training with two
+different DAN groups should change largely non-overlapping sets of MBONs; this
+is consistent with compartment-specific memories \cite{aso2014a,aso2016} and is the
+least novel of the four.
+
 \paragraph*{Limitations}
 One connectome and one reconstruction; leaky integrate-and-fire neurons with
 hand-set gain, tonic drive and zero noise (the two emergent findings were
 checked at two other values of each and with 2 and 5\,Hz noise, other results
-only at the reference); a hand-set plasticity rule and
+only at the reference); an APL feedback loop too weak to sparsen the KC code,
+so sparseness comes from the input alone; a hand-set plasticity rule and
 valence signs; symbol codes that are not odour responses; operating points
 chosen by us; write pairs and items within one connectome as the only
 replication; input current as a linear proxy that ignores spiking; the sparse
@@ -683,6 +731,28 @@ plasticity (PAM potentiates, PPL depresses) is a model assumption opposite to
 the predominantly depressing effect of DANs in the fly; location results were unchanged under a
 depression-only rule, but the sign of stored changes is not interpretable. None of the results is a claim about memory in the
 fly.
+
+% =====================================================================
+\section{Conclusion in plain terms}
+Think of the mushroom body as a filing system with many drawers. When the fly
+is taught something, a dopamine signal decides which drawers are opened: a
+reward-like signal and a punishment-like signal open different drawers, and in
+our model this choice explains most of where a memory ends up. What is written
+is a small change in the strength of connections from Kenyon cells, the
+neurons that represent ``what the fly is sensing'', onto the output neurons of
+the open drawers. To read the memory back, the same small group of Kenyon cells
+has to become active again. This only works when each stimulus activates few
+Kenyon cells, as in the real fly; when too many are active, every stimulus
+looks the same to the output neurons and the memory can no longer tell stimuli
+apart. Finally, the shape of the output depends on coarse anatomy, on which
+side of the brain and which family of Kenyon cells stored the memory, rather
+than on the exact wiring of individual cells.
+
+Two cautions matter as much as the findings. Some results follow directly from
+how the model was built, such as how long a memory lasts; we list these
+separately (Table~\ref{tab:status}). And all of this happens in a simplified
+simulation of one reconstructed brain. The results are predictions about the
+fly, not observations of it.
 
 % =====================================================================
 \section*{Use of AI tools}

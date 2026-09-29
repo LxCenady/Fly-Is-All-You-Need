@@ -268,18 +268,43 @@ runs, so the central neurons did not receive mushroom-body output; their
 contribution comes from other pathways.
 
 \subsection{More data}
-With 100k training and 20k validation characters (segment 0, one code draw,
-one run per condition) the context head alone reaches 48.9\% / 2.681 BPC. With
-the held-out-selected readout the sparse brain made it worse (2.698); with
-clipped KC features it was 2.671 (48.4\%), a change of $-0.010$ BPC, within
-the readout-fit noise; dense KC features gave 2.996. The brain's gain over the
-n-gram therefore does not survive a five-fold increase in training data. The
-most likely reading is that the sparse brain features carry mostly short-range
-context: with little data they smooth the sparse n-gram table, and with more
-data the table learns the same information itself. These are the first results in this project
-that improve on a context-only model; they are not evidence that the
-connectome models language, and they do not persist with more training
-data (below).
+We simulated 120k characters (segment 0, one code draw) and trained on the
+first 5k to 100k, always validating on the same last 20k characters
+(Fig.~\ref{fig:curve}; clipped KC features, L2 $5\cdot10^{-3}$). The
+brain's gain over the context head shrank steadily with training size: $-0.32$,
+$-0.20$, $-0.10$, $-0.04$ and $-0.01$ BPC at 5k, 10k, 20k, 50k and 100k
+characters. At 100k the context head alone reached 48.9\% / 2.681 BPC and the
+brain added 0.010 BPC, within the readout-fit noise, while lowering accuracy
+slightly (48.4\%); the held-out-selected readout was worse than the context
+head (2.698), and dense KC features much worse (2.996). The brain's advantage
+is therefore a small-data effect.
+
+\begin{figure}[t]\centering
+\includegraphics[width=\columnwidth]{figures/fig3_curve.pdf}
+\caption{Learning curve on one 120k-character segment, validated on its last
+20k characters. Left: validation BPC with the context head alone and with the
+sparse brain's KC features added. Right: the difference.}
+\label{fig:curve}
+\end{figure}
+
+\subsection{What does the brain add?}
+Two controls ask whether the brain supplies anything beyond recent characters
+(20k/5k, three segments, same readout). An explicit one-hot code of the last
+four characters, added to the context head, lowered BPC by 0.071 on average
+and raised accuracy by 0.9--1.6 points; extending it to eight characters did
+not help further. The KC features alone lowered BPC by 0.107 but changed accuracy
+inconsistently ($-0.5$ to $+0.9$ points). Adding the KC features to the four-character code lowered BPC by a
+further 0.043--0.062 in all three segments. The sparse brain therefore carries
+some information that neither the hashed trigram table nor an explicit
+eight-character window provides, though what that information is, and why it
+stops mattering with more data, we cannot say from these runs. A random
+KC-like expansion of the last eight characters, meant as a connectome-free
+control, overfitted badly at every regularisation strength tried ($+0.20$ to
+$+0.36$ BPC); it is a poor control, and the question of whether any
+random reservoir would do as well as the connectome remains open.
+
+These are the first results in this project that improve on a context-only
+model. They are not evidence that the connectome models language.
 
 % =====================================================================
 \section{Discussion}
@@ -302,6 +327,29 @@ characters); one readout fit per case; the exploratory table was tuned on the
 validation split (the held-out check was not); the
 revised protocol differs from the earlier one in input pathway, gain and
 sampling, so comparisons with the earlier numbers are approximate.
+
+\section{Conclusion in plain terms}
+We asked whether the wiring diagram of a fruit-fly brain, simulated but never
+trained, could help predict the next letter of Shakespeare. At first it seemed
+to: the model guessed about 43\% of letters correctly. On checking, almost all
+of that came from a simple lookup table of what usually follows the previous
+three letters, which scores as well without any brain. Adding the fly's own
+learning mechanism wrote information into the brain but did not help, and
+working out why became a separate study.
+
+That study showed that we had been feeding the brain too much input at once,
+so that nearly all of its Kenyon cells, the neurons the fly uses to tell smells
+apart, lit up for every letter. With sparser input, as in a real fly, the brain
+did add something the lookup table lacked, consistently across different parts
+of the text: its predictions became better calibrated, although it did not get
+more letters right. This held only when the model had little text to learn
+from. With five times more text the lookup table learned
+the same information on its own and the brain's advantage disappeared.
+
+The practical lessons are to compare every result with the simplest possible
+baseline, to check whether a gain survives more data, and to audit results
+before building on them: here the audit found a simulator bug, an inflated
+benchmark and a preprocessing artefact.
 
 \section*{Use of AI tools}
 This is independent research by a high-school student. The author directed

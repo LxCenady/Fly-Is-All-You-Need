@@ -24,8 +24,11 @@ if _DEADLINE <= _START:
     _DEADLINE += dt.timedelta(days=1)
 
 
+_CAP = int(sys.argv[3]) if len(sys.argv) > 3 else 3   # optional max concurrency
+
+
 def limit():
-    return 1 if dt.datetime.now() >= _DEADLINE else 3
+    return 1 if dt.datetime.now() >= _DEADLINE else _CAP
 
 
 def main(qfile, logdir):
