@@ -1,9 +1,9 @@
 """A made-up 1,200-neuron "connectome" in the plain CSV format, to show how any wiring diagram
-goes into GPF (and to test the framework without a GPU).
+goes into UCTF (and to test the framework without a GPU).
 
     python make_toy.py                          writes neurons.csv and edges.csv here
-    python -m gpf import --neurons neurons.csv --edges edges.csv --out toy --sign-col nt
-    python -m gpf bench --substrate toy.json --data ../../gpf/data/tinyshakespeare.txt \\
+    python -m uctf import --neurons neurons.csv --edges edges.csv --out toy --sign-col nt
+    python -m uctf bench --substrate toy.json --data ../../../playground/gpf/data/tinyshakespeare.txt \\
         --train-chars 5000 --val-chars 1500 --device cpu
 
 Layout: 100 input neurons -> 800 sparse "expansion" cells (a few inputs each, a loose copy of

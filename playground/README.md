@@ -120,10 +120,13 @@ show up under **Your models** in the web UI and in the terminal UI, and as
 | `--keep-features` | save the simulated brain activity so a rerun (with `--overwrite`) only refits the readout | off |
 | `--config params.json` | the same options from a JSON file | |
 
-**Other connectomes.** The fly is not built in: any wiring diagram can be imported, described
-in a small JSON spec and trained on (`--substrate my-spec.json`). `python -m gpf bench` runs the
-honest comparison for it: n-gram baselines, the readout without the brain, and degree-preserving
-rewired copies of the connectome. See [CONNECTOMES.md](CONNECTOMES.md).
+**Other connectomes.** The fly is not built in. Connectome models come from
+[UCTF](../uctf), the Universal Connectome Training Framework in this repository: any wiring
+diagram can be imported, described in a small JSON spec and trained on
+(`--substrate my-spec.json`). `python -m uctf bench` (or `python -m gpf bench`) runs the
+comparison for it: n-gram baselines, the readout without the brain, and degree-preserving
+rewired copies of the connectome at matched activity. A whole-worm example (C. elegans) is
+included.
 
 The Lite downloads can train n-gram models (`gpf train kn ...`). The GRU needs torch and
 the fly needs flybrain, so train those from source.

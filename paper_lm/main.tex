@@ -294,7 +294,7 @@ sparse brain's KC features added. Right: the difference.}
 \end{figure}
 
 % =====================================================================
-\section{What does the brain provide?}
+\section{What does the brain provide?}\label{sec:brain}
 The gains above were measured against the hashed context head. We asked what
 the brain supplies and tested three predictions of one hypothesis: that the
 sparse brain is a nonlinear, fading memory of the last few characters, useful
@@ -479,6 +479,95 @@ different minibatch orders, the readout-fit noise described in
 Section~\ref{sec:revision}.
 
 % =====================================================================
+\section{Beyond the fly: a framework for other connectomes}\label{sec:uctf}
+Every analysis in this report asks the same questions of one wiring diagram:
+does it add anything over a context table, does it come near a smoothed
+n-gram, how far back does it remember, and does any of it depend on the real
+wiring? The author proposed turning these questions into a Universal Connectome
+Training Framework (UCTF), so that any connectome released in the future can be
+put through the same tests. UCTF is distributed with the repository. It was
+implemented by reorganising and debugging tools this project already had:
+
+\begin{itemize}
+\item the GPF-1 runtime, generalised to a spec file that names the input and
+readout populations of any connectome;
+\item the readout training and evaluation scripts of
+Sections~\ref{sec:revision}--\ref{sec:brain};
+\item the rewiring controls of Section~\ref{sec:brain}.
+\end{itemize}
+
+Three changes were added:
+\begin{itemize}
+\item optional electrical synapses;
+\item a benchmark command that runs every comparison of this report;
+\item an option that runs each rewired control at the gain where its readout
+neurons are as active as the real network's.
+\end{itemize}
+
+Checks against this report came out exact:
+\begin{itemize}
+\item with the fly's spec, UCTF's simulator gives the same spikes as GPF-1's
+runtime;
+\item its two rewirings reproduce the rewired connectomes of
+Section~\ref{sec:brain} exactly;
+\item the fly benchmark reproduces the KC memory span (100, 90, 59, 36 and
+25\% for $k=0$--4).
+\end{itemize}
+
+We then ran UCTF on a second species, the whole \textit{C.~elegans}
+hermaphrodite \cite{cook2019}: 300 neurons, 133 muscles, 4{,}681 chemical
+connections and 1{,}345 gap junctions. The setup was as follows:
+\begin{itemize}
+\item \textbf{Signs.} The 26 GABAergic neurons \cite{mcintire1993} were
+inhibitory and all other cells excitatory, a simplification.
+\item \textbf{Input and readout.} Each character drove 20 of the 83 sensory
+neurons, and the readout took the interneurons, motor and pharyngeal neurons
+(not the driven sensory neurons, whose own membrane leak would otherwise count
+as memory).
+\item \textbf{Operating point.} With the fly's gain the worm network ran away
+(90\% of neurons active on every character). The gain was set to 0.9 by a
+criterion fixed before any prediction results were seen: 5--30\% of neurons
+active on average.
+\end{itemize}
+
+On the fly's 20k/5k split the worm connectome lowered BPC from 3.205 (context
+table) to 3.135--3.160 (three input codes), far above the 5-gram (2.680). It
+remembered about two characters: the character two back was decoded in
+66--67\% of cases and three back in 33\%, against the fly's 84\% and 50\% with
+all features. Rewired worm connectomes at matched activity scored 3.151--3.171
+(whole network) and 3.169--3.186 (within cell classes, three seeds each): on
+average 0.014 and 0.033 BPC worse than the real wiring, a small difference but
+consistent in direction. For the fly at matched activity the
+figures were 3.126 (whole network) and 3.120 (within classes, one seed each),
+against 3.122 for the real wiring and 3.139 and 3.122 at the same gain.
+
+One correction came from this review. At the same gain, rewiring changes how
+active a network is, because weights move to neurons they were not normalised
+for. The fully rewired worm networks were much quieter than the real one (2--4\%
+of readout neurons active instead of 6\%), and at that gain they looked
+\emph{better} than the real wiring (3.121--3.126). This advantage disappeared
+at matched activity. The rewiring comparisons of Section~\ref{sec:brain} were
+made at the same gain. For the fly, matching activity changed the rewired scores
+by at most 0.013 BPC, so the conclusion of that section stands. The match was
+imperfect for the fully rewired fly, however. Its KCs are silent at the
+original gain, and the gain that matched activity over the first 500
+characters (3.7 instead of 1.5) left its readout neurons more active over the
+whole run (1.4\% against 0.2\%).
+
+Both species therefore show the same pattern: a fading memory of a few
+characters, far behind a smoothed n-gram, and little or no dependence on the
+specific wiring. This suggests that UCTF carries over between connectomes to
+some degree, and that the negative result of this report is not peculiar to
+the fly. It does not show that UCTF is general:
+\begin{itemize}
+\item it has been run on two species, one task and one input protocol, with a
+linear readout;
+\item the worm's operating point was chosen by hand;
+\item its transmitter signs are simplified;
+\item neither result is a claim about what these animals compute.
+\end{itemize}
+
+% =====================================================================
 \section{Discussion}
 For its original goal this project ends with a clear negative result. A frozen
 reservoir with a linear readout can only expose what its dynamics retain
@@ -504,8 +593,9 @@ Whether a richer teacher, longer eligibility traces or slower decay would let
 it store something n-gram statistics do not have remains open; we have not
 shown that it can.
 
-\paragraph*{Limitations} One connectome and one rewiring of each kind; one
-corpus; short splits (20k characters, one 100k run); one readout fit per case;
+\paragraph*{Limitations} One fly connectome (a second species only in the
+framework check of Section~\ref{sec:uctf}) and, in Section~\ref{sec:brain}, one
+rewiring of each kind at the same gain; one corpus; short splits (20k characters, one 100k run); one readout fit per case;
 a linear readout; KN and GRU baselines without extensive tuning; the
 exploratory table was tuned on the validation split (the later analyses were
 not); in the language-model runs only 0.5\% of KCs fired per character and no
@@ -551,12 +641,17 @@ Phases 1--2 and proposed the plasticity route (see Roles); from Phase 3 on,
 much of the investigation was carried out by AI agents under the author's
 instructions. AI agents (OpenAI Codex, DeepSeek via OpenCode, Anthropic Claude)
 implemented and ran training scripts, parameter sweeps, parallel runs, audits,
-and this report's analysis and drafting.
+and this report's analysis and drafting. The idea of UCTF
+(Section~\ref{sec:uctf}), to make these tests reusable for other connectomes,
+is the author's; Anthropic Claude implemented it from the project's existing
+code under the author's direction and ran the \textit{C.~elegans} check.
 
 \section*{Data and code}
-\url{https://github.com/LxCenady/Fly-Is-All-You-Need}.
+\url{https://github.com/LxCenady/Fly-Is-All-You-Need}. UCTF is in its
+\texttt{uctf/} folder; the \textit{C.~elegans} example, including the script
+that fetches the data, is in \texttt{uctf/examples/celegans/}.
 
-\begin{thebibliography}{9}
+\begin{thebibliography}{99}
 \bibitem{berg2026} S. Berg \textit{et al.}, ``Sexual dimorphism in the
 complete \textit{Drosophila} male central nervous system connectome,''
 \textit{Cell}, vol.~189, no.~18, pp.~5504--5526.e15, 2026.
@@ -589,5 +684,11 @@ using RNN encoder-decoder for statistical machine translation,'' in
 \bibitem{lukosevicius2009} M. Luko\v{s}evi\v{c}ius and H. Jaeger, ``Reservoir
 computing approaches to recurrent neural network training,''
 \textit{Comput. Sci. Rev.}, vol.~3, no.~3, pp.~127--149, 2009.
+\bibitem{cook2019} S. J. Cook \textit{et al.}, ``Whole-animal connectomes of
+both \textit{Caenorhabditis elegans} sexes,'' \textit{Nature}, vol.~571,
+pp.~63--71, 2019.
+\bibitem{mcintire1993} S. L. McIntire, E. Jorgensen, J. Kaplan and
+H. R. Horvitz, ``The GABAergic nervous system of \textit{Caenorhabditis
+elegans},'' \textit{Nature}, vol.~364, pp.~337--341, 1993.
 \end{thebibliography}
 \end{document}

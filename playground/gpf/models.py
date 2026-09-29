@@ -9,7 +9,6 @@ from __future__ import annotations
 import json
 import os
 import time
-from collections import defaultdict
 from pathlib import Path
 
 import numpy as np
@@ -45,61 +44,25 @@ class CharModel:
 
 # ------------------------------------------------------------------ Kneser-Ney
 class KNModel(CharModel):
-    """Interpolated modified Kneser-Ney character n-gram, fitted when loaded."""
+    """Interpolated modified Kneser-Ney character n-gram (uctf.baselines), fitted when loaded."""
 
     def __init__(self, order: int = 7, text: str | None = None, chars=None, name=None, log=print):
+        from uctf.baselines import KneserNey
         self.n = order
         self.set_chars(chars or VOCAB)
         text = CORPUS.read_text(encoding="utf-8")[:1_000_000] if text is None else text
         self.name = name or f"Kneser-Ney {order}-gram ({len(text):,} chars)"
         t0 = time.time()
-        self.fit(self.encode(text))
+        self.kn = KneserNey(order, self.V).fit(self.encode(text))
         log(f"{self.name} fitted in {time.time() - t0:.0f}s")
         self.reset()
-
-    def fit(self, seq):
-        n = self.n
-        c = [defaultdict(lambda: defaultdict(int)) for _ in range(n + 1)]
-        for i in range(len(seq)):
-            for k in range(1, n + 1):
-                if i - k + 1 < 0:
-                    break
-                c[k][tuple(seq[i - k + 1:i])][seq[i]] += 1
-        cc = [defaultdict(lambda: defaultdict(int)) for _ in range(n + 1)]
-        for k in range(2, n + 1):
-            for ctx, d in c[k].items():
-                for w in d:
-                    cc[k - 1][ctx[1:]][w] += 1
-        self.c, self.cc, self.D = c, cc, []
-        for k in range(n + 1):
-            nr = np.zeros(5)
-            for d in (c[k] if k == n else cc[k]).values():
-                for v in d.values():
-                    if v <= 4:
-                        nr[v] += 1
-            Y = nr[1] / max(nr[1] + 2 * nr[2], 1)
-            self.D.append([0.0] + [max(min(r - (r + 1) * Y * nr[r + 1] / max(nr[r], 1), r), 0.0)
-                                   for r in (1, 2, 3)])
-
-    def _p(self, k, ctx, top):
-        if k == 0:
-            return np.full(self.V, 1.0 / self.V)
-        d = (self.c[k] if top else self.cc[k]).get(ctx[len(ctx) - (k - 1):] if k > 1 else ())
-        lower = self._p(k - 1, ctx, False)
-        if not d:
-            return lower
-        tot = sum(d.values()); D = self.D[k]; p = np.zeros(self.V); nr = [0, 0, 0, 0]
-        for w, v in d.items():
-            p[w] = max(v - D[min(v, 3)], 0) / tot; nr[min(v, 3)] += 1
-        return p + (D[1] * nr[1] + D[2] * nr[2] + D[3] * nr[3]) / tot * lower
 
     def reset(self):
         self.hist = []
 
     def feed(self, t):
         self.hist.append(int(t))
-        ctx = tuple(self.hist[-(self.n - 1):]) if self.n > 1 else ()
-        return np.log(np.maximum(self._p(min(self.n, len(ctx) + 1), ctx, True), 1e-12))
+        return self.kn.logprobs(self.hist)
 
 
 # ------------------------------------------------------------------ GRU
@@ -136,11 +99,8 @@ class GRUModel(CharModel):
 
 # ------------------------------------------------------------------ connectome
 def ctx_hash(hist, order, V, buckets):
-    """Hash of the last `order` characters (0 before the start), as in lm_mech.ctx_ids."""
-    h = 0
-    for lag in range(order - 1, -1, -1):
-        h = h * V + (hist[-1 - lag] if len(hist) > lag else 0)
-    return h % buckets
+    from uctf.readout import ctx_hash as h
+    return h(hist, order, V, buckets)
 
 
 class BrainModel(CharModel):

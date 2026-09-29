@@ -734,6 +734,30 @@ the predominantly depressing effect of DANs in the fly; location results were un
 depression-only rule, but the sign of stored changes is not interpretable. None of the results is a claim about memory in the
 fly.
 
+\paragraph*{Beyond this connectome}
+The simulation tools of this study were later generalised, at the author's
+proposal, into a Universal Connectome Training Framework (UCTF, in the
+repository). It was built by reorganising and debugging the project's existing
+code: the whole-CNS runtime, the population definitions (PNs, KCs, MBONs,
+DANs, MBON targets) and the degree-preserving wiring controls. Any connectome
+can then be described by a spec and tested in the companion report's
+language-model protocol \cite{lmcompanion}.
+
+The framework was checked on a second species, the whole \textit{C.~elegans}
+hermaphrodite \cite{cook2019}, with gap junctions and simplified transmitter
+signs. The worm showed the pattern the fly shows in that protocol:
+\begin{itemize}
+\item a fading memory of about two characters (four in the fly);
+\item a small gain over a context table and far behind a 5-gram;
+\item rewired copies at matched activity about as good as the real wiring.
+\end{itemize}
+
+This shows that the tools carry over between connectomes to some degree. It
+does not show that they are general: two species and one task only, a
+hand-chosen worm operating point, and simplified signs. The mushroom-body
+mechanisms reported here were not tested in another species; the worm has no
+mushroom body.
+
 % =====================================================================
 \section{Conclusion in plain terms}
 Think of the mushroom body as a filing system with many drawers. When the fly
@@ -776,7 +800,8 @@ the public repository.
 All scripts (\texttt{m1\_core.py} for the snapshot interface and one script
 per experiment), their JSON outputs and a result register that maps each number
 above to its output file are available at
-\url{https://github.com/LxCenady/Fly-Is-All-You-Need}.
+\url{https://github.com/LxCenady/Fly-Is-All-You-Need}. The generalised framework
+(UCTF) and its \textit{C.~elegans} example are in the \texttt{uctf/} folder.
 
 \begin{thebibliography}{99}
 \bibitem{hige2015} T. Hige, Y. Aso, M. N. Modi, G. M. Rubin, and G. C. Turner,
@@ -850,5 +875,8 @@ model,'' 2026. The language-model project from which the
 present study grew.
 \bibitem{olddraft} Earlier draft of this study (2026-09-20), superseded;
 see the correction register PAPER\_OVERTURN\_20260928.md.
+\bibitem{cook2019} S. J. Cook \textit{et al.}, ``Whole-animal connectomes of
+both \textit{Caenorhabditis elegans} sexes,'' \textit{Nature}, vol.~571,
+pp.~63--71, 2019.
 \end{thebibliography}
 \end{document}

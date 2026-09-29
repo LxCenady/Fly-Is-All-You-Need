@@ -15,6 +15,14 @@ fire while it writes, and compare it side by side with an n-gram model and a sma
 - **The fly model (GPF-1)** needs an NVIDIA GPU and [flybrain](https://github.com/alextitonis/fly.ai)
   (required dependency). See the [GPF README](playground/) for setup.
 
+## UCTF: bring your own connectome
+
+GPF's connectome models come from [UCTF](uctf/), the Universal Connectome Training Framework:
+import any wiring diagram, describe it in a JSON spec, and train and benchmark it against
+n-gram baselines and rewired copies of itself. It has been run on two species so far: the fly
+(MaleCNS v1.0) and the whole C. elegans worm (Cook et al. 2019). Both show the same pattern:
+a few characters of memory, far behind a 5-gram, and the real wiring is not special.
+
 ## The research behind it
 
 This is independent research (a high-school project) on a spiking model of the adult male
@@ -38,6 +46,7 @@ earlier plasticity results, and the corrections it forced, are documented in
 
 ```
 playground/       GPF (web UI, terminal UI, packaging)
+uctf/             UCTF, the connectome training framework (package, examples, tests)
 paper/            mechanism paper (PDF, LaTeX source, figures)
 paper_lm/         language-model report (PDF, LaTeX source, figures)
 mechanism/        experiment scripts; RESULTS_20260928.md = result register

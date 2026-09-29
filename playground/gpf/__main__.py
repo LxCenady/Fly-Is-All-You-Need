@@ -2,8 +2,8 @@
 python -m gpf --web      -> web UI
 python -m gpf --cli --model brain --prompt "ROMEO:\\n" --n 300 --temp 0.7
 python -m gpf train kn|gru|brain --data my.txt --name my-model   (see gpf/train.py)
-python -m gpf bench --substrate malecns-v1 --data my.txt           (see gpf/bench.py)
-python -m gpf import --neurons n.csv --edges e.csv --out DIR       (see gpf/connectome/importer.py)"""
+python -m gpf bench --substrate malecns-v1 --data my.txt           (UCTF: uctf/uctf/bench.py)
+python -m gpf import --neurons n.csv --edges e.csv --out DIR       (UCTF: uctf/uctf/importer.py)"""
 import argparse
 import sys
 
@@ -34,10 +34,10 @@ def run(argv):
         from .train import main as train_main
         train_main(argv[1:])
     elif argv[:1] == ["bench"]:
-        from .bench import main as bench_main
+        from uctf.bench import main as bench_main
         bench_main(argv[1:])
     elif argv[:1] == ["import"]:
-        from .connectome.importer import main as import_main
+        from uctf.importer import main as import_main
         import_main(argv[1:])
     elif "--web" in argv:
         from .web import main as web_main

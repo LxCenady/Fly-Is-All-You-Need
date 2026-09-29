@@ -1,6 +1,6 @@
 """A connectome as a language-model substrate: characters in, neuron features out.
 
-A spec (JSON; built-ins in gpf/connectome/specs/) says which connectome to load, how neurons
+A spec (JSON; built-ins in uctf/specs/) says which connectome to load, how neurons
 behave, which neurons receive the input and what is read out:
 
 {
@@ -40,10 +40,22 @@ from .data import Connectome, load
 from .select import Selector
 
 SPECS = Path(__file__).parent / "specs"
+# Bump whenever the simulation, the loaders or the controls change what features a spec produces:
+# cached features (uctf bench, gpf train --keep-features) are keyed on it.
+SIM_VERSION = 2
 
 
 def builtin_specs() -> list[str]:
     return sorted(p.stem for p in SPECS.glob("*.json"))
+
+
+def find_spec_file(name: str) -> Path | None:
+    """A spec of this name among UCTF's built-in specs and examples, if any."""
+    root = Path(__file__).resolve().parent
+    for p in [SPECS / f"{name}.json", *sorted((root.parent / "examples").glob(f"*/{name}.json"))]:
+        if name and p.exists():
+            return p
+    return None
 
 
 def load_spec(ref) -> dict:
@@ -64,17 +76,8 @@ def load_spec(ref) -> dict:
 
 
 def _xp(device: str):
-    if device in ("auto", "cuda"):
-        try:
-            import cupy
-            from ..brain import _patch_cupy_includes
-            _patch_cupy_includes()
-            if cupy.cuda.runtime.getDeviceCount() > 0:
-                return cupy
-        except Exception:                                   # noqa: BLE001
-            if device == "cuda":
-                raise
-    return np
+    from .gpu import array_module
+    return array_module(device)
 
 
 class LIFSubstrate:
@@ -88,7 +91,16 @@ class LIFSubstrate:
                  connectome: Connectome | None = None, log=print):
         spec = load_spec(spec)
         self.spec, self.control = spec, control
-        raw = connectome if connectome is not None else load(spec["connectome"])
+        src = spec["connectome"]
+        if connectome is None and src.get("loader", "folder") == "folder" and not Path(src["path"]).exists():
+            found = find_spec_file(spec.get("name", ""))          # the repository moved: use its own copy
+            moved = load_spec(found)["connectome"] if found else None
+            if not moved or not Path(moved["path"]).exists():
+                raise FileNotFoundError(f"connectome folder {src['path']} not found (spec {spec.get('name')}); "
+                                        "rebuild it with the example's prepare/import steps or fix the path")
+            src = dict(src, path=moved["path"])
+            log(f"connectome folder moved; using {src['path']}")
+        raw = connectome if connectome is not None else load(src)
         cut = spec["connectome"].get("cut_inputs_to")
         sel = Selector(raw, spec.get("populations"))
         cut_mask = sel.mask(cut) if cut else None

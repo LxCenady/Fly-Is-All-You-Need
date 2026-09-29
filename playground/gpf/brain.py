@@ -13,7 +13,6 @@ central traces (256) | mean central pre-reset voltage (256).
 from __future__ import annotations
 
 import os
-from pathlib import Path
 
 import numpy as np
 
@@ -23,32 +22,8 @@ PROTOCOL = dict(active=160, drive=1.5, gain=1.5, tonic=0.05, k=6, sustain=0.5,
 
 
 def _patch_cupy_includes() -> None:
-    """Some CuPy installs cannot find their own headers when NVRTC compiles a new kernel.
-    Add CuPy's include folders to every compilation (harmless where not needed)."""
-    try:
-        import cupy
-        import cupy.cuda.compiler as compiler
-    except Exception:
-        return
-    if getattr(compiler, "_gpf_include_patch", False):
-        return
-    inc = Path(cupy.__path__[0]) / "_core" / "include"
-    if not (inc / "cupy" / "complex.cuh").exists():
-        return
-    flags = [f"-I{inc}"] + [f"-I{p}" for p in (inc / "cupy" / "_cccl", inc / "cupy" / "_cccl" / "thrust",
-                                               inc / "cupy" / "_cccl" / "libcudacxx", inc / "cupy" / "_cccl" / "cub")
-                            if p.exists()]
-    original = compiler._compile_with_cache_cuda
-
-    def patched(source, options=(), *a, **kw):
-        opts = tuple(options)
-        for f in flags:
-            if f not in opts:
-                opts += (f,)
-        return original(source, opts, *a, **kw)
-
-    compiler._compile_with_cache_cuda = patched
-    compiler._gpf_include_patch = True
+    from uctf.gpu import patch_cupy_includes
+    patch_cupy_includes()
 
 
 def data_dir():
@@ -220,27 +195,22 @@ class FlyRuntime:
 
 
 # ------------------------------------------------------------------ substrates
-# A substrate turns one character into a feature vector by running a simulated nervous system.
-# It needs reset(), step_token(token) -> 1-D float32 features, and optionally map_payload(),
-# record_activity and last_activity for the web UI's brain view.  Models record the substrate
-# they were trained on (model.json: brain).  Two kinds:
-#   {"spec": {...}, "control": {...}}   any connectome described by a spec (gpf/connectome/):
-#                                       the general path; the spec is stored with the model
-#   {"substrate": "flybrain-malecns-v1", "pn_active": .., "drive_scale": ..}
-#                                       FlyRuntime above, which the bundled GPF-1 was trained
-#                                       with (same features as spec malecns-v1 to float32 rounding)
-LEGACY = {
-    "flybrain-malecns-v1": lambda vocab_size, spec: FlyRuntime(
-        vocab_size, {"active": spec["pn_active"], "drive": float(spec["drive_scale"]),
-                     "encoder_seed": spec.get("encoder_seed", PROTOCOL["encoder_seed"])}),
-}
+# Substrates are run through UCTF (uctf/run.py).  A brain spec with {"spec": ...} is any connectome
+# described by a UCTF spec; {"substrate": "flybrain-malecns-v1", ...} is FlyRuntime above, which the
+# bundled GPF-1 was trained with (the same features as UCTF's malecns-v1 spec to float32 rounding).
+def _legacy(vocab_size, spec, device="auto"):
+    return FlyRuntime(vocab_size, {"active": spec["pn_active"], "drive": float(spec["drive_scale"]),
+                                   "encoder_seed": spec.get("encoder_seed", PROTOCOL["encoder_seed"])})
 
 
-def make_substrate(vocab_size: int, spec: dict, device: str = "auto"):
-    if "spec" in spec:
-        from .connectome import LIFSubstrate
-        return LIFSubstrate(vocab_size, spec["spec"], spec.get("control"), device=device)
-    name = spec.get("substrate", "flybrain-malecns-v1")
-    if name not in LEGACY:
-        raise ValueError(f"unknown substrate {name!r}")
-    return LEGACY[name](vocab_size, spec)
+def make_substrate(vocab_size: int, spec: dict, device: str = "auto", log=print):
+    from uctf import run
+    return run.make_substrate(vocab_size, spec, device=device, log=log)
+
+
+def _register():
+    from uctf import run
+    run.register("flybrain-malecns-v1", _legacy)
+
+
+_register()

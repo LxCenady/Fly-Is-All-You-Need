@@ -29,12 +29,11 @@ import json
 import math
 import sys
 import time
-from collections import Counter
 from pathlib import Path
 
 import numpy as np
 
-from .models import GRUModel, KNModel, ctx_hash, models_dir
+from .models import GRUModel, models_dir
 
 DEFAULTS = {
     "common": {"train_chars": None, "val_chars": None, "offset": 0, "max_vocab": 256, "vocab": None, "seed": 0},
@@ -48,58 +47,30 @@ DEFAULTS = {
 LOG2 = math.log(2)
 
 
-# ------------------------------------------------------------------ data
+# ------------------------------------------------------------------ data (UCTF)
 def load_split(a):
-    """Read the file, pick the training and validation characters, build the character set."""
-    text = Path(a.data).read_text(encoding="utf-8", errors="replace").replace("\r\n", "\n")
-    text = text[a.offset:]
-    if a.train_chars is None:
-        n_val = a.val_chars or max(1000, min(len(text) // 10, 100_000))
-        n_tr = len(text) - n_val
-    else:
-        n_tr = a.train_chars
-        n_val = a.val_chars or max(1000, n_tr // 4 if a.kind == "brain" else n_tr // 10)
-    if n_tr < 1000 or n_tr + n_val > len(text):
-        sys.exit(f"not enough text: {len(text):,} characters after offset {a.offset}, "
-                 f"need {n_tr:,} for training + {n_val:,} for validation")
-    part = text[:n_tr + n_val]
-    freq = Counter(part)
-    if a.vocab:                                  # a fixed character set: vocab.json or any text file
-        src = Path(a.vocab).read_text(encoding="utf-8")
-        try:
-            chars = list(json.loads(src)["chars"])
-        except (ValueError, KeyError, TypeError):
-            chars = sorted(set(src))
-    else:
-        chars = sorted(c for c, _ in freq.most_common(a.max_vocab))
-    dropped = sum(v for c, v in freq.items() if c not in set(chars))
-    idx = {c: i for i, c in enumerate(chars)}
-    ids = np.asarray([idx[c] for c in part if c in idx], np.int64)
-    n_tr = n_tr - sum(1 for c in part[:n_tr] if c not in idx)
-    print(f"text: {len(part):,} characters ({n_tr:,} train, {len(ids) - n_tr:,} validation), "
-          f"{len(chars)} distinct" + (f"; {dropped:,} characters outside the character set dropped"
-                                      if dropped else ""), flush=True)
-    return part, chars, ids, n_tr
+    """The training part, the validation part after it, and the character set (uctf.text)."""
+    from uctf.text import load_split as split
+    try:
+        sp = split(a.data, a.train_chars, a.val_chars, a.offset, a.vocab, a.max_vocab,
+                   0.25 if a.kind == "brain" else 0.1)
+    except ValueError as e:
+        sys.exit(str(e))
+    print(f"text: {len(sp.part):,} characters ({sp.n_tr:,} train, {len(sp.ids) - sp.n_tr:,} validation), "
+          f"{len(sp.chars)} distinct" + (f"; {sp.dropped:,} characters outside the character set dropped"
+                                        if sp.dropped else ""), flush=True)
+    return sp.part, sp.chars, sp.ids, sp.n_tr
 
 
 def unigram_bpc(ids, n_tr, V):
-    p = (np.bincount(ids[:n_tr], minlength=V) + 1.0) / (n_tr + V)
-    return float(-np.log2(p[ids[n_tr:]]).mean())
+    from uctf.baselines import unigram_bpc as u
+    return u(ids, n_tr, V)
 
 
 def kn_bpc(order, chars, ids, n_tr, log=lambda m: None):
     """Validation BPC and accuracy of a Kneser-Ney model fitted on the training characters."""
-    text = "".join(chars[i] for i in ids[:n_tr])
-    m = KNModel(order, text, chars, log=log)
-    m.reset()
-    for t in ids[max(0, n_tr - order):n_tr]:       # context: the end of the training text
-        logits = m.feed(t)
-    lp, hit = 0.0, 0
-    for t in ids[n_tr:]:
-        lp += logits[t]; hit += int(np.argmax(logits) == t)
-        logits = m.feed(t)
-    n = len(ids) - n_tr
-    return -lp / n / LOG2, hit / n
+    from uctf.baselines import kn_bpc as k
+    return k(order, ids, n_tr, len(chars))
 
 
 def save(a, kind, chars, part, n_tr, metrics, extra):
@@ -221,153 +192,34 @@ def train_gru(a):
     report(a, metrics)
 
 
-# ------------------------------------------------------------------ connectome
-def fit_readout(X, cx, y, V, a, clip):
-    """Softmax readout: standardised brain features (clipped at +-clip) + a hashed context table
-    initialised from smoothed counts; Adam, minibatches of 1024.  A numpy port of lm_mech.fit
-    (mechanism/export_lm_model.py).  X may have zero columns (context table only)."""
-    n = len(y)
-    mu, sd = X.mean(0), X.std(0) + 1e-6
-    Z = ((X - mu) / sd).astype(np.float32)
-    if clip:
-        np.clip(Z, -clip, clip, out=Z)
-    W = np.zeros((X.shape[1], V), np.float32)
-    prior = (np.bincount(y, minlength=V) + 1) / (n + V)
-    b = np.log(prior).astype(np.float32)
-    C = np.zeros((a.buckets, V)); np.add.at(C, (cx, y), 1.0)
-    E = (np.log((C + 2.0 * prior) / (C.sum(1, keepdims=True) + 2.0)) - np.log(prior)).astype(np.float32)
-    params = [W, E, b]
-    m = [np.zeros_like(p) for p in params]; v = [np.zeros_like(p) for p in params]
-    rng = np.random.RandomState(a.seed); step = 0
-    for _ in range(a.epochs):
-        order = rng.permutation(n)
-        for lo in range(0, n, 1024):
-            idx = order[lo:lo + 1024]
-            s = b + E[cx[idx]] + Z[idx] @ W
-            s -= s.max(1, keepdims=True)
-            p = np.exp(s); p /= p.sum(1, keepdims=True)
-            p[np.arange(len(idx)), y[idx]] -= 1; p /= len(idx)
-            gE = np.zeros_like(E); np.add.at(gE, cx[idx], p)
-            grads = [Z[idx].T @ p + a.l2 * W, gE, p.sum(0)]
-            step += 1
-            for j, (P, G) in enumerate(zip(params, grads)):
-                m[j] = 0.9 * m[j] + 0.1 * G; v[j] = 0.999 * v[j] + 0.001 * G * G
-                P -= a.lr * (m[j] / (1 - 0.9 ** step)) / (np.sqrt(v[j] / (1 - 0.999 ** step)) + 1e-8)
-    return {"mu": mu.astype(np.float32), "sd": sd.astype(np.float32), "W": W, "E": E, "b": b, "clip": clip}
-
-
-def readout_scores(M, X, cx):
-    Z = (X - M["mu"]) / M["sd"]
-    if M["clip"]:
-        Z = np.clip(Z, -M["clip"], M["clip"])
-    return M["b"] + M["E"][cx] + Z @ M["W"]
-
-
-def score(s, y, T):
-    s = s / T
-    s = s - s.max(1, keepdims=True)
-    lp = s - np.log(np.exp(s).sum(1, keepdims=True))
-    return float((s.argmax(1) == y).mean()), float(-lp[np.arange(len(y)), y].mean() / LOG2)
-
-
-def fit_calibrated(X, cx, y, n_tr, V, a, clip):
-    """Temperature chosen on the last 10% of the training rows, then refit on all of them."""
-    cut = int(n_tr * 0.9)
-    M = fit_readout(X[:cut], cx[:cut], y[:cut], V, a, clip)
-    s = readout_scores(M, X[cut:n_tr], cx[cut:n_tr])
-    Ts = np.linspace(0.6, 2.0, 29)
-    T = float(Ts[int(np.argmin([score(s, y[cut:n_tr], t)[1] for t in Ts]))])
-    M = fit_readout(X[:n_tr], cx[:n_tr], y[:n_tr], V, a, clip)
-    acc, bpc = score(readout_scores(M, X[n_tr:], cx[n_tr:]), y[n_tr:], T)
-    return M, T, acc, bpc
-
-
-def set_path(d: dict, dotted: str, value):
-    keys = dotted.split(".")
-    for k in keys[:-1]:
-        d = d.setdefault(k, {})
-    d[keys[-1]] = value
-
-
+# ------------------------------------------------------------------ connectome (UCTF)
 def brain_spec(a):
-    """What the model is trained on.  A connectome spec (built-in name or JSON path, with
+    """What the model is trained on: a UCTF connectome spec (built-in name or JSON path, with
     --pn-active/--drive/--spec-set overrides and an optional rewiring control), or the legacy
-    GPF-1 runtime."""
+    GPF-1 runtime (flybrain-malecns-v1)."""
     if a.substrate == "flybrain-malecns-v1":
         return {"substrate": a.substrate, "pn_active": a.pn_active or 160, "drive_scale": a.drive or 1.5,
                 "encoder_seed": 3}
-    from .connectome import load_spec
-    spec = json.loads(json.dumps(load_spec(a.substrate)))               # a private copy
-    if a.pn_active:
-        spec["input"]["active"] = a.pn_active
-    if a.drive:
-        spec["input"]["drive"] = a.drive
-    for item in a.spec_set or []:
-        key, _, val = item.partition("=")
-        try:
-            val = json.loads(val)
-        except ValueError:
-            pass
-        set_path(spec, key.strip(), val)
-    control = None
-    if a.control and a.control != "none":
-        control = {"rewire": {"rewire-full": "full", "rewire-class": "class"}[a.control], "seed": a.control_seed}
-    return {"spec": spec, "control": control, "substrate": spec.get("name", "custom")}
-
-
-def feature_key(ids, V, bspec) -> str:
-    """Identifies simulated features: the text, the character set and everything in the substrate
-    spec that changes the simulation (not its description or brain-view settings)."""
-    b = json.loads(json.dumps(bspec))
-    for k in ("view", "description"):
-        b.get("spec", {}).pop(k, None)
-    return hashlib.sha256(ids.tobytes() + json.dumps([V, b], sort_keys=True).encode()).hexdigest()
+    from uctf.run import brain_spec as bs
+    return bs(a.substrate, a.pn_active, a.drive, a.spec_set, a.control, a.control_seed)
 
 
 def brain_features(ids, V, a, cache: Path | None):
     """Run the frozen connectome over the text (one continuous stream) and collect the
     features of every character.  Reuses a matching cache from an earlier --keep-features run."""
+    from uctf.run import feature_key, simulate
+    from . import brain  # noqa: F401  (registers the legacy GPF-1 runtime with UCTF)
     key = feature_key(ids, V, brain_spec(a))
     if cache is not None and cache.exists():
         z = np.load(cache)
         if str(z["key"]) == key:
             print("reusing the simulated features from features.npz", flush=True)
             return z["X"].astype(np.float32), key
-    return simulate(ids, V, brain_spec(a), a.device or "auto"), key
-
-
-def log_flush(msg):
-    print(msg, flush=True)
-
-
-def simulate(ids, V, bspec: dict, device="auto", log=log_flush, with_dims=False):
-    """Run the substrate over the text as one continuous stream; row i = features after
-    character i (used to predict character i+1).  with_dims: also return the size of each
-    readout group, in feature order."""
-    from . import brain as fly
-    ctl = bspec.get("control")
-    log(f"building the substrate ({bspec.get('substrate')}" + (f", {ctl['rewire']} rewiring, seed {ctl['seed']}"
-                                                              if ctl else "") + ")...")
     try:
-        rt = fly.make_substrate(V, bspec, device=device)
+        return simulate(ids, V, brain_spec(a), a.device or "auto"), key
     except ImportError as e:
         sys.exit(f"this substrate needs a package that is missing ({e}).  The MaleCNS connectome needs\n"
                  "  pip install \"flybrain[gpu]==0.1.0\"   (and an NVIDIA GPU)")
-    rt.reset()
-    n = len(ids) - 1
-    X = None; t0 = time.time()
-    for i in range(n):
-        x = rt.step_token(int(ids[i]))
-        if X is None:
-            X = np.zeros((n, len(x)), np.float32)
-        X[i] = x
-        if (i + 1) % 1000 == 0 or i + 1 == n:
-            r = (i + 1) / (time.time() - t0)
-            log(f"  simulated {i + 1:,}/{n:,} characters  ({r:.0f}/s, {(n - i - 1) / r / 60:.1f} min left)")
-    if with_dims:
-        dims = getattr(rt, "readout_sizes", None) or {"features": X.shape[1]}
-        return X, dict(dims)
-    return X
 
 
 def train_brain(a):
@@ -379,14 +231,15 @@ def train_brain(a):
     cache = target / "features.npz"
     X, key = brain_features(ids, V, a, cache if a.keep_features or cache.exists() else None)
     y = ids[1:]
-    cx = np.asarray([ctx_hash(list(ids[max(0, i - a.context_order + 1):i + 1]), a.context_order, V, a.buckets)
-                     for i in range(len(ids) - 1)], np.int64)
+    from uctf.readout import ReadoutConfig, context_ids, fit_calibrated, readout_scores, score
+    cfg = ReadoutConfig(a.l2, a.epochs, a.lr, a.buckets, a.context_order, a.seed)
+    cx = context_ids(ids, a.context_order, V, a.buckets)
     ntr = n_tr - 1                                   # rows: features at character i predict i+1
     print("fitting the readout (CPU)...", flush=True)
-    M, T, acc, bpc = fit_calibrated(X, cx, y, ntr, V, a, a.clip or None)
+    M, T, acc, bpc = fit_calibrated(X, cx, y, ntr, V, cfg, a.clip or None)
     metrics = {"val_bpc": bpc, "val_acc": acc}
     print("fitting the same readout without the brain (context table only) for comparison...", flush=True)
-    metrics["context_only_val_bpc"] = fit_calibrated(X[:, :0], cx, y, ntr, V, a, None)[3]
+    metrics["context_only_val_bpc"] = fit_calibrated(X[:, :0], cx, y, ntr, V, cfg, None)[3]
     metrics["unigram_val_bpc"] = unigram_bpc(ids, n_tr, V)
     if not a.no_baseline:
         metrics["kn5_val_bpc"] = kn_bpc(5, chars, ids, n_tr)[0]
@@ -398,7 +251,7 @@ def train_brain(a):
                      else ["kc", "mbon_v", "mbon_spk", "central"]),
         "brain": dict(brain_spec(a), mode="frozen"),
         "readout": {"l2": a.l2, "epochs": a.epochs, "lr": a.lr, "context_order": a.context_order,
-                    "buckets": a.buckets, "E_dtype": "float16", "fit": "gpf/train.py fit_readout (CPU)"}})
+                    "buckets": a.buckets, "E_dtype": "float16", "fit": "uctf.readout.fit_readout (CPU)"}})
     np.savez_compressed(out / "readout.npz", W=M["W"], E=M["E"].astype(np.float16), b=M["b"],
                         mu=M["mu"], sd=M["sd"])
     if a.keep_features:

@@ -1,6 +1,6 @@
 """Turn a neuron table and an edge list into a connectome folder that GPF can simulate.
 
-    python -m gpf import --neurons neurons.csv --edges edges.csv --out my-connectome \\
+    python -m uctf import --neurons neurons.csv --edges edges.csv --out my-connectome \\
         [--id-col id --pre-col pre --post-col post --weight-col weight] \\
         [--sign-col nt --inhibitory gaba,glutamate,histamine] [--no-normalise]
 
@@ -9,7 +9,7 @@ side, ...); x, y, z columns (optional) give positions for the brain view.  edges
 connection (pre id, post id, synapse count).  Weights are synapse counts, negative when the
 presynaptic neuron's sign column names an inhibitory transmitter, and each neuron's inputs are
 divided by its total absolute input (at least 1), flybrain's recipe for MaleCNS.  Then write a
-spec (see gpf/connectome/specs/ and examples/) that points at the folder.
+spec (see uctf/specs/ and ../examples/) that points at the folder.
 """
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ from .data import import_edges
 
 
 def main(argv):
-    ap = argparse.ArgumentParser(prog="gpf import", description=__doc__.split("\n\n")[0],
+    ap = argparse.ArgumentParser(prog="uctf import", description=__doc__.split("\n\n")[0],
                                  formatter_class=argparse.RawDescriptionHelpFormatter, epilog=__doc__)
     ap.add_argument("--neurons", required=True)
     ap.add_argument("--edges", required=True)

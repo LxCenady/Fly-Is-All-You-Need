@@ -7,8 +7,8 @@ outputs/
 legacy/
 
 # generated connectome data (rebuild with the example scripts)
-playground/examples/*/raw/
-playground/examples/*/neurons.csv
-playground/examples/*/edges.csv
-playground/examples/celegans/cook2019/
-playground/examples/toy_connectome/toy/
+uctf/examples/*/raw/
+uctf/examples/*/neurons.csv
+uctf/examples/*/edges.csv
+uctf/examples/celegans/cook2019/
+uctf/examples/toy_connectome/toy/

@@ -1,12 +1,12 @@
-"""C. elegans hermaphrodite connectome (Cook et al. 2019, Nature 571:63-71) for GPF.
+"""C. elegans hermaphrodite connectome (Cook et al. 2019, Nature 571:63-71) for UCTF.
 
 Downloads two small files from OpenWorm's ConnectomeToolbox (MIT; ~320 KB) unless present,
-and writes neurons.csv and edges.csv in GPF's import format:
+and writes neurons.csv and edges.csv in UCTF's import format:
 
     python prepare_cook2019.py
-    python -m gpf import --neurons neurons.csv --edges edges.csv --out cook2019 \\
+    python -m uctf import --neurons neurons.csv --edges edges.csv --out cook2019 \\
         --sign-col nt --inhibitory gaba --type-col type
-    python -m gpf bench --substrate celegans-cook2019.json --data <text> ...
+    python -m uctf bench --substrate celegans-cook2019.json --data <text> ...
 
 Cells: every cell in the edge list (neurons, muscles and a few other cells), with a coarse class
 (sensory, interneuron, motor, pharynx, muscle, other) from the cell table's "Type".  Signs: the

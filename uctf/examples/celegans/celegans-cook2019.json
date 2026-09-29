@@ -1,6 +1,6 @@
 {
  "name": "celegans-cook2019",
- "description": "C. elegans hermaphrodite, whole animal (Cook et al. 2019): 300 neurons, 133 muscles, chemical synapses and gap junctions. Input to sensory neurons; readout from all neurons. Operating point chosen by hand (see README).",
+ "description": "C. elegans hermaphrodite, whole animal (Cook et al. 2019): 300 neurons, 133 muscles, chemical synapses and gap junctions. Input to sensory neurons; readout from all other neurons (not the driven sensory neurons: the fly's readout also excludes its input neurons). Operating point chosen by hand (see README).",
  "connectome": {"loader": "folder", "path": "cook2019"},
  "populations": {
   "SENSORY": {"col": "class", "equals": "sensory"},
@@ -8,15 +8,15 @@
   "MOTOR": {"col": "class", "equals": "motor"},
   "PHARYNX": {"col": "class", "equals": "pharynx"},
   "MUSCLE": {"col": "class", "equals": "muscle"},
-  "NEURONS": {"or": ["SENSORY", "INTER", "MOTOR", "PHARYNX", {"col": "cell_type", "in": ["RIPL", "RIPR"]}]}
+  "READOUT": {"or": ["INTER", "MOTOR", "PHARYNX", {"col": "cell_type", "in": ["RIPL", "RIPR"]}]}
  },
  "neuron": {"dt": 0.02, "tau": 0.1, "threshold": 1.0, "reset": 0.0, "gain": 0.9, "tonic": 0.05,
             "gap_gain": 0.5, "noise_hz": 0.0, "seed": 20260920},
  "input": {"population": "SENSORY", "active": 20, "drive": 1.5, "steps": 6, "sustain": 0.5, "code_seed": 3},
  "readout": [
-  {"name": "spikes", "population": "NEURONS", "feature": "counts"},
-  {"name": "voltage", "population": "NEURONS", "feature": "voltage"},
-  {"name": "trace", "population": "NEURONS", "feature": "trace", "tau": 0.1}
+  {"name": "spikes", "population": "READOUT", "feature": "counts"},
+  {"name": "voltage", "population": "READOUT", "feature": "voltage"},
+  {"name": "trace", "population": "READOUT", "feature": "trace", "tau": 0.1}
  ],
  "classes": {"populations": ["SENSORY", "INTER", "MOTOR", "PHARYNX", "MUSCLE"], "else_col": "class"},
  "view": {
