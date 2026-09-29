@@ -18,7 +18,6 @@ Results: <out>/report.json and <out>/report.md; simulated features are cached in
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import time
 from pathlib import Path
@@ -91,7 +90,7 @@ def main(argv):
     for label, control, seed in variants:
         a.control, a.control_seed = control, seed
         bspec = T.brain_spec(a)
-        key = hashlib.sha256(ids.tobytes() + json.dumps([V, bspec]).encode()).hexdigest()[:16]
+        key = T.feature_key(ids, V, bspec)[:16]
         cache = out / f"features_{key}.npy"
         t0 = time.time()
         dims_file = out / f"features_{key}.json"

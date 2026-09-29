@@ -315,10 +315,19 @@ def brain_spec(a):
     return {"spec": spec, "control": control, "substrate": spec.get("name", "custom")}
 
 
+def feature_key(ids, V, bspec) -> str:
+    """Identifies simulated features: the text, the character set and everything in the substrate
+    spec that changes the simulation (not its description or brain-view settings)."""
+    b = json.loads(json.dumps(bspec))
+    for k in ("view", "description"):
+        b.get("spec", {}).pop(k, None)
+    return hashlib.sha256(ids.tobytes() + json.dumps([V, b], sort_keys=True).encode()).hexdigest()
+
+
 def brain_features(ids, V, a, cache: Path | None):
     """Run the frozen connectome over the text (one continuous stream) and collect the
     features of every character.  Reuses a matching cache from an earlier --keep-features run."""
-    key = hashlib.sha256(ids.tobytes() + json.dumps([V, brain_spec(a)]).encode()).hexdigest()
+    key = feature_key(ids, V, brain_spec(a))
     if cache is not None and cache.exists():
         z = np.load(cache)
         if str(z["key"]) == key:
