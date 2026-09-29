@@ -103,6 +103,13 @@ def build(args, condition="intact"):
     p = st["plastic"]
     live = p.xp.asnumpy(st["brain"]._W.indices[p.edge_pos_gpu]).astype(np.int64)
     assert np.array_equal(live, p.edge_pre_ids), "KC->MBON identity drift"
+    # The pre-fix bug struck at the first GPU sparse product (cuSPARSE re-sorted an unsorted CSR
+    # in place), after the check above.  Do one product now and check again.
+    _ = st["brain"].synaptic_input(st["brain"].fired)
+    p.xp.cuda.Device().synchronize()
+    live = p.xp.asnumpy(st["brain"]._W.indices[p.edge_pos_gpu]).astype(np.int64)
+    assert np.array_equal(live, p.edge_pre_ids), "KC->MBON identity changed at the first SpMV (unfixed flybrain?)"
+    assert bool(st["brain"]._W.has_sorted_indices), "GPU matrix not canonical (use flybrain 0.1.0.post1)"
     if os.environ.get("MB_LESION"):
         st["_lesion"] = _apl_lesion(st, os.environ["MB_LESION"])
     st["_other_mask"] = _other_positions(st)
