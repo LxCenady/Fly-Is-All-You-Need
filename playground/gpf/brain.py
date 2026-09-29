@@ -223,18 +223,24 @@ class FlyRuntime:
 # A substrate turns one character into a feature vector by running a simulated nervous system.
 # It needs reset(), step_token(token) -> 1-D float32 features, and optionally map_payload(),
 # record_activity and last_activity for the web UI's brain view.  Models record the substrate
-# they were trained on (model.json: brain.substrate); a new connectome or simulator is added
-# by registering one more factory here.
-SUBSTRATES = {
+# they were trained on (model.json: brain).  Two kinds:
+#   {"spec": {...}, "control": {...}}   any connectome described by a spec (gpf/connectome/):
+#                                       the general path; the spec is stored with the model
+#   {"substrate": "flybrain-malecns-v1", "pn_active": .., "drive_scale": ..}
+#                                       FlyRuntime above, which the bundled GPF-1 was trained
+#                                       with (same features as spec malecns-v1 to float32 rounding)
+LEGACY = {
     "flybrain-malecns-v1": lambda vocab_size, spec: FlyRuntime(
         vocab_size, {"active": spec["pn_active"], "drive": float(spec["drive_scale"]),
                      "encoder_seed": spec.get("encoder_seed", PROTOCOL["encoder_seed"])}),
 }
-DEFAULT_SUBSTRATE = "flybrain-malecns-v1"
 
 
-def make_substrate(vocab_size: int, spec: dict):
-    name = spec.get("substrate", DEFAULT_SUBSTRATE)
-    if name not in SUBSTRATES:
-        raise ValueError(f"unknown substrate {name!r}; known: {', '.join(SUBSTRATES)}")
-    return SUBSTRATES[name](vocab_size, spec)
+def make_substrate(vocab_size: int, spec: dict, device: str = "auto"):
+    if "spec" in spec:
+        from .connectome import LIFSubstrate
+        return LIFSubstrate(vocab_size, spec["spec"], spec.get("control"), device=device)
+    name = spec.get("substrate", "flybrain-malecns-v1")
+    if name not in LEGACY:
+        raise ValueError(f"unknown substrate {name!r}")
+    return LEGACY[name](vocab_size, spec)

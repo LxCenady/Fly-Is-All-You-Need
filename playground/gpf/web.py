@@ -113,9 +113,9 @@ class Handler(BaseHTTPRequestHandler):
                     model.record_activity(watch)
                 if watch:
                     if need_map:
-                        if "map" not in _cache:
-                            _cache["map"] = model.map_payload()
-                        emit({"brainmap": _cache["map"]})
+                        if ("map", key) not in _cache:              # one map per connectome model
+                            _cache[("map", key)] = model.map_payload()
+                        emit({"brainmap": _cache[("map", key)]})
 
                     def on_feed(c, phase):
                         a = model.activity()

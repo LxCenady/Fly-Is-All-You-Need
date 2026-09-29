@@ -2,7 +2,7 @@
 
     python -m gpf train kn    --data my.txt --name my-ngram  [--order 5]
     python -m gpf train gru   --data my.txt --name my-gru    [--hidden 256 --max-steps 20000]
-    python -m gpf train brain --data my.txt --name my-fly    [--pn-active 160 --train-chars 20000]
+    python -m gpf train brain --data my.txt --name my-fly    [--substrate malecns-v1 --train-chars 20000]
 
 The text is split into a training part and a validation part (the characters that follow it).
 The model is saved to ~/.gpf/models/<name>/ (or $GPF_MODELS/<name>/) and appears in the web UI,
@@ -11,11 +11,13 @@ the terminal UI and --cli as "user:<name>".  Every run prints validation bits pe
 
   kn     Kneser-Ney character n-gram.  numpy only; seconds to minutes.
   gru    1-layer GRU.  Needs torch (uses the GPU if torch sees one).
-  brain  The fly connectome (GPF-1): the frozen MaleCNS v1.0 simulation turns each character
-         into ~4,800 neuron features; only a linear readout (plus a hashed 3-character context
-         table) is trained.  Needs flybrain with GPU support and an NVIDIA GPU; about 40
-         characters per second, so 25k characters take ~10 minutes.  This is the recipe of
-         the shipped GPF-1 model (paper_lm/, Section VI).
+  brain  A connectome as a frozen reservoir: a simulated nervous system turns each character
+         into neuron features; only a linear readout (plus a hashed 3-character context table)
+         is trained.  --substrate picks the connectome spec (gpf/connectome/specs/ or your own
+         JSON); the default, malecns-v1, is the whole fly CNS with GPF-1's recipe (paper_lm/,
+         Section VI; flybrain + NVIDIA GPU, ~40-60 characters/s).  --control rewire-full or
+         rewire-class trains on a degree-preserving rewired copy instead: the null model that
+         asks whether the real wiring matters.  For the whole comparison use  python -m gpf bench.
 
 Options can also come from a JSON file: --config params.json (command-line flags win).
 """
@@ -39,7 +41,8 @@ DEFAULTS = {
     "kn": {"order": 5},
     "gru": {"embed": 32, "hidden": 256, "seq": 100, "batch": 32, "lr": 3e-3, "max_steps": 20000,
             "eval_every": 100, "patience": 8, "device": "auto"},
-    "brain": {"train_chars": 20000, "substrate": "flybrain-malecns-v1", "pn_active": 160, "drive": 1.5, "l2": 1e-2, "epochs": 15, "lr": 0.01, "context_order": 3,
+    "brain": {"train_chars": 20000, "substrate": "malecns-v1", "pn_active": None, "drive": None,
+              "control": "none", "control_seed": 0, "spec_set": None, "device": "auto", "l2": 1e-2, "epochs": 15, "lr": 0.01, "context_order": 3,
               "buckets": 32768, "clip": 3.0, "keep_features": False},
 }
 LOG2 = math.log(2)
@@ -279,8 +282,37 @@ def fit_calibrated(X, cx, y, n_tr, V, a, clip):
     return M, T, acc, bpc
 
 
+def set_path(d: dict, dotted: str, value):
+    keys = dotted.split(".")
+    for k in keys[:-1]:
+        d = d.setdefault(k, {})
+    d[keys[-1]] = value
+
+
 def brain_spec(a):
-    return {"substrate": a.substrate, "pn_active": a.pn_active, "drive_scale": a.drive, "encoder_seed": 3}
+    """What the model is trained on.  A connectome spec (built-in name or JSON path, with
+    --pn-active/--drive/--spec-set overrides and an optional rewiring control), or the legacy
+    GPF-1 runtime."""
+    if a.substrate == "flybrain-malecns-v1":
+        return {"substrate": a.substrate, "pn_active": a.pn_active or 160, "drive_scale": a.drive or 1.5,
+                "encoder_seed": 3}
+    from .connectome import load_spec
+    spec = json.loads(json.dumps(load_spec(a.substrate)))               # a private copy
+    if a.pn_active:
+        spec["input"]["active"] = a.pn_active
+    if a.drive:
+        spec["input"]["drive"] = a.drive
+    for item in a.spec_set or []:
+        key, _, val = item.partition("=")
+        try:
+            val = json.loads(val)
+        except ValueError:
+            pass
+        set_path(spec, key.strip(), val)
+    control = None
+    if a.control and a.control != "none":
+        control = {"rewire": {"rewire-full": "full", "rewire-class": "class"}[a.control], "seed": a.control_seed}
+    return {"spec": spec, "control": control, "substrate": spec.get("name", "custom")}
 
 
 def brain_features(ids, V, a, cache: Path | None):
@@ -292,13 +324,26 @@ def brain_features(ids, V, a, cache: Path | None):
         if str(z["key"]) == key:
             print("reusing the simulated features from features.npz", flush=True)
             return z["X"].astype(np.float32), key
+    return simulate(ids, V, brain_spec(a), a.device or "auto"), key
+
+
+def log_flush(msg):
+    print(msg, flush=True)
+
+
+def simulate(ids, V, bspec: dict, device="auto", log=log_flush, with_dims=False):
+    """Run the substrate over the text as one continuous stream; row i = features after
+    character i (used to predict character i+1).  with_dims: also return the size of each
+    readout group, in feature order."""
     from . import brain as fly
-    if not fly.available():
-        sys.exit("training on the connectome needs flybrain with GPU support and an NVIDIA GPU:\n"
-                 "  pip install \"flybrain[gpu]==0.1.0\"")
-    print("building the connectome simulation (166,700 neurons; the first run downloads ~260 MB)...",
-          flush=True)
-    rt = fly.make_substrate(V, brain_spec(a))
+    ctl = bspec.get("control")
+    log(f"building the substrate ({bspec.get('substrate')}" + (f", {ctl['rewire']} rewiring, seed {ctl['seed']}"
+                                                              if ctl else "") + ")...")
+    try:
+        rt = fly.make_substrate(V, bspec, device=device)
+    except ImportError as e:
+        sys.exit(f"this substrate needs a package that is missing ({e}).  The MaleCNS connectome needs\n"
+                 "  pip install \"flybrain[gpu]==0.1.0\"   (and an NVIDIA GPU)")
     rt.reset()
     n = len(ids) - 1
     X = None; t0 = time.time()
@@ -309,16 +354,16 @@ def brain_features(ids, V, a, cache: Path | None):
         X[i] = x
         if (i + 1) % 1000 == 0 or i + 1 == n:
             r = (i + 1) / (time.time() - t0)
-            print(f"  simulated {i + 1:,}/{n:,} characters  ({r:.0f}/s, {(n - i - 1) / r / 60:.1f} min left)",
-                  flush=True)
-    return X, key
+            log(f"  simulated {i + 1:,}/{n:,} characters  ({r:.0f}/s, {(n - i - 1) / r / 60:.1f} min left)")
+    if with_dims:
+        dims = getattr(rt, "readout_sizes", None) or {"features": X.shape[1]}
+        return X, dict(dims)
+    return X
 
 
 def train_brain(a):
     part, chars, ids, n_tr = load_split(a)
     V = len(chars)
-    print(f"the connectome runs at about 40 characters per second: ~{len(ids) / 40 / 60:.0f} minutes "
-          f"of simulation", flush=True)
     target = Path(a.models_dir or models_dir()) / a.name
     if target.exists() and not a.overwrite:
         sys.exit(f"{target} exists; pick another --name or add --overwrite")
@@ -340,9 +385,9 @@ def train_brain(a):
     metrics["train_acc"] = tr_acc
     out, meta = save(a, "brain", chars, part, n_tr, metrics, {
         "temperature": T, "clip": a.clip or None, "val_bpc": bpc, "val_acc": acc,
-        "features": ["kc", "mbon_v", "mbon_spk", "central"],
-        "brain": dict(brain_spec(a), code="random", mode="frozen",
-                      simulator="flybrain LIF, MaleCNS v1.0, gpf/brain.py"),
+        "features": ([r["name"] for r in brain_spec(a)["spec"]["readout"]] if a.substrate != "flybrain-malecns-v1"
+                     else ["kc", "mbon_v", "mbon_spk", "central"]),
+        "brain": dict(brain_spec(a), mode="frozen"),
         "readout": {"l2": a.l2, "epochs": a.epochs, "lr": a.lr, "context_order": a.context_order,
                     "buckets": a.buckets, "E_dtype": "float16", "fit": "gpf/train.py fit_readout (CPU)"}})
     np.savez_compressed(out / "readout.npz", W=M["W"], E=M["E"].astype(np.float16), b=M["b"],
@@ -386,10 +431,16 @@ def parser():
     g.add_argument("--lr", type=float, help="learning rate (gru 3e-3, brain readout 0.01)")
     g.add_argument("--device", help="auto, cpu or cuda")
     g = ap.add_argument_group("brain")
-    g.add_argument("--substrate", help="simulated nervous system (flybrain-malecns-v1; see gpf/brain.py)")
-    g.add_argument("--pn-active", type=int, help="projection neurons driven per character (160; "
-                                                 "the sparse regime is 160-192 of 675)")
-    g.add_argument("--drive", type=float, help="input drive scale (1.5)")
+    g.add_argument("--substrate", help="connectome spec: a built-in name (malecns-v1) or a JSON file; "
+                                       "see gpf/connectome/ (flybrain-malecns-v1 = the legacy GPF-1 runtime)")
+    g.add_argument("--spec-set", action="append", metavar="KEY=VALUE",
+                   help="override one spec entry, e.g. --spec-set neuron.gain=1.8 (repeatable)")
+    g.add_argument("--control", choices=["none", "rewire-full", "rewire-class"],
+                   help="train on a degree-preserving rewired copy of the connectome instead (null model)")
+    g.add_argument("--control-seed", type=int, help="seed of the rewiring (0)")
+    g.add_argument("--pn-active", type=int, help="input neurons driven per character (spec default; "
+                                                 "MaleCNS: 160 of 675 projection neurons)")
+    g.add_argument("--drive", type=float, help="input drive (spec default; MaleCNS 1.5)")
     g.add_argument("--l2", type=float, help="readout L2 penalty (0.01)")
     g.add_argument("--epochs", type=int, help="readout epochs (15)")
     g.add_argument("--context-order", type=int, help="characters hashed into the context table (3; 0 = none)")

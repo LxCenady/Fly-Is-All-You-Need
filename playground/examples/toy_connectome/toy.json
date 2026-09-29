@@ -1,0 +1,31 @@
+{
+ "name": "toy",
+ "description": "A made-up 1,200-neuron network (make_toy.py) to show the format; not biological.",
+ "connectome": {"loader": "folder", "path": "toy"},
+ "populations": {
+  "IN": {"col": "cell_type", "equals": "IN"},
+  "EXP": {"col": "cell_type", "equals": "EXP"},
+  "OUT": {"col": "cell_type", "equals": "OUT"},
+  "HUB": {"col": "cell_type", "equals": "HUB"}
+ },
+ "neuron": {"dt": 0.02, "tau": 0.1, "threshold": 1.0, "reset": 0.0, "gain": 1.5, "tonic": 0.05, "seed": 0},
+ "input": {"population": "IN", "active": 20, "drive": 1.5, "steps": 6, "sustain": 0.5, "code_seed": 3},
+ "readout": [
+  {"name": "exp", "population": "EXP", "feature": "counts"},
+  {"name": "out_v", "population": "OUT", "feature": "voltage"},
+  {"name": "hub_trace", "population": "HUB", "feature": "trace", "tau": 0.1}
+ ],
+ "classes": {"populations": ["IN", "EXP", "OUT", "HUB"], "else_col": "cell_type"},
+ "view": {
+  "project": ["x", "z"],
+  "title": "Inside the toy network",
+  "caption": "Each letter drives its own set of input cells; the expansion layer holds a short trace of recent letters.",
+  "credit": "A made-up network from examples/toy_connectome; not biological.",
+  "groups": [
+   {"name": "IN", "population": "IN", "color": "#22d3ee", "text": "input"},
+   {"name": "EXP", "population": "EXP", "color": "#facc15", "text": "expansion"},
+   {"name": "OUT", "population": "OUT", "color": "#4ade80", "text": "output"}
+  ],
+  "labels": [{"text": "expansion layer", "population": "EXP", "half": "both"}]
+ }
+}

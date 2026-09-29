@@ -165,17 +165,17 @@ header .sub { color: var(--muted); font-size: 13px; }
 
 <section id="brainpane" hidden>
   <div>
-    <div class="bp-title">Inside the fly</div>
-    <div class="bp-sub">Every dot is one of 166,700 neurons. Each frame is one character: 120 ms of simulated time.</div>
+    <div class="bp-title" id="bptitle">Inside the fly</div>
+    <div class="bp-sub" id="bpsub">Every dot is one of 166,700 neurons. Each frame is one character: 120 ms of simulated time.</div>
   </div>
   <div class="bp-canvas"><canvas id="bc"></canvas>
     <div class="bp-empty" id="bpempty">Send a prompt to watch GPF-1's neurons fire.</div></div>
   <div class="bp-now" id="bpnow"></div>
   <div class="bp-stats" id="bpstats"></div>
-  <div class="bp-note">Each letter switches on its own set of projection neurons (PN). They excite a few
+  <div class="bp-note" id="bpnote">Each letter switches on its own set of projection neurons (PN). They excite a few
     Kenyon cells (KC), the fly's sparse memory code. The memory's output neurons (MBON) rarely fire,
     which is why the fly remembers only the last few letters.</div>
-  <div class="bp-credit">Brain view drawn after the live dashboard in
+  <div class="bp-credit" id="bpcredit">Brain view drawn after the live dashboard in
     <a href="https://github.com/alextitonis/fly.ai" target="_blank" rel="noopener" style="color:inherit">fly.ai</a>
     (flybrain, MIT). Soma positions from MaleCNS v1.0.</div>
 </section>
@@ -227,10 +227,13 @@ function renderHeader() {
 }
 
 /* ---- brain view: after the fly.ai dashboard (faint dots for every neuron, amber glow for spikes) ---- */
-const GCOL = ["#f59e0b", "#22d3ee", "#facc15", "#4ade80", "#e879f9"];   // other, PN, KC, MBON, DAN
-const GROW = [["PN", 1, "projection neurons"], ["KC", 2, "Kenyon cells"], ["MBON", 3, "output neurons"],
+let GCOL = ["#f59e0b", "#22d3ee", "#facc15", "#4ade80", "#e879f9"];     // defaults (MaleCNS): other, PN, KC, MBON, DAN
+let GROW = [["PN", 1, "projection neurons"], ["KC", 2, "Kenyon cells"], ["MBON", 3, "output neurons"],
               ["DAN", 4, "dopamine neurons"], ["other", 0, "everything else"]];
-let bmap = null, paneOpen = true;
+const DEF_GCOL = GCOL, DEF_GROW = GROW;
+const DEF_TEXT = {};
+for (const id of ["bptitle", "bpnote", "bpcredit"]) DEF_TEXT[id] = document.getElementById(id).innerHTML;
+let bmap = null, bmapKey = null, paneOpen = true;
 const bc = $("#bc"), base = document.createElement("canvas"), glow = document.createElement("canvas");
 
 function b64bytes(s) { const bin = atob(s), a = new Uint8Array(bin.length);
@@ -247,6 +250,17 @@ function updatePane() {
 function setupMap(m) {
   bmap = { n: m.n, xy: new Uint16Array(b64bytes(m.xy).buffer), g: b64bytes(m.group), w: m.w, h: m.h,
            scale: m.scale, labels: m.labels, totals: m.totals };
+  bmapKey = current; GCOL = DEF_GCOL; GROW = DEF_GROW;
+  for (const [id, k] of [["bptitle", "title"], ["bpnote", "caption"], ["bpcredit", "credit"]]) {
+    if (m[k] === undefined) $("#" + id).innerHTML = DEF_TEXT[id]; else $("#" + id).textContent = m[k];
+  }
+  if (m.colors && m.groups) {                                        // any connectome: groups from its spec
+    GCOL = m.colors;
+    GROW = m.groups.map((name, k) => [name, k, (m.descriptions || [])[k] || name]);
+    GROW.push(GROW.shift());                                         // "other" last
+  }
+  $("#bpsub").textContent = `Every dot is one of ${m.n.toLocaleString()} neurons. ` +
+    "Each frame is one character.";
   $("#bpempty").style.display = "none";
   sizeCanvas(); drawBase(); composite();
 }
@@ -286,7 +300,7 @@ function drawAct(ev) {
   g.globalCompositeOperation = "destination-out";                   // fade older frames
   g.fillStyle = "rgba(0,0,0,0.35)"; g.fillRect(0, 0, glow.width, glow.height);
   g.globalCompositeOperation = "source-over";
-  const ids = new Uint32Array(b64bytes(ev.act).buffer), byGroup = [[], [], [], [], []];
+  const ids = new Uint32Array(b64bytes(ev.act).buffer), byGroup = GCOL.map(() => []);
   for (const id of ids) byGroup[bmap.g[id]].push(id);
   byGroup.forEach((list, k) => {                                     // circuit cells larger and glowing, on top
     const s = (k === 0 ? 2.4 : 4) * dpr, o = s / 2;
@@ -362,7 +376,7 @@ async function send(text) {
       method: "POST", headers: {"Content-Type": "application/json"}, signal: controller.signal,
       body: JSON.stringify({model: current, prompt, n: +$("#n").value, temp: +$("#temp").value,
                             topk: +$("#topk").value, seed: +$("#seed").value,
-                            brainview: isBrain(current) && paneOpen, need_map: !bmap})
+                            brainview: isBrain(current) && paneOpen, need_map: bmapKey !== current})
     });
     const reader = res.body.getReader(), dec = new TextDecoder(); let buf = "";
     while (true) {
