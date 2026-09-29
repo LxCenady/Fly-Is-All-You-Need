@@ -62,8 +62,10 @@ head; but the question they raised, why information written into the MB is
 not read out, is the starting point here. The companion report
 \cite{lmcompanion} audits that history and uses the mechanisms found below to
 revise the language model: with sparse input, the brain's features improved a
-context-only model in all 18 held-out cases with 20k training characters, with
-dense input in about half; with 100k characters the gain vanished.
+hashed context-only model in all 18 held-out cases with 20k training
+characters, but not a smoothed 5-gram, and the gain vanished with more data;
+there the frozen brain acts as a fading memory of about four characters,
+whatever its wiring.
 
 The MB stores associative memories as dopamine-gated, compartment-specific
 changes of KC$\rightarrow$MBON synapses \cite{hige2015,aso2014a,modi2020}.

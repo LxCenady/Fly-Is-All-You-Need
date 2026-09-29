@@ -10,8 +10,8 @@
 
 \begin{document}
 
-\title{Teaching a Fly Connectome to Predict Text: History, Audit and
-Mechanism-Guided Revision of a Connectome-Reservoir Character Language Model}
+\title{Teaching a Fly Connectome to Predict Text: History, Audit and Limits
+of a Connectome-Reservoir Character Language Model}
 
 \author{\IEEEauthorblockN{Quanxi Li}
 \IEEEauthorblockA{Independent Researcher\\
@@ -32,19 +32,24 @@ but did not improve prediction, which motivated the mechanism study. The audit
 finds that all plasticity results were produced on a simulator version that
 wrote to the wrong synapses, and that a hashed three-character context head
 alone, with no brain, reaches 42.9\% / 3.205 BPC on our 20k/5k split: the
-earlier benchmark was essentially an n-gram score. The mechanism study showed
-that the input used so far activates most Kenyon cells (KCs) for every symbol.
-With sparse projection-neuron (PN) codes instead, the brain adds information
-beyond the n-gram when training data are small. In a check with readout settings chosen on held-out training
-data, over three text segments and three PN-code draws, adding the brain to the
-context head lowered BPC by 0.078 $\pm$ 0.020 (sparse 160 PNs) and 0.076
-$\pm$ 0.014 (192) in 9 of 9 cases each, but by only 0.007 $\pm$ 0.019 with the
-earlier dense input (5 of 9). The gain is in probability calibration, not in
-top-1 accuracy, which did not change, and it shrinks with more data: with
-100k training characters (one run) it fell to at most 0.01 BPC, within
-readout-fit noise. The brain helps the n-gram when data are scarce but does not add
-information that a larger n-gram table cannot learn. Plasticity with a
-uniform teaching signal made prediction worse.
+earlier benchmark was essentially an n-gram score. Guided by the mechanism
+study, sparse projection-neuron codes made the brain improve that hashed context
+head in all 18 held-out cases (by 0.08 BPC), but the head itself was weak: a
+Kneser-Ney 5-gram reaches 2.47--2.68 BPC on the same splits, and adding the
+brain to it makes prediction worse. Three analyses explain why. The brain's
+Kenyon-cell code retains the last four or so characters (the character two
+back is decoded in 57--60\% of cases, four back in 24--26\%), which a 5-gram
+already covers; its advantage over the hashed head shrinks from 0.32 BPC at 5k
+training characters to 0.01 at 100k; and degree-preserving rewired connectomes
+match the real one within 0.03 BPC. With this protocol and a linear readout
+the frozen connectome acts as a generic fading memory of a few characters. A
+GRU trained on the same text reaches 2.34 BPC at 100k characters. In a
+pilot, a content-dependent dopaminergic teacher, a write gate like a GRU's,
+let the mushroom body learn next-character associations online within two or
+three exposures on a synthetic task (balanced accuracy 26\% against 7.8\% with
+a random teacher and 6.7\% chance); on real text it also learned, but added
+nothing to the 5-gram. A small terminal application lets readers
+compare the models by continuing a prompt.
 \end{abstract}
 
 % =====================================================================
@@ -287,46 +292,207 @@ sparse brain's KC features added. Right: the difference.}
 \label{fig:curve}
 \end{figure}
 
-\subsection{What does the brain add?}
-Two controls ask whether the brain supplies anything beyond recent characters
-(20k/5k, three segments, same readout). An explicit one-hot code of the last
-four characters, added to the context head, lowered BPC by 0.071 on average
-and raised accuracy by 0.9--1.6 points; extending it to eight characters did
-not help further. The KC features alone lowered BPC by 0.107 but changed accuracy
-inconsistently ($-0.5$ to $+0.9$ points). Adding the KC features to the four-character code lowered BPC by a
-further 0.043--0.062 in all three segments. The sparse brain therefore carries
-some information that neither the hashed trigram table nor an explicit
-eight-character window provides, though what that information is, and why it
-stops mattering with more data, we cannot say from these runs. A random
-KC-like expansion of the last eight characters, meant as a connectome-free
-control, overfitted badly at every regularisation strength tried ($+0.20$ to
-$+0.36$ BPC); it is a poor control, and the question of whether any
-random reservoir would do as well as the connectome remains open.
+% =====================================================================
+\section{What does the brain provide?}
+The gains above were measured against the hashed context head. We asked what
+the brain supplies and tested three predictions of one hypothesis: that the
+sparse brain is a nonlinear, fading memory of the last few characters, useful
+only while n-gram statistics are sparse. If so, (P1) the character $k$ steps
+back should be decodable from the brain only for small $k$; (P2) a properly
+smoothed n-gram of sufficient order should leave the brain nothing to add;
+and (P3) rewiring the connectome while keeping degrees should not matter.
+All analyses use the three 20k/5k segments of the held-out check (sparse 160
+PNs, default code draw) with clipped KC features (L2 $5\cdot10^{-3}$).
 
-These are the first results in this project that improve on a context-only
-model. They are not evidence that the connectome models language.
+\paragraph*{Stronger baselines (P2)} We fitted interpolated modified
+Kneser-Ney (KN) character models \cite{kneser1995,chen1999} on the same
+training characters. They are far stronger than the hashed head
+(Table~\ref{tab:base}): a 5-gram reaches 2.47--2.68 BPC, against 3.10 at best
+for any brain model on these splits. To ask whether the brain adds anything to
+such a model, we used the KN log-probabilities as a fixed offset in the
+softmax readout and added brain features (KN probabilities for training rows
+were cross-fitted over five folds, so that the readout does not learn to
+over-trust them). With a trigram the KC features helped a little ($-0.02$ to
+$-0.05$ BPC), less than an explicit one-hot code of the last four characters
+($-0.05$ to $-0.08$); with a 5-gram or 7-gram they made prediction worse
+($+0.03$ to $+0.06$; all brain features $+0.10$ to $+0.15$), as extra features do when
+they carry no new information (Fig.~\ref{fig:memory}, right). A causal cache
+of recent character statistics, the simplest online memory, did not help the
+5-gram either ($-0.006$ to $+0.012$). A one-layer GRU \cite{cho2014} trained
+on the same characters reached 2.64--2.98 BPC with 20k characters and 2.34
+with 100k, better than every other model at the larger size.
+
+\begin{table}[t]
+\caption{Validation BPC on the three 20k/5k segments (offsets 0, 300k,
+600k). Brain: sparse 160 PNs, clipped KC features.}
+\label{tab:base}\centering\footnotesize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lccc@{}}\toprule
+Model & 0 & 300k & 600k\\\midrule
+Hashed 3-character context head & 3.205 & 3.115 & 2.970\\
+\quad + brain & 3.100 & 3.013 & 2.858\\
+Kneser-Ney 3-gram & 2.968 & 2.957 & 2.817\\
+Kneser-Ney 5-gram & 2.676 & 2.588 & 2.475\\
+\quad + brain & 2.734 & 2.651 & 2.511\\
+Kneser-Ney 7-gram & 2.670 & 2.570 & 2.466\\
+GRU (hidden 256) & 2.857 & 2.985 & 2.637\\\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph*{Memory span (P1)} A ridge decoder from the KC code at character
+$t$ recovers character $t-k$ in 99.9\% of cases for $k=0$, 90--92\% for
+$k=1$, 57--60\% for $k=2$, 35--38\% for $k=3$, 24--26\% for $k=4$ and
+20--21\% for $k=5$, approaching the rate of always guessing the most frequent
+character (15--16\%) by $k\approx7$ (Fig.~\ref{fig:memory}, left). The brain
+thus holds about four characters, fading fast, which is less context than a
+5-gram uses. This also explains the learning curve: with little data the
+hashed trigram table is sparse and the brain's smooth code of the last few
+characters generalises better; with more data the table fills in.
+
+\paragraph*{Is the real wiring needed? (P3)} We built two rewired
+connectomes by permuting (presynaptic neuron, weight) pairs among edges: over
+the whole brain, or only within blocks of presynaptic and postsynaptic cell
+class (KC, PN, MBON, dopaminergic neurons, APL, otherwise the annotated
+superclass). Every neuron keeps its in-degree, its out-degree and the sign and
+weights of its outputs; duplicate edges created by the permutation were
+merged (1.5\% and 0.3\% of edges). With classes kept, PN$\rightarrow$KC
+connections remain but go to random KCs; the KC code keeps the same memory
+span as in the real connectome (1.00, 0.95, 0.62, 0.38, 0.25 for $k=0$--4)
+and, like it, adds nothing on top of a 5-gram (its KC features cost $+0.09$ to
+$+0.12$ BPC there, against $+0.04$ to $+0.06$ for the real connectome). With the whole brain
+rewired, KCs no longer receive PN input and stay silent, yet the whole-brain
+readout (context head plus all features) scores 3.122, 3.037 and 2.874 BPC
+against 3.106, 3.024 and 2.846 for the real connectome, within the readout-fit
+noise; the class-preserving rewiring gives 3.118, 3.056 and 2.880. The
+information comes from other neurons that also hold a short fading trace. One
+rewiring of each kind was tested.
+
+\begin{figure}[t]\centering
+\includegraphics[width=\columnwidth]{figures/fig4_memory.pdf}
+\caption{Left: decoding the character $k$ steps back from the KC code of the
+real connectome, a connectome rewired within cell classes, and a fully
+rewired one (mean of three segments). Right: change in BPC when KC features
+are added to Kneser-Ney models (points: segments; colours as left).}
+\label{fig:memory}
+\end{figure}
+
+Taken together: with this input protocol and a linear readout, the frozen
+connectome behaves as a generic fading memory of about four characters. Its
+advantage over the hashed context head was real but came from a weak
+baseline, and it does not depend on the specific wiring.
+
+% =====================================================================
+\section{A write gate for the mushroom body (pilot)}
+A GRU learns what to store and when \cite{cho2014}; the frozen brain cannot.
+The mushroom body can write, and the companion study found that the
+dopaminergic teacher chooses where a memory is stored \cite{mechpaper}. We
+therefore tested whether a content-dependent teacher lets the mushroom body
+learn next-character associations online, as flies learn an odour in one or
+a few trials.
+
+\paragraph*{Design} Fifteen dopaminergic cell types whose gating patterns
+over the MBONs overlap little ($|\cos|<0.5$) and whose pulse delivers a
+substantial gate serve as fifteen character classes. When character $t+1$
+arrives, the type of its class is pulsed, and the KC$\rightarrow$MBON update
+writes the KC eligibility trace of the preceding characters (not the current
+one): recent context $\rightarrow$ class of what came next. The prediction
+for character $t+1$ is read without training: the memory current evoked by
+the KCs active at character $t$ is decomposed by least squares into the gate
+patterns of the classes (memory currents superpose linearly
+\cite{mechpaper}), and the class with the largest coefficient is chosen. The
+text consists of five made-up five-letter words with disjoint letters in
+random order, so that within a word the next letter is predictable only after
+the word has been seen. Controls: a teacher that pulses a random class (the
+same number and strength of writes, no content), and no writes. The criterion,
+fixed before the runs, was that accuracy on repeated occurrences exceed both
+first occurrences and the random teacher.
+
+\paragraph*{Result} With the content teacher, accuracy rose from 4\% on first
+occurrences to 22\% on second and 27\% on later ones (mean of five seeds;
+balanced over classes 26\%, range 15--36\%), while the random teacher stayed
+at chance (balanced 7.8\% against 6.7\% for $1/K$; Fig.~\ref{fig:online}).
+One correction was made after the first runs: two-cell dopaminergic types
+whose pulse delivered almost no gate produced huge least-squares coefficients
+from noise and dominated the predictions in one of three seeds; we then kept
+only types delivering a total gate of at least 1 and reran all seeds, adding
+two new ones. The mushroom body can thus learn associations online when the
+teacher carries content. Whether this adds anything to a strong n-gram on real
+text is a separate question (below).
+
+\begin{figure}[t]\centering
+\includegraphics[width=\columnwidth]{figures/fig5_online.pdf}
+\caption{Online learning in the mushroom body with a content-dependent
+dopaminergic teacher: accuracy of the next character's class by occurrence of
+the word (thin lines: five seeds; thick: mean). Dotted: chance.}
+\label{fig:online}
+\end{figure}
+
+\paragraph*{Real text} We then ran the same content-taught mushroom body over
+the three TinyShakespeare segments (25k characters each, plasticity on
+throughout; the 65 characters assigned to the 15 classes round-robin in order
+of frequency) and, as a control, with the random teacher. The memory did learn:
+its read-out class prediction was right for 11--14\% of characters with the
+content teacher against 5--6\% with the random teacher (balanced 8.5--9.0\%
+against 6.5--7.4\%), though below always guessing the most frequent class
+(16--18\%). The second criterion, fixed before the run, was that its memory
+features (the memory current on the 97 MBONs and its class decomposition) add
+to a Kneser-Ney 5-gram. They did not: stacked on the 5-gram they changed BPC by
+$+0.003$ to $+0.018$ with the content teacher and $+0.005$ to $+0.019$ with the
+random teacher. A causal cache of recent character statistics did no better
+($-0.006$ to $+0.012$). On this text, what an online memory of the last
+hundred or so characters can learn, the 5-gram already knows.
+
+% =====================================================================
+\section{Playground}
+To make these results tangible we wrote GPF, the ``Generative Pretrained
+Fly'', a terminal application (distributed with the repository) that continues
+a prompt with a chosen model, GPT-style. The name is a joke: the connectome's
+only pretraining is evolution, and only its linear readout was trained, on 20k
+characters. The prompt is fed one character at a time, then the
+model samples a character, feeds it back and continues. The connectome model
+simulates all 166{,}700 neurons for each character (about 20 characters per
+second on a laptop GPU). With the prompt ``ROMEO:'' at temperature 0.7 the
+connectome model writes Shakespeare-shaped text that is mostly not words
+(``I' the as fragent Roman now I / thrirlywerGere: yetty truduse''), a 5-gram
+trained on the same 20k characters writes slightly better nonsense, a 7-gram
+on a million characters writes plausible fragments (``O, 'twas us / fellow
+of the young Princes have the triumph?''), and a GRU on a million characters
+writes the most coherent text (``Shall I put was the bastards prepare to make
+the state and a far thoughts'').
 
 % =====================================================================
 \section{Discussion}
-The language model did what reservoir models usually do: the explicit context
-head did most of the work, and the reservoir added little until its input
-regime was changed. The mechanism study explained why: dense input erases the
-Kenyon-cell code that makes the mushroom body informative, and information
-written into KC$\rightarrow$MBON synapses reaches downstream neurons only when
-it flips an MBON spike. Using these facts turned the brain from a redundant
-feature set into one that adds information to an n-gram context, consistently
-across text segments and code draws, though only in calibration (BPC), not in
-top-1 accuracy, and only while training data are scarce: at 100k characters
-the gain was gone. For the original goal this is a negative result: with a
-linear readout, the frozen connectome does not supply sequence information
-beyond what counts of three-character contexts provide. The model
-still does not understand language; it predicts local character structure.
+For its original goal this project ends with a clear negative result. A frozen
+reservoir with a linear readout can only expose what its dynamics retain
+\cite{lukosevicius2009}, and the fly connectome driven one character at a time
+retains about four characters, fading fast, which is no more than a 5-gram
+knows and no more than a rewired network of the same degrees retains. The
+improvements found along the way were real but measured against a weak
+baseline: first against nothing (the earlier benchmark was an n-gram score),
+then against a hashed context table that a standard smoothed n-gram beats by
+0.5 BPC. The lesson we draw is methodological: every gain must be measured
+against the strongest simple baseline available, and against a control that
+removes the property being credited (here, the wiring).
 
-\paragraph*{Limitations} One connectome; one corpus; short splits (20k
-characters); one readout fit per case; the exploratory table was tuned on the
-validation split (the held-out check was not); the
-revised protocol differs from the earlier one in input pathway, gain and
-sampling, so comparisons with the earlier numbers are approximate.
+What the mechanism study adds is an account of why, and a direction. Dense
+input erased the sparse KC code; a frozen network holds only a fading trace;
+and plasticity with a teacher that is the same for every character writes
+nothing item-specific. The pilot shows the other side: when the dopaminergic
+teacher depends on content, as a GRU's update gate does, the mushroom body
+learns associations after one or two exposures. This is where the fly's
+circuit differs from a generic reservoir. On real text the same mechanism
+learned too, but what it learned in its short window a 5-gram already knew.
+Whether a richer teacher, longer eligibility traces or slower decay would let
+it store something n-gram statistics do not have remains open; we have not
+shown that it can.
+
+\paragraph*{Limitations} One connectome and one rewiring of each kind; one
+corpus; short splits (20k characters, one 100k run); one readout fit per case;
+a linear readout; KN and GRU baselines without extensive tuning; the
+exploratory table was tuned on the validation split (the later analyses were
+not); in the language-model runs only 0.5\% of KCs fired per character and no
+MBON fired, a quiet regime set by the input drive, and other input protocols
+might retain more; the pilot used a synthetic task and a decoder correction
+made after the first runs.
 
 \section{Conclusion in plain terms}
 We asked whether the wiring diagram of a fruit-fly brain, simulated but never
@@ -339,17 +505,26 @@ working out why became a separate study.
 
 That study showed that we had been feeding the brain too much input at once,
 so that nearly all of its Kenyon cells, the neurons the fly uses to tell smells
-apart, lit up for every letter. With sparser input, as in a real fly, the brain
-did add something the lookup table lacked, consistently across different parts
-of the text: its predictions became better calibrated, although it did not get
-more letters right. This held only when the model had little text to learn
-from. With five times more text the lookup table learned
-the same information on its own and the brain's advantage disappeared.
+apart, lit up for every letter. With sparser input the brain did beat our
+lookup table, but our lookup table was a poor one. A standard, well-smoothed
+table of five-letter sequences does much better than any of our brain models,
+and adding the brain to it only makes things worse. The reason is simple: the
+simulated brain remembers roughly the last four letters, and a five-letter
+table already knows those. A brain whose wiring we scrambled, keeping only how
+many connections each neuron has, remembers just as much.
 
-The practical lessons are to compare every result with the simplest possible
-baseline, to check whether a gain survives more data, and to audit results
-before building on them: here the audit found a simulator bug, an inflated
-benchmark and a preprocessing artefact.
+The fly's brain can do one thing a fixed lookup table cannot: learn on the
+spot. When we let its dopamine neurons signal which letter came next, the way
+a reward or a punishment signals what an odour meant, the mushroom body
+started predicting letters of made-up words after seeing them once or twice.
+On real Shakespeare it learned as well, but nothing that the five-letter table
+did not already know.
+
+The practical lessons are to compare every result with the strongest simple
+baseline available, to test whether the thing given credit (here, the real
+wiring) is actually needed, and to audit results before building on them: here
+the audits found a simulator bug, an inflated benchmark, a weak baseline and a
+preprocessing artefact.
 
 \section*{Use of AI tools}
 This is independent research by a high-school student. The author directed
@@ -384,5 +559,16 @@ flies,'' \textit{Neural Comput.}, vol.~35, no.~11, pp.~1797--1819, 2023.
 mushroom-body memory: dopamine chooses the compartment, sparse Kenyon-cell
 codes set the cue, side- and subtype-specific routing shapes the output,''
 2026. Mechanism study that grew out of the present project.
+\bibitem{kneser1995} R. Kneser and H. Ney, ``Improved backing-off for M-gram
+language modeling,'' in \textit{Proc. IEEE ICASSP}, 1995, pp.~181--184.
+\bibitem{chen1999} S. F. Chen and J. Goodman, ``An empirical study of
+smoothing techniques for language modeling,'' \textit{Comput. Speech Lang.},
+vol.~13, no.~4, pp.~359--394, 1999.
+\bibitem{cho2014} K. Cho \textit{et al.}, ``Learning phrase representations
+using RNN encoder-decoder for statistical machine translation,'' in
+\textit{Proc. EMNLP}, 2014, pp.~1724--1734.
+\bibitem{lukosevicius2009} M. Luko\v{s}evi\v{c}ius and H. Jaeger, ``Reservoir
+computing approaches to recurrent neural network training,''
+\textit{Comput. Sci. Rev.}, vol.~3, no.~3, pp.~127--149, 2009.
 \end{thebibliography}
 \end{document}

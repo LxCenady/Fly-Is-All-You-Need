@@ -57,7 +57,7 @@ if os.environ.get("MB_SIGN") == "depress" and not getattr(_KP, "_sign_patched", 
     _KP.__init__ = _init_depress
     _KP._sign_patched = True
 
-DATA = Path(r"D:\flybrain_lm_cuda\data")
+DATA = Path(os.environ.get("MB_DATA", r"D:\flybrain_lm_cuda\data"))   # MB_DATA: shuffled-connectome controls
 CORPUS = Path(r"D:\flybrain_lm_cuda\corpus\tinyshakespeare.txt")
 SETTLE = slice(6, 12)          # frozen settle window [6, 11] of the probe profile
 

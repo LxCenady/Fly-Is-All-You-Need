@@ -10,6 +10,7 @@ from pathlib import Path
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import numpy as np
 
 OUT = Path(__file__).parent / "figures"; OUT.mkdir(exist_ok=True)
 LM = Path(r"E:\mechanism_20260928\lm")
@@ -35,7 +36,7 @@ def fig_timeline():
                                      f"{old['bpc']:.3f} BPC\n(+ hashed 3-char context)"),
         ("Phase 3\nMB plasticity", f"{dual['val_acc']:.1%} / {dual['bpc']:.3f} BPC\nwritten but not read"),
         ("Mechanism study", "memory on KC->MBON\nweights; sparse KC code\n= retrieval key; read out\nonly via MBON spikes"),
-        ("Audit + revision", "indexing bug found;\nbenchmark ~ n-gram;\nsparse brain adds to it\nonly with little data"),
+        ("Audit + revision", "bug found; benchmark ~\nn-gram; brain = ~4-char\nfading memory, no gain\nover a 5-gram"),
     ]
     fig, ax = plt.subplots(figsize=(7.2, 1.9))
     ax.axis("off")
@@ -135,5 +136,58 @@ def fig_curve():
     plt.close(fig)
 
 
+def fig_memory():
+    """Left: decoding the character k steps back from the KC code (real, rewired within
+    classes, fully rewired).  Right: BPC change from adding brain features to KN n-grams."""
+    E = Path(r"E:\mechanism_20260928")
+    real = j(E / "lm_explain_real.json"); conn = j(E / "lm_explain_conn.json")
+    groups = [("real", [real[k] for k in real], C1, "o"),
+              ("rewired, classes kept", [conn[k] for k in conn if "class" in k], C2, "s"),
+              ("rewired, all", [conn[k] for k in conn if "full" in k], GRAY, "^")]
+    fig, axes = plt.subplots(1, 2, figsize=(3.5, 1.95), gridspec_kw={"width_ratios": [1.15, 1]})
+    ax = axes[0]; lags = range(13)
+    for lab, rs, col, mk in groups:
+        m = np.mean([r["mem_kc"] for r in rs], 0)
+        ax.plot(lags, m, marker=mk, ms=3, lw=1.1, color=col, label=lab)
+    maj = np.mean([r["mem_majority"] for r in groups[0][1]], 0)
+    ax.plot(lags, maj, ls=":", color=INK2, lw=0.9, label="most frequent char.")
+    ax.set_xlabel("characters back (k)"); ax.set_ylabel("decoding accuracy from KCs")
+    ax.set_ylim(0, 1.05); ax.legend(fontsize=5, frameon=False, loc="upper right", bbox_to_anchor=(1.03, 1.03)); ax.grid(color=GRID, lw=0.5)
+    ax = axes[1]
+    for i, (lab, rs, col, mk) in enumerate(groups[:2]):
+        for o_i, order in enumerate((3, 5, 7)):
+            d = [r[f"kn+kc_{order}"]["bpc"] - r[f"kn_{order}"]["bpc"] for r in rs]
+            x = o_i + (i - 0.5) * 0.25
+            ax.plot([x] * len(d), d, mk, color=col, ms=3.2, ls="none")
+    ax.axhline(0, color=MUTED, lw=0.8)
+    ax.set_xticks(range(3), ["KN-3", "KN-5", "KN-7"]); ax.set_ylabel("BPC change from KC features")
+    ax.grid(axis="y", color=GRID, lw=0.5)
+    fig.tight_layout()
+    fig.savefig(OUT / "fig4_memory.pdf"); fig.savefig(OUT / "fig4_memory.png", dpi=200)
+    plt.close(fig)
+
+
+def fig_online():
+    """Online pilot: accuracy by occurrence of the word, content vs random teacher, 5 seeds."""
+    E = Path(r"E:\mechanism_20260928")
+    runs = [j(p) for p in sorted(E.glob("mb_online_v2_s*.json")) if "frozen" in j(p)]
+    fig, ax = plt.subplots(figsize=(3.5, 1.8))
+    for cond, col, mk, lab in (("content", C1, "o", "teacher = class of next character"),
+                               ("random", GRAY, "s", "teacher = random class")):
+        ys = np.array([[r[cond]["first"]["acc"], r[cond]["second"]["acc"], r[cond]["third_plus"]["acc"]]
+                       for r in runs])
+        for y in ys:
+            ax.plot([1, 2, 3], y, color=col, lw=0.6, alpha=0.45)
+        ax.plot([1, 2, 3], ys.mean(0), marker=mk, color=col, lw=1.6, label=lab)
+    ax.axhline(np.mean([1 / r["K"] for r in runs]), ls=":", color=INK2, lw=0.9)
+    ax.text(0.83, np.mean([1 / r["K"] for r in runs]) + 0.012, "chance (1/K)", fontsize=5.5, color=INK2, va="bottom")
+    ax.set_xticks([1, 2, 3], ["1st", "2nd", "3rd+"]); ax.set_xlabel("occurrence of the word")
+    ax.set_ylabel("next-class accuracy"); ax.set_xlim(0.8, 3.3)
+    ax.legend(fontsize=5.8, frameon=False, loc="upper left"); ax.grid(color=GRID, lw=0.5)
+    fig.tight_layout()
+    fig.savefig(OUT / "fig5_online.pdf"); fig.savefig(OUT / "fig5_online.png", dpi=200)
+    plt.close(fig)
+
+
 if __name__ == "__main__":
-    fig_timeline(); fig_results(); fig_paired(); fig_curve(); print("ok")
+    fig_timeline(); fig_results(); fig_paired(); fig_curve(); fig_memory(); fig_online(); print("ok")

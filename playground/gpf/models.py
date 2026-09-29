@@ -1,0 +1,213 @@
+"""Character models for the playground.  KN and GRU need only numpy (+ torch for the GRU);
+the connectome model needs the flybrain simulator, the MaleCNS data and a CUDA GPU."""
+from __future__ import annotations
+
+import json
+import os
+import sys
+import time
+from collections import defaultdict
+from pathlib import Path
+
+import numpy as np
+
+DATA = Path(__file__).parent / "data"
+CORPUS = DATA / "tinyshakespeare.txt"
+VOCAB = list(json.loads((DATA / "vocab.json").read_text(encoding="utf-8"))["chars"])
+V = len(VOCAB)
+IDX = {c: i for i, c in enumerate(VOCAB)}
+
+
+def encode(text: str) -> list[int]:
+    return [IDX[c] for c in text if c in IDX]
+
+
+class CharModel:
+    name = "base"
+
+    def reset(self):
+        raise NotImplementedError
+
+    def feed(self, t: int) -> np.ndarray:
+        """Consume one character id; return logits for the next character."""
+        raise NotImplementedError
+
+
+# ------------------------------------------------------------------ Kneser-Ney
+class KNModel(CharModel):
+    """Interpolated modified Kneser-Ney character n-gram."""
+
+    def __init__(self, order: int = 7, train_chars: int = 1_000_000, log=print):
+        self.n = order
+        self.name = f"Kneser-Ney {order}-gram ({train_chars:,} chars)"
+        t0 = time.time()
+        self._fit(encode(CORPUS.read_text(encoding="utf-8")[:train_chars]))
+        log(f"{self.name} fitted in {time.time() - t0:.0f}s")
+        self.reset()
+
+    def _fit(self, seq):
+        n = self.n
+        c = [defaultdict(lambda: defaultdict(int)) for _ in range(n + 1)]
+        for i in range(len(seq)):
+            for k in range(1, n + 1):
+                if i - k + 1 < 0:
+                    break
+                c[k][tuple(seq[i - k + 1:i])][seq[i]] += 1
+        cc = [defaultdict(lambda: defaultdict(int)) for _ in range(n + 1)]
+        for k in range(2, n + 1):
+            for ctx, d in c[k].items():
+                for w in d:
+                    cc[k - 1][ctx[1:]][w] += 1
+        self.c, self.cc, self.D = c, cc, []
+        for k in range(n + 1):
+            nr = np.zeros(5)
+            for d in (c[k] if k == n else cc[k]).values():
+                for v in d.values():
+                    if v <= 4:
+                        nr[v] += 1
+            Y = nr[1] / max(nr[1] + 2 * nr[2], 1)
+            self.D.append([0.0] + [max(min(r - (r + 1) * Y * nr[r + 1] / max(nr[r], 1), r), 0.0)
+                                   for r in (1, 2, 3)])
+
+    def _p(self, k, ctx, top):
+        if k == 0:
+            return np.full(V, 1.0 / V)
+        d = (self.c[k] if top else self.cc[k]).get(ctx[len(ctx) - (k - 1):] if k > 1 else ())
+        lower = self._p(k - 1, ctx, False)
+        if not d:
+            return lower
+        tot = sum(d.values()); D = self.D[k]; p = np.zeros(V); nr = [0, 0, 0, 0]
+        for w, v in d.items():
+            p[w] = max(v - D[min(v, 3)], 0) / tot; nr[min(v, 3)] += 1
+        return p + (D[1] * nr[1] + D[2] * nr[2] + D[3] * nr[3]) / tot * lower
+
+    def reset(self):
+        self.hist = []
+
+    def feed(self, t):
+        self.hist.append(int(t))
+        ctx = tuple(self.hist[-(self.n - 1):]) if self.n > 1 else ()
+        return np.log(np.maximum(self._p(min(self.n, len(ctx) + 1), ctx, True), 1e-12))
+
+
+# ------------------------------------------------------------------ GRU
+class GRUModel(CharModel):
+    def __init__(self, weights: str = "gru_1000000.pt", log=print):
+        import torch
+
+        class GRU(torch.nn.Module):
+            def __init__(self, e=32, h=256):
+                super().__init__()
+                self.emb = torch.nn.Embedding(V, e); self.rnn = torch.nn.GRU(e, h, batch_first=True)
+                self.out = torch.nn.Linear(h, V)
+
+            def forward(self, x, h=None):
+                o, h = self.rnn(self.emb(x), h)
+                return self.out(o), h
+
+        self.torch = torch
+        self.net = GRU(); self.net.load_state_dict(torch.load(DATA / weights)); self.net.eval()
+        self.name = "GRU (hidden 256, trained on 1M chars)"
+        log(f"{self.name} loaded")
+        self.reset()
+
+    def reset(self):
+        self.h = None
+
+    def feed(self, t):
+        with self.torch.no_grad():
+            lg, self.h = self.net(self.torch.tensor([[int(t)]]), self.h)
+        return lg[0, 0].numpy().astype(np.float64)
+
+
+# ------------------------------------------------------------------ connectome
+class BrainModel(CharModel):
+    """The MaleCNS v1.0 connectome simulated one character at a time + the trained readout.
+    Needs FLYBRAIN_HOME (default D:\\flybrain_lm_cuda: simulator, data, sitecustomize) and
+    GPF_MECHANISM (default D:\\苍蝇。\\mechanism: m1_core, lm_mech)."""
+
+    def __init__(self, readout: str = "brain_readout_20k", log=print):
+        home = Path(os.environ.get("FLYBRAIN_HOME", r"D:\flybrain_lm_cuda"))
+        mech = Path(os.environ.get("GPF_MECHANISM", r"D:\苍蝇。\mechanism"))
+        if not home.exists() or not mech.exists():
+            raise RuntimeError("connectome simulator not found: set FLYBRAIN_HOME and GPF_MECHANISM")
+        os.chdir(home)
+        for p in (str(home), str(mech)):
+            if p not in sys.path:
+                sys.path.insert(0, p)
+        import m1_core as C
+        import mb_persistent_memory_probe as pmp
+        self.C, self.pmp = C, pmp
+        rd = DATA / readout
+        meta = json.loads((rd / "model.json").read_text(encoding="utf-8"))
+        d = np.load(rd / "readout.npz")
+        self.W, self.E, self.b = d["W"], d["E"].astype(np.float32), d["b"]
+        self.mu, self.sd = d["mu"], d["sd"]
+        self.Tcal, self.clip = float(meta["temperature"]), meta.get("clip")
+        args, chars = C.protocol_args()
+        assert list(chars) == VOCAB, "vocabulary mismatch"
+        b = meta["brain"]
+        args.active, args.drive, args.probe_drive = b["pn_active"], 1.0 * b["drive_scale"], 2.5 * b["drive_scale"]
+        log("building the connectome simulation (166,700 neurons)...")
+        self.st = C.build(args); self.st["enc"].drive = args.drive
+        self.args = args
+        self.name = f"Connectome brain (MaleCNS v1.0, readout {readout})"
+        log(f"{self.name} ready")
+        self.reset()
+
+    def reset(self):
+        self.C.reset(self.st, self.args)
+        self.hist = []
+
+    def feed(self, t):
+        st = self.st
+        self.pmp._advance_token(st, self.args, int(t), allow_plastic=False, pulse_dan=False,
+                                record_profile=True, settle_steps=0)
+        prof = st["_last_probe_profile"]
+        x = np.concatenate([st["_last_kc_counts"].astype(np.float32), prof["v_pre_mbon"].mean(0),
+                            st["_last_mbon_counts"].astype(np.float32), st["trace_central"].get(),
+                            prof["v_pre_central"].mean(0)]).astype(np.float32)
+        z = (x - self.mu) / self.sd
+        if self.clip:
+            z = np.clip(z, -self.clip, self.clip)
+        self.hist.append(int(t))
+        h = 0
+        for lag in (2, 1, 0):                          # hash of the last 3 characters (lm_mech.ctx_ids)
+            h = h * V + (self.hist[-1 - lag] if len(self.hist) > lag else 0)
+        return (self.b + self.E[h % self.E.shape[0]] + z @ self.W) / self.Tcal
+
+
+MODELS = {
+    "kn7": ("Kneser-Ney 7-gram, 1M chars", lambda log: KNModel(7, 1_000_000, log)),
+    "kn5-20k": ("Kneser-Ney 5-gram, 20k chars (same data as the brain)", lambda log: KNModel(5, 20_000, log)),
+    "gru": ("GRU, 1M chars", lambda log: GRUModel(log=log)),
+    "brain": ("Connectome brain (GPU + simulator required)", lambda log: BrainModel(log=log)),
+}
+
+
+# ------------------------------------------------------------------ sampling
+def sample(logits, temp, topk, rng):
+    s = np.asarray(logits, np.float64) / max(temp, 1e-6)
+    if topk:
+        s = np.where(s >= np.sort(s)[-topk], s, -np.inf)
+    p = np.exp(s - s.max()); p /= p.sum()
+    return int(rng.choice(len(p), p=p))
+
+
+def generate(model, prompt, n, temp=0.8, topk=0, seed=0, on_char=None, stop=lambda: False):
+    """Reset, inject the prompt character by character, then write n characters."""
+    rng = np.random.default_rng(seed)
+    model.reset()
+    ids = encode(prompt) or [IDX["\n"]]
+    for t in ids:
+        logits = model.feed(t)
+    out = []
+    for _ in range(n):
+        if stop():
+            break
+        t = sample(logits, temp, topk, rng)
+        out.append(VOCAB[t])
+        if on_char:
+            on_char(VOCAB[t])
+        logits = model.feed(t)
+    return "".join(out)
