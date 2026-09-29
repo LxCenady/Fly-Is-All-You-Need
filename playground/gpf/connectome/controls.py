@@ -37,7 +37,41 @@ def rewire(cx: Connectome, seed: int = 0, classes: np.ndarray | None = None) -> 
     info = {"edges": int(len(w)), "edges_after_merge": int(R.nnz),
             "merged_fraction": float(1 - R.nnz / max(len(w), 1)),
             "mode": "within classes" if classes is not None else "whole network", "seed": int(seed)}
-    return Connectome(R, cx.annotations, cx.positions, cx.name + " (rewired)"), info
+    G = None
+    if cx.G is not None:
+        G, info["gap_swaps"] = swap_symmetric(cx.G, rng, None if classes is None else cls)
+    return Connectome(R, cx.annotations, cx.positions, cx.name + " (rewired)", G), info
+
+
+def swap_symmetric(G, rng, cls=None, per_edge: int = 10):
+    """Degree-preserving rewiring of a symmetric (electrical) network by double-edge swaps:
+    a-b, c-d -> a-d, c-b, rejected when it would create a self-loop or an existing edge.  Each edge
+    keeps its weight.  With classes, a swap is allowed only when b and d share a class, so every
+    edge keeps the classes of its two ends."""
+    U = sparse.triu(G, k=1).tocoo()
+    a, b, w = U.row.astype(np.int64), U.col.astype(np.int64), U.data.copy()
+    m = len(w)
+    if m < 2:
+        return G, 0
+    edges = set(zip(a.tolist(), b.tolist())) | set(zip(b.tolist(), a.tolist()))
+    done = 0
+    for _ in range(per_edge * m):
+        i, j = rng.integers(0, m, 2)
+        if i == j:
+            continue
+        p, q = (a[i], b[i]) if rng.random() < 0.5 else (b[i], a[i])
+        r, s = (a[j], b[j]) if rng.random() < 0.5 else (b[j], a[j])
+        if p == s or r == q or (p, s) in edges or (r, q) in edges:
+            continue
+        if cls is not None and cls[q] != cls[s]:
+            continue
+        for x, y in ((p, q), (r, s)):
+            edges.discard((x, y)); edges.discard((y, x))
+        edges |= {(p, s), (s, p), (r, q), (q, r)}
+        a[i], b[i], a[j], b[j] = p, s, r, q
+        done += 1
+    S = sparse.coo_matrix((np.r_[w, w], (np.r_[a, b], np.r_[b, a])), shape=G.shape)
+    return canonical(S), done
 
 
 def class_labels(sel, spec: dict) -> np.ndarray:

@@ -32,11 +32,14 @@ def main(argv):
     ap.add_argument("--inhibitory", default="gaba,glutamate,histamine",
                     help="comma-separated substrings of --sign-col meaning inhibitory")
     ap.add_argument("--no-normalise", action="store_true", help="keep raw signed synapse counts")
+    ap.add_argument("--type-col", help="edge column marking electrical synapses (gap junctions)")
+    ap.add_argument("--electrical", default="electrical", help="value of --type-col meaning electrical")
     a = ap.parse_args(argv)
     cx = import_edges(a.neurons, a.edges, a.out, a.id_col, a.pre_col, a.post_col, a.weight_col, a.sign_col,
                       tuple(s.strip().lower() for s in a.inhibitory.split(",") if s.strip()),
-                      not a.no_normalise)
+                      not a.no_normalise, type_col=a.type_col, electrical=a.electrical.lower())
     inh = int((cx.W.data < 0).sum())
-    print(f"{cx.n:,} neurons, {cx.W.nnz:,} connections ({inh:,} inhibitory); annotations: "
+    gap = f", {cx.G.nnz // 2:,} gap junctions" if cx.G is not None else ""
+    print(f"{cx.n:,} neurons, {cx.W.nnz:,} connections ({inh:,} inhibitory){gap}; annotations: "
           f"{', '.join(cx.annotations)}; positions: {'yes' if cx.positions is not None else 'no'}\n"
           f"written to {a.out}")

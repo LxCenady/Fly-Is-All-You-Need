@@ -5,3 +5,10 @@ __pycache__/
 mechanism/paths_local.json
 outputs/
 legacy/
+
+# generated connectome data (rebuild with the example scripts)
+playground/examples/*/raw/
+playground/examples/*/neurons.csv
+playground/examples/*/edges.csv
+playground/examples/celegans/cook2019/
+playground/examples/toy_connectome/toy/

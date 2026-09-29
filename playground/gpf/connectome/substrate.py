@@ -124,11 +124,21 @@ class LIFSubstrate:
         rng = np.random.default_rng(int(inp.get("code_seed", 3)))
         codes = [np.sort(in_ids[rng.choice(len(in_ids), size=active, replace=False)]) for _ in range(vocab_size)]
         xp = self.xp = _xp(device)
+        # electrical synapses: I_i = gap_gain * sum_j Gn_ij (v_j - v_i), Gn = G with each row divided
+        # by max(row sum, 1), so the coupling a neuron feels is bounded
+        self.gap_gain = np.float32(nr.get("gap_gain", 0.0))
+        Gn = None
+        if cx.G is not None and self.gap_gain:
+            from scipy import sparse as sp
+            deg = np.asarray(cx.G.sum(1)).ravel()
+            Gn = (sp.diags((1.0 / np.maximum(deg, 1.0)).astype(np.float32)) @ cx.G).tocsr().astype(np.float32)
         if xp is np:
-            self.W = cx.W
+            self.W, self.G = cx.W, Gn
         else:
             from cupyx.scipy import sparse as cusparse
             self.W = cusparse.csr_matrix(cx.W)
+            self.G = cusparse.csr_matrix(Gn) if Gn is not None else None
+        self.Gdeg = (xp.asarray(np.asarray(Gn.sum(1)).ravel().astype(np.float32)) if Gn is not None else None)
         self.codes = [xp.asarray(c) for c in codes]
         self.readouts = [(name, xp.asarray(ids), feat, np.float32(np.exp(-self.dt / tau)))
                          for name, ids, feat, tau in readouts]
@@ -153,8 +163,11 @@ class LIFSubstrate:
     def _step(self):
         xp = self.xp
         current = self.W @ self.spikes * self.gain
+        gap = (self.G @ self.v - self.Gdeg * self.v) * self.gap_gain if self.G is not None else None
         self.v *= self.decay
         self.v += current + self.tonic
+        if gap is not None:
+            self.v += gap
         if self.noise_hz:
             self.v += (self.rng.random(self.cx.n) < self.noise_hz * self.dt) * self.noise_amp
         v_pre = self.v[self.record] if self.record is not None else None
@@ -222,9 +235,13 @@ class LIFSubstrate:
         """Neuron positions projected to 2-D (spec view.project, e.g. ["-x", "z"]), quantised to uint16,
         with group codes, colours and region labels, for the web UI's brain view."""
         import base64
-        if self.cx.positions is None:
-            raise ValueError(f"{self.cx.name} has no neuron positions")
-        pos = np.asarray(self.cx.positions, np.float64)
+        if self.cx.positions is None:           # no anatomy: a schematic, one column per view group
+            rng = np.random.default_rng(0)
+            pos = np.zeros((self.cx.n, 3))
+            pos[:, 0] = -(self.group.astype(float) + rng.uniform(-0.3, 0.3, self.cx.n))
+            pos[:, 2] = rng.uniform(0, max(1, len(self.group_names()) - 1), self.cx.n)
+        else:
+            pos = np.asarray(self.cx.positions, np.float64)
         axes = []
         for a in self._view.get("project", ["-x", "z"]):
             col = pos[:, "xyz".index(a[-1])].copy()

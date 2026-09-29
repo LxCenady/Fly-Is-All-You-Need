@@ -105,5 +105,16 @@ one spec entry for one run. Models store their full spec, so they can be reloade
 - **Checks:** the generic simulator with `malecns-v1` gives the same spikes as GPF-1's runtime
   and voltages equal to float32 rounding. Whole-network rewiring with seed 0 reproduces the
   paper's rewired connectome exactly.
-- **Not modelled yet:** gap junctions (electrical synapses), neuromodulation, plasticity
-  during reading, and multi-compartment neurons. Chemical synapses only.
+- **Gap junctions** (electrical synapses) are supported. Import them with `--type-col` (edges
+  marked `electrical`); they are stored as `gap.npz` and switched on by `neuron.gap_gain` in
+  the spec. The rewiring controls rewire them too, by degree-preserving double-edge swaps.
+- **Not modelled yet:** neuromodulation, plasticity during reading, and multi-compartment
+  neurons.
+
+## Examples
+
+| Example | What it shows |
+|---|---|
+| [`gpf/connectome/specs/malecns-v1.json`](gpf/connectome/specs/malecns-v1.json) | the adult fly CNS (166,700 neurons), GPF-1's protocol |
+| [`examples/celegans/`](examples/celegans/) | a different species: the whole C. elegans worm (Cook et al. 2019), with gap junctions and a hand-chosen operating point. Its result has the same pattern as the fly's. |
+| [`examples/toy_connectome/`](examples/toy_connectome/) | a made-up network, showing the CSV format end to end |
