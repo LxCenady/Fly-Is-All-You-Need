@@ -630,7 +630,18 @@ from the model's rules or from our readout metric; their contribution is a
 quantification, not a mechanism. The two findings that depend on the wiring
 and the operating point, the KC retrieval key and the side-and-subtype output
 map, were reproduced across items, shuffle seeds, code sizes and code types;
-their sensitivity to gain, tonic drive and noise is being tested.
+we also varied gain (1.2, 1.8; reference 1.5), tonic drive (0.03, 0.08;
+reference 0.05) and added membrane noise (2 and 5\,Hz), rerunning the real
+wiring in each job (the reference reproduced 0.756 and 0.885 exactly). The
+side-and-subtype swap kept output distinctness within 0.016 of the real wiring
+in all 14 variant-and-code combinations, while randomising KC$\rightarrow$MBON
+wiring removed it in all of them. The retrieval key changed strongly, but
+through one variable only: at 160 PNs cue specificity fell as the KC overlap
+between items rose (Spearman $\rho=-0.96$ over the seven settings) (overlap 0.05, 0.08, 0.17, 0.46, 0.58, 0.60,
+0.94; specificity 9.9, 9.3, 4.7, 2.8, 2.9, 2.0, 1.95), whichever parameter
+raised it. Higher gain, stronger tonic drive and noise all densify the KC code
+and weaken the key; the dependence on sparseness, not on a particular
+parameter setting, is the robust result.
 
 \begin{table}[t]
 \caption{Status of the main findings.}
@@ -641,10 +652,11 @@ Memory on weights after $\sim$1\,s & Time scale set by the 100\,ms membrane
 constant; the transplant test is the evidence\\
 Lifetime = prescribed decay & By construction; shows only that no other
 forgetting emerges\\
-KC identity is the retrieval key & Emergent; depends on the sparse operating
-point (12 pairs, two sparse points)\\
+KC identity is the retrieval key & Emergent; strength set by KC sparseness
+across gain, tonic and noise settings (12 pairs, two sparse points)\\
 Side + subtype set output identity & Emergent from the wiring; amounts to the
-lobe/side output channels (several shuffle seeds, two code sizes and types)\\
+lobe/side output channels (several shuffle seeds, two code sizes and types,
+seven parameter settings)\\
 DAN chooses the compartment (87\%) & Largely by construction (rule applies
 DAN signal via DAN$\rightarrow$MBON edges); the connectome sets how little
 teachers overlap\\
@@ -658,7 +670,9 @@ synapses; the rarity of flips is the finding\\\bottomrule
 
 \paragraph*{Limitations}
 One connectome and one reconstruction; leaky integrate-and-fire neurons with
-hand-set gain, tonic drive and zero noise; a hand-set plasticity rule and
+hand-set gain, tonic drive and zero noise (the two emergent findings were
+checked at two other values of each and with 2 and 5\,Hz noise, other results
+only at the reference); a hand-set plasticity rule and
 valence signs; symbol codes that are not odour responses; operating points
 chosen by us; write pairs and items within one connectome as the only
 replication; input current as a linear proxy that ignores spiking; the sparse
