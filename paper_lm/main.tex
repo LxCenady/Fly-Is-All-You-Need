@@ -603,6 +603,55 @@ Whether a richer teacher, longer eligibility traces or slower decay would let
 it store something n-gram statistics do not have remains open; we have not
 shown that it can.
 
+Table~\ref{tab:lmstatus} summarises how strong each finding is. We also ran a
+pre-registered confirmatory test on text never used before, with three unused
+PN codes; hypotheses, thresholds and evaluation code were public before the
+runs. On this text:
+\begin{itemize}
+\item the fly connectome lowered BPC from 3.088 (context table) to 3.007--3.017,
+while a 5-gram reached 2.612;
+\item the character two back was decoded in 82--85\% of cases;
+\item a class-preserving rewired connectome at matched activity scored within
+0.013 BPC of the real one;
+\item the worm connectome showed the same pattern.
+\end{itemize}
+All three language-model hypotheses were confirmed. This shows that the
+pattern holds on new inputs. It does not show that it holds for other
+connectomes, readouts or tasks.
+
+\begin{table*}[t]
+\caption{Status of the main findings.
+\emph{Class:} E = in-model empirical; C = follows from the model or the metric;
+X = exploratory (single run or setting chosen after seeing the data).
+Intervals are 95\%.
+\emph{Confirmatory:} the pre-registered test on an unseen text segment
+(characters 900{,}000 onward) with three unused PN-code seeds
+(\texttt{repro/PREREGISTRATION.md}).}
+\label{tab:lmstatus}\centering\footnotesize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}p{0.25\textwidth}p{0.17\textwidth}p{0.42\textwidth}p{0.1\textwidth}@{}}\toprule
+Finding & Class & Evidence & Confirmatory\\\midrule
+The earlier benchmark was an n-gram score & E & hashed trigram alone 42.9\% /
+3.205 BPC (one split) & --\\
+Sparse input: the brain improves the context table & E & 18/18 held-out cases;
+$-0.078$ [$-0.093$, $-0.063$] (160 PNs), $-0.076$ [$-0.087$, $-0.065$] (192);
+dense $-0.007$ [$-0.021$, $+0.008$] & H6: confirmed\\
+A 5-gram beats every brain model & E & 3 segments; gap 0.442 [0.416, 0.469] BPC
+(segment 0) & H6: confirmed\\
+Adding the brain to a 5-gram hurts & E & 3 segments & --\\
+The brain holds about four characters & E & 3 segments; character 2 back
+decoded in 83.9\% [82.7, 85.0] (all features) & H6: confirmed\\
+Rewired connectomes do as well & E & 3 segments, 1 rewiring each (same gain);
+matched activity: 3.126 / 3.120 vs 3.122 & H7: confirmed\\
+The advantage vanishes with more data & X & 1 segment, 1 code draw & --\\
+The MB learns online with a content teacher & E (a decoder correction made
+after the first runs) & 5 seeds, synthetic task & --\\
+On real text it adds nothing to a 5-gram & E (pre-stated criterion failed) &
+3 segments & --\\
+The worm shows the same pattern & E; the operating point was set by hand &
+3 codes, rewiring 3 seeds $\times$ 2 kinds & H8: confirmed\\\bottomrule
+\end{tabular}
+\end{table*}
+
 \paragraph*{Limitations} One fly connectome (a second species only in the
 framework check of Section~\ref{sec:uctf}) and, in Section~\ref{sec:brain}, one
 rewiring of each kind at the same gain; one corpus; short splits (20k characters, one 100k run); one readout fit per case;

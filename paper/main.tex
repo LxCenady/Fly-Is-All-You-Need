@@ -205,9 +205,24 @@ MBON's change distribution, destroying KC identity) or within each KC (keeping
 which KCs changed, destroying which MBON they address). Wiring nulls rewire
 PN$\rightarrow$KC or KC$\rightarrow$MBON edges while preserving in-degrees,
 out-degrees and weight multisets, without duplicate edges. The simulation is
-deterministic at zero noise; the units of replication are write pairs, items
-and null draws, all within one connectome, so we report ranges and medians and
-do not attach $p$ values to population claims. Decision rules were written
+deterministic at zero noise. Within one input code, write pairs, items and
+null draws are not independent, so for single runs we report ranges and
+medians and no $p$ values. For the five key results we repeated the
+experiments with fresh input codes: new random PN codes (five seeds; three
+for the transplant and downstream tests) or new glomerular codes (five seeds).
+These give independent sets of stimuli. We report 95\% intervals from a
+cluster bootstrap over code seeds, with pairs resampled within each seed.
+
+We then registered hypotheses with pass thresholds, three further code
+seeds and the evaluation code in the public repository
+(\texttt{repro/PREREGISTRATION.md}), before running them. The confirmatory
+outcomes are given in Table~\ref{tab:status}; all five hypotheses were
+confirmed, one narrowly. In H4 the downstream response changed in 9.5\% of
+cells with an unchanged MBON spike count, against a limit of 10\%. In the
+reference run, all such cells were ones where a spike moved in time
+(Section~\ref{sec:downstream}); the confirmatory runs did not record spike
+timing. All units still lie within one
+connectome, one simulator and one team's code. Decision rules were written
 into each script before its data were inspected.
 
 % =====================================================================
@@ -516,7 +531,7 @@ Dense input (512 PNs): connectome / shuffle & \multicolumn{2}{c}{0.91 / 0.95--0.
 \end{tabular}
 \end{table}
 
-\subsection{Downstream neurons see the memory only through MBON spikes}
+\subsection{Downstream neurons see the memory only through MBON spikes}\label{sec:downstream}
 \label{sec:gating}
 In the sparse regime the cued MBON response is mostly subthreshold (about one
 MBON spike per probe), and central targets showed no change at the numerical
@@ -627,9 +642,14 @@ MBON response \cite{hafez2023}, and how graded such a readout is in a
 compartmental model is open.
 
 Table~\ref{tab:status} separates what the simulations discovered from what
-the model builds in. Four of the seven findings follow, in whole or in part,
-from the model's rules or from our readout metric; their contribution is a
-quantification, not a mechanism. The two findings that depend on the wiring
+the model builds in, and from what is exploratory.
+\begin{itemize}
+\item Four findings follow, in whole or in part, from the model's rules or from
+our readout metric; their contribution is a quantification, not a mechanism.
+\item Two rest on a single fit or a single pair.
+\item Five key results were repeated with fresh input codes and then tested in
+a pre-registered confirmatory run.
+\end{itemize} The two findings that depend on the wiring
 and the operating point, the KC retrieval key and the side-and-subtype output
 map, were reproduced across items, shuffle seeds, code sizes and code types;
 we also varied gain (1.2, 1.8; reference 1.5), tonic drive (0.03, 0.08;
@@ -676,30 +696,46 @@ randomising KC$\rightarrow$MBON wiring (open), for the seven settings and two
 input codes; points on the diagonal keep the output map.}
 \label{fig:sens}\end{figure*}
 
-\begin{table}[t]
-\caption{Status of the main findings.}
-\label{tab:status}\centering\footnotesize\setlength{\tabcolsep}{2.5pt}
-\begin{tabular}{@{}p{0.34\columnwidth}p{0.62\columnwidth}@{}}\toprule
-Finding & Status\\\midrule
-Memory on weights after $\sim$1\,s & Time scale set by the 100\,ms membrane
-constant; the transplant test is the evidence\\
-Lifetime = prescribed decay & By construction; shows only that no other
-forgetting emerges\\
-KC identity is the retrieval key & Emergent; strength set by KC sparseness
-across gain, tonic and noise settings (12 pairs, two sparse points)\\
-Side + subtype set output identity & Emergent from the wiring; amounts to the
-lobe/side output channels (several shuffle seeds, two code sizes and types,
-seven parameter settings)\\
-DAN chooses the compartment (87\%) & Largely by construction (rule applies
-DAN signal via DAN$\rightarrow$MBON edges); the connectome sets how little
-teachers overlap\\
-Interference additive, set by overlap & Additivity by construction of the
-current metric; overlap dependence expected from theory
-\cite{dasgupta2017,shen2023}\\
-Downstream sees memory only via spikes & By construction of spike-based
-synapses; the rarity of flips is the finding\\\bottomrule
+\begin{table*}[t]
+\caption{Status of the main findings.
+\emph{Class:} E = in-model empirical (could have come out otherwise);
+C = follows from the model's rules or the metric; X = exploratory.
+\emph{Replication:} fresh input codes (new random or glomerular PN codes) are the
+independent units; 95\% intervals from a cluster bootstrap over code seeds.
+\emph{Confirmatory:} the pre-registered test on three further, previously
+unused code seeds (Methods).}
+\label{tab:status}\centering\footnotesize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}p{0.2\textwidth}p{0.24\textwidth}p{0.4\textwidth}p{0.1\textwidth}@{}}\toprule
+Finding & Class & Replication with fresh input codes & Confirmatory\\\midrule
+Memory on weights after $\sim$1\,s & E; the time scale is the 100\,ms
+membrane constant (C) & 3 codes: $D_m/D_\mathrm{nat}$ median 1.0000 [0.9999,
+1.0000], minimum 0.995 & H5: confirmed\\
+Lifetime = prescribed decay & C; shows only that no other forgetting emerges &
+-- & --\\
+KC identity is the retrieval key & E; its strength follows KC sparseness &
+5 codes $\times$ 6 pairs: cue specificity 5.3 [4.2, 7.4] (160 PNs), 4.5 [3.6,
+6.2] (192) vs 1.02 [1.00, 1.06] (512); KC-identity shuffle keeps 0.11 [0.09,
+0.17] and 0.15 [0.11, 0.20] & H1: confirmed\\
+Side + subtype set output identity & E; amounts to the lobe/side output
+channels & 5 codes: side+subtype swap changes item cosine by $-0.002$
+[$-0.007$, $+0.004$] (160) and $-0.008$ [$-0.010$, $-0.006$] (192);
+KC$\rightarrow$MBON shuffle by $+0.135$ [$+0.102$, $+0.175$] and $+0.174$
+[$+0.140$, $+0.206$] (reference $+0.21$) & H2: confirmed\\
+Subtype mixture explains 66\% of output & X (in-sample fit, 26 items) & -- & --\\
+DAN chooses the compartment & C, largely (the rule applies the DAN signal
+through DAN$\rightarrow$MBON edges); how little teachers overlap is set by the
+connectome (E) & 5 glomerular codes: teacher share 0.86 [0.84, 0.89] (reference
+0.87) & H3: confirmed\\
+Interference additive, set by overlap & additivity C (the current metric is
+linear); overlap dependence E, expected from theory
+\cite{dasgupta2017,shen2023} & -- & --\\
+Downstream sees memory only via spikes & C (spike-based synapses); the rarity
+of flips is E & 3 codes: downstream changed in 60/60 cells with a changed MBON
+spike count, 12/180 without (moved spikes included) & H4: confirmed (0.095 vs limit 0.10)\\
+Readout lifetime = lifetime of an extra MBON spike & X (one pair shown) & -- &
+--\\\bottomrule
 \end{tabular}
-\end{table}
+\end{table*}
 
 \paragraph*{Predictions}
 The model makes four predictions that experiments in the fly could test.
