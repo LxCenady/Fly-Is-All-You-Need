@@ -17,3 +17,5 @@ uctf/examples/toy_connectome/toy/
 third_party/flybrain/dist/
 third_party/flybrain/build/
 third_party/flybrain/*.egg-info/
+uctf/build/
+*.egg-info/

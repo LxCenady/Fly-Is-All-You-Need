@@ -53,6 +53,8 @@ Neurotransmitters are handled at two levels:
 
 ```
 pip install -e uctf                  # numpy + scipy; add [gpu] for CuPy, [malecns] for the fly
+# or, without the repository, the released wheel:
+# pip install https://github.com/LxCenady/Fly-Is-All-You-Need/releases/download/gpf-v0.5/uctf-0.2.0-py3-none-any.whl
 python -m uctf                       # lists the commands
 python -m uctf plugins               # every registered plugin
 python uctf/tests/test_uctf.py       # invariants, CPU, seconds
