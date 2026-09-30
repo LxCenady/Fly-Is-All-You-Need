@@ -1,0 +1,94 @@
+{
+  "val_acc": 0.42877178922059705,
+  "bpc": 3.345738410949707,
+  "bpc_t1": 3.3454675674438477,
+  "temperature": 1.0146944819666985,
+  "memory_lags": [
+    1,
+    2,
+    4,
+    8
+  ],
+  "mode": "biological",
+  "train_samples": 19991,
+  "val_samples": 4991,
+  "seconds": 1548.6313216686249,
+  "population_train": {
+    "fast": {
+      "kc": 4064,
+      "mbon": 97,
+      "dan": 356,
+      "plastic_edges": 0,
+      "neural_features": 512,
+      "continued_state": false
+    },
+    "mb": {
+      "kc": 4064,
+      "mbon": 97,
+      "dan": 356,
+      "plastic_edges": 61210,
+      "neural_features": 0,
+      "continued_state": false
+    }
+  },
+  "population_val": {
+    "fast": {
+      "kc": 4064,
+      "mbon": 97,
+      "dan": 356,
+      "plastic_edges": 0,
+      "neural_features": 512,
+      "continued_state": true
+    },
+    "mb": {
+      "kc": 4064,
+      "mbon": 97,
+      "dan": 356,
+      "plastic_edges": 61210,
+      "neural_features": 0,
+      "continued_state": true
+    }
+  },
+  "config": {
+    "corpus": "D:\\flybrain_lm_cuda\\corpus\\tinyshakespeare.txt",
+    "data": "D:\\flybrain_lm_cuda\\data",
+    "mode": "biological",
+    "engineering_signal": "current_char",
+    "train_chars": 20000,
+    "val_chars": 5000,
+    "k": 6,
+    "sustain": 0.5,
+    "active": 512,
+    "drive": 1.0,
+    "gain": 1.5,
+    "tonic": 0.05,
+    "window": 4,
+    "gamma": 0.5,
+    "position_codes": false,
+    "trace_tau": 0.1,
+    "neural_top": 512,
+    "neural_kind": "probe",
+    "probe": "models/mb_memory_neuron_probe.npz",
+    "edge_bins": 4096,
+    "edge_hash_bins": 8192,
+    "eligibility_bins": 0,
+    "eligibility_hash_bins": 1024,
+    "eta": 0.02,
+    "eligibility_tau": 0.5,
+    "weight_tau": 4.0,
+    "max_modulation": 0.9,
+    "memory_lags": "1,2,4,8",
+    "memory_epochs": 10,
+    "memory_l2": 0.0001,
+    "raw_edge": false,
+    "dual_lane": true,
+    "softmax_epochs": 10,
+    "softmax_batch": 2048,
+    "softmax_lr": 0.02,
+    "softmax_l2": 0.1,
+    "skip_order": 3,
+    "skip_buckets": 32768,
+    "seed": 20260916,
+    "out": "models/plastic_memory_lm_biological_dual_probe_20k_l2p1.npz"
+  }
+}
