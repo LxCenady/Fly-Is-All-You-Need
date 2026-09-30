@@ -1,0 +1,3495 @@
+{
+ "about": "Write results/MANIFEST.json: for every file under results/, its sha256, size and provenance.",
+ "levels": "(best available is recorded):\n  rerun-verified    rerun with the canonical command in the pinned environment (flybrain\n                    0.1.0.post1) and found to match the committed file within tolerance; the rerun's\n                    manifest (commit, environment, data hashes, timing) is embedded\n  command-recorded  the exact command is known from the job queue that produced it\n  script-known      the producing script is known (docs/CLAIMS_EVIDENCE.md), not the exact arguments\n  derived           a summary or plot input computed from other results\n  unknown           none of the above (listed so that the gap is visible)",
+ "counts": {
+  "command-recorded": 74,
+  "script-known": 45,
+  "config-recorded": 42,
+  "derived": 6,
+  "rerun-verified": 17
+ },
+ "files": {
+  "results/apl/m2_apl_fb100.json": {
+   "sha256": "493de4f0493eb10229b4f030c206556505cb083ce66e5db94a9367bcacdaf253",
+   "bytes": 41354,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/apl/queue.json",
+   "name": "apl_apl_fb100_m2",
+   "command": [
+    "python",
+    "mechanism/with_env.py",
+    "MB_LESION=apl_fb100",
+    "--",
+    "mechanism/m2_current.py",
+    "{out:m2_apl_fb100.json}",
+    "ac,bd,eg,fh,ik,jl",
+    "160:1.5,512:1.0"
+   ],
+   "env": null
+  },
+  "results/apl/m2_apl_fb1000.json": {
+   "sha256": "649b036ea901dd1d00be1c88863b9a4ec73b11a05a9c40d02366b5ce83886125",
+   "bytes": 41370,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/apl/queue.json",
+   "name": "apl_apl_fb1000_m2",
+   "command": [
+    "python",
+    "mechanism/with_env.py",
+    "MB_LESION=apl_fb1000",
+    "--",
+    "mechanism/m2_current.py",
+    "{out:m2_apl_fb1000.json}",
+    "ac,bd,eg,fh,ik,jl",
+    "160:1.5,512:1.0"
+   ],
+   "env": null
+  },
+  "results/apl/m2_apl_off.json": {
+   "sha256": "bcb02810220a22cee33ddccf3c34bcf7850537af66c9ba108513c8e76e66affc",
+   "bytes": 41370,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/apl/queue.json",
+   "name": "apl_apl_off_m2",
+   "command": [
+    "python",
+    "mechanism/with_env.py",
+    "MB_LESION=apl_off",
+    "--",
+    "mechanism/m2_current.py",
+    "{out:m2_apl_off.json}",
+    "ac,bd,eg,fh,ik,jl",
+    "160:1.5,512:1.0"
+   ],
+   "env": null
+  },
+  "results/apl/m2_base.json": {
+   "sha256": "cc2e84cfd026f82e1e61026f6b25cfbe722f59847e644d093664ffbceed53482",
+   "bytes": 41320,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/apl/queue.json",
+   "name": "apl_base_m2",
+   "command": [
+    "python",
+    "mechanism/with_env.py",
+    "--",
+    "mechanism/m2_current.py",
+    "{out:m2_base.json}",
+    "ac,bd,eg,fh,ik,jl",
+    "160:1.5,512:1.0"
+   ],
+   "env": null
+  },
+  "results/apl/m9_independent.json": {
+   "sha256": "62c4f80b5cd1205b21e9a1ce19622864b68f90daa5b36f6382f26bcb33bfeed5",
+   "bytes": 8274,
+   "provenance": "script-known",
+   "script": "mechanism/m9_independent.py"
+  },
+  "results/apl/route160r_apl_fb100.json": {
+   "sha256": "0664fa279236f71ff650a96d973531a7b8f882129a18f3c1d56fe2f8a7729243",
+   "bytes": 1162,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/apl/queue.json",
+   "name": "apl_apl_fb100_route",
+   "command": [
+    "python",
+    "mechanism/with_env.py",
+    "MB_LESION=apl_fb100",
+    "--",
+    "mechanism/m3_kcmbon.py",
+    "{out:route160r_apl_fb100.json}",
+    "160:1.5",
+    "real:0,profile_type_side:3,kc_perm:3",
+    "random"
+   ],
+   "env": null
+  },
+  "results/apl/route160r_apl_fb1000.json": {
+   "sha256": "8a40b72bc79d29090d841f139648edfec29aeac7b4692a35f5c9e3784d9c0a2a",
+   "bytes": 1159,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/apl/queue.json",
+   "name": "apl_apl_fb1000_route",
+   "command": [
+    "python",
+    "mechanism/with_env.py",
+    "MB_LESION=apl_fb1000",
+    "--",
+    "mechanism/m3_kcmbon.py",
+    "{out:route160r_apl_fb1000.json}",
+    "160:1.5",
+    "real:0,profile_type_side:3,kc_perm:3",
+    "random"
+   ],
+   "env": null
+  },
+  "results/apl/route160r_apl_off.json": {
+   "sha256": "2b81e88b7afd21e7b744c830c217689bf488c4e97a31984dafd5dd2635acfb69",
+   "bytes": 1159,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/apl/queue.json",
+   "name": "apl_apl_off_route",
+   "command": [
+    "python",
+    "mechanism/with_env.py",
+    "MB_LESION=apl_off",
+    "--",
+    "mechanism/m3_kcmbon.py",
+    "{out:route160r_apl_off.json}",
+    "160:1.5",
+    "real:0,profile_type_side:3,kc_perm:3",
+    "random"
+   ],
+   "env": null
+  },
+  "results/apl/route160r_base.json": {
+   "sha256": "2b81e88b7afd21e7b744c830c217689bf488c4e97a31984dafd5dd2635acfb69",
+   "bytes": 1159,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/apl/queue.json",
+   "name": "apl_base_route",
+   "command": [
+    "python",
+    "mechanism/with_env.py",
+    "--",
+    "mechanism/m3_kcmbon.py",
+    "{out:route160r_base.json}",
+    "160:1.5",
+    "real:0,profile_type_side:3,kc_perm:3",
+    "random"
+   ],
+   "env": null
+  },
+  "results/asset_a_rerun.json": {
+   "sha256": "f8fd3cb229ef117919b31bfb269b41f8d499d928807fc00d6d10037792eee583",
+   "bytes": 24065,
+   "provenance": "script-known",
+   "claims": [
+    "M21"
+   ],
+   "script": "`rerun_asset_a.py`"
+  },
+  "results/kc_density.json": {
+   "sha256": "e8ac27e7baae443b69e83d343de20adadead7f6ed39269ff5bb9145054c60e04",
+   "bytes": 5128,
+   "provenance": "script-known",
+   "claims": [
+    "M6"
+   ],
+   "script": "`kc_density.py`, `sweep_opoint.py`"
+  },
+  "results/kc_input_clusters.npz": {
+   "sha256": "6a77a6e1b6ccabaa5c17eccce37a4ded2c6ef76f8ef02811648bd987e5f5e1bf",
+   "bytes": 807480,
+   "provenance": "script-known",
+   "script": "mechanism/m6_structure.py"
+  },
+  "results/lm/ctx_only_20k.json": {
+   "sha256": "5b19a6d6e2ce99ccf7ac04cb651cd3f05642fbf2b97755aa2455b77132852fe6",
+   "bytes": 680,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py",
+   "claims": [
+    "L4"
+   ]
+  },
+  "results/lm/ctx_only_6k.json": {
+   "sha256": "1ea379c07e5990732414a32891e561920bf97f449e28e9e2c4bfc1d27158daf1",
+   "bytes": 675,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py"
+  },
+  "results/lm/ctx_only_skip3_20k.json": {
+   "sha256": "50d7172d6335a4438ee2f3e61e25ec5e42ebe626ccac7605b9228a863fd1e03e",
+   "bytes": 640,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py"
+  },
+  "results/lm/ctx_only_skip3_6k.json": {
+   "sha256": "a39337aba3ae0a19c09ce3d4f43da9ddea6bdf1e106f4221dddd139eecc7dd3c",
+   "bytes": 618,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py"
+  },
+  "results/lm/d512_6k_all_skip3_fix.json": {
+   "sha256": "21dd75cc1377af46e28a28437e767f41afec764f85c308042d6ff3d80080cdf3",
+   "bytes": 710,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py"
+  },
+  "results/lm/dense_all_skip0.json": {
+   "sha256": "62d9eaf8c3e446a6e70baccd6725c851bffc8735a1e8ea5cee9601c008d24f0a",
+   "bytes": 687,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py"
+  },
+  "results/lm/dense_all_skip3_l2e2.json": {
+   "sha256": "0e0b14b2219c1026bc20d4fe2def7f646746b8d873fc19783b866c00250ba20c",
+   "bytes": 690,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py"
+  },
+  "results/lm/dense_bio_6k_all_skip3.json": {
+   "sha256": "f144434b9abc3dff8151bc25bf98b5b23e5b9545bbad2415b13088a9366b1cd7",
+   "bytes": 690,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py"
+  },
+  "results/lm/dense_frozen_6k_all_skip3.json": {
+   "sha256": "4977fadab0979170561fa4123833fef36bac75b6e76f44f06a13f1e5e0604168",
+   "bytes": 703,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py"
+  },
+  "results/lm/legacy/README.md": {
+   "sha256": "126dc3ebba88201d4deb212c37caeab458abad9fb40448f4f40bb5041feca9bd",
+   "bytes": 1292,
+   "provenance": "derived"
+  },
+  "results/lm/legacy/exp7_metrics.json": {
+   "sha256": "c0a114e76cd88fe64536e274a46875529c1c913f5ea00406b331c4500c4d4f63",
+   "bytes": 186,
+   "provenance": "script-known",
+   "script": "harness/lm/exp7_shakespeare.py (historical)"
+  },
+  "results/lm/legacy/flybrain_memoryrank512_skip3h32k_softmax.metrics.json": {
+   "sha256": "7c37f9d8862aafc660d7d77201965d876042f14405785366da93b05ef49b190d",
+   "bytes": 1468,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py",
+   "claims": [
+    "L1"
+   ]
+  },
+  "results/lm/legacy/plastic_memory_lm_biological_dual_probe_20k_l2p1.metrics.json": {
+   "sha256": "6a65864736faa99a3781993e17454b925a56ac38b63e4573a53ab883e2b8bd40",
+   "bytes": 2197,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py",
+   "claims": [
+    "L2"
+   ]
+  },
+  "results/lm/night/SUMMARY.md": {
+   "sha256": "8b7c461a59f249dda5caa237645889859dd6543f11d3fb6b82ff8d46e57ef847",
+   "bytes": 3622,
+   "provenance": "derived"
+  },
+  "results/lm/night/d512_100k.json": {
+   "sha256": "831d209047a8eb28bb7768807d59c1a7026aa9f0bb4dcc44b692f7b31c501eff",
+   "bytes": 730,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/night/queue.json",
+   "name": "lm2_d512_100k",
+   "command": [
+    "python",
+    "mechanism/lm_mech.py",
+    "--out",
+    "{out:d512_100k.json}",
+    "--train",
+    "100000",
+    "--val",
+    "20000",
+    "--active",
+    "512",
+    "--scale",
+    "1.0",
+    "--mode",
+    "frozen",
+    "--features",
+    "kc,mbon_v,mbon_spk,central",
+    "--l2",
+    "1e-2",
+    "--cache",
+    "{out:d512_100k.npz}"
+   ],
+   "env": null
+  },
+  "results/lm/night/d512_o0_c-1.json": {
+   "sha256": "743f4bde0063826cadfbd53075c4368987ab9a455b01e8a35e76e950c8bf90a1",
+   "bytes": 732,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/night/queue.json",
+   "name": "lm1_d512_o0_c-1",
+   "command": [
+    "python",
+    "mechanism/lm_mech.py",
+    "--out",
+    "{out:d512_o0_c-1.json}",
+    "--train",
+    "20000",
+    "--val",
+    "5000",
+    "--active",
+    "512",
+    "--scale",
+    "1.0",
+    "--mode",
+    "frozen",
+    "--features",
+    "kc,mbon_v,mbon_spk,central",
+    "--l2",
+    "1e-2",
+    "--offset",
+    "0",
+    "--code-seed",
+    "-1",
+    "--cache",
+    "{out:d512_o0_c-1.npz}"
+   ],
+   "env": null
+  },
+  "results/lm/night/d512_o0_c11.json": {
+   "sha256": "138f870aa2fda66345939e9b9b728e2399732099fc424c53d89713c3a2e930dc",
+   "bytes": 731,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/night/queue.json",
+   "name": "lm1_d512_o0_c11",
+   "command": [
+    "python",
+    "mechanism/lm_mech.py",
+    "--out",
+    "{out:d512_o0_c11.json}",
+    "--train",
+    "20000",
+    "--val",
+    "5000",
+    "--active",
+    "512",
+    "--scale",
+    "1.0",
+    "--mode",
+    "frozen",
+    "--features",
+    "kc,mbon_v,mbon_spk,central",
+    "--l2",
+    "1e-2",
+    "--offset",
+    "0",
+    "--code-seed",
+    "11",
+    "--cache",
+    "{out:d512_o0_c11.npz}"
+   ],
+   "env": null
+  },
+  "results/lm/night/d512_o0_c23.json": {
+   "sha256": "bf6eb24c31d57a2f79d4589fc480f6b5e8879020a6e904936e5d286a27932b3e",
+   "bytes": 730,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/night/queue.json",
+   "name": "lm1_d512_o0_c23",
+   "command": [
+    "python",
+    "mechanism/lm_mech.py",
+    "--out",
+    "{out:d512_o0_c23.json}",
+    "--train",
+    "20000",
+    "--val",
+    "5000",
+    "--active",
+    "512",
+    "--scale",
+    "1.0",
+    "--mode",
+    "frozen",
+    "--features",
+    "kc,mbon_v,mbon_spk,central",
+    "--l2",
+    "1e-2",
+    "--offset",
+    "0",
+    "--code-seed",
+    "23",
+    "--cache",
+    "{out:d512_o0_c23.npz}"
+   ],
+   "env": null
+  },
+  "results/lm/night/d512_o300000_c-1.json": {
+   "sha256": "b199d66f220b57ff0c29a11096817d0ba91aacf9ccabe4005cee403ef6f6db81",
+   "bytes": 745,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/night/queue.json",
+   "name": "lm1_d512_o300000_c-1",
+   "command": [
+    "python",
+    "mechanism/lm_mech.py",
+    "--out",
+    "{out:d512_o300000_c-1.json}",
+    "--train",
+    "20000",
+    "--val",
+    "5000",
+    "--active",
+    "512",
+    "--scale",
+    "1.0",
+    "--mode",
+    "frozen",
+    "--features",
+    "kc,mbon_v,mbon_spk,central",
+    "--l2",
+    "1e-2",
+    "--offset",
+    "300000",
+    "--code-seed",
+    "-1",
+    "--cache",
+    "{out:d512_o300000_c-1.npz}"
+   ],
+   "env": null
+  },
+  "results/lm/night/d512_o300000_c11.json": {
+   "sha256": "bcf56b98c7589980c5c2a0403d2c204b18d9156aaa6fee317eb5d21d07c3043a",
+   "bytes": 746,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/night/queue.json",
+   "name": "lm1_d512_o300000_c11",
+   "command": [
+    "python",
+    "mechanism/lm_mech.py",
+    "--out",
+    "{out:d512_o300000_c11.json}",
+    "--train",
+    "20000",
+    "--val",
+    "5000",
+    "--active",
+    "512",
+    "--scale",
+    "1.0",
+    "--mode",
+    "frozen",
+    "--features",
+    "kc,mbon_v,mbon_spk,central",
+    "--l2",
+    "1e-2",
+    "--offset",
+    "300000",
+    "--code-seed",
+    "11",
+    "--cache",
+    "{out:d512_o300000_c11.npz}"
+   ],
+   "env": null
+  },
+  "results/lm/night/d512_o300000_c23.json": {
+   "sha256": "b9987b7185504eafd80108c5849ace0ba3bba20be0baf9f9dcfd84c9e2a0b795",
+   "bytes": 744,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/night/queue.json",
+   "name": "lm1_d512_o300000_c23",
+   "command": [
+    "python",
+    "mechanism/lm_mech.py",
+    "--out",
+    "{out:d512_o300000_c23.json}",
+    "--train",
+    "20000",
+    "--val",
+    "5000",
+    "--active",
+    "512",
+    "--scale",
+    "1.0",
+    "--mode",
+    "frozen",
+    "--features",
+    "kc,mbon_v,mbon_spk,central",
+    "--l2",
+    "1e-2",
+    "--offset",
+    "300000",
+    "--code-seed",
+    "23",
+    "--cache",
+    "{out:d512_o300000_c23.npz}"
+   ],
+   "env": null
+  },
+  "results/lm/night/d512_o600000_c-1.json": {
+   "sha256": "3e4bc2f5cb32c687e5fb1d51ef0eb4f6fa668e3b4c50b20ba7482362e11a918b",
+   "bytes": 746,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/night/queue.json",
+   "name": "lm1_d512_o600000_c-1",
+   "command": [
+    "python",
+    "mechanism/lm_mech.py",
+    "--out",
+    "{out:d512_o600000_c-1.json}",
+    "--train",
+    "20000",
+    "--val",
+    "5000",
+    "--active",
+    "512",
+    "--scale",
+    "1.0",
+    "--mode",
+    "frozen",
+    "--features",
+    "kc,mbon_v,mbon_spk,central",
+    "--l2",
+    "1e-2",
+    "--offset",
+    "600000",
+    "--code-seed",
+    "-1",
+    "--cache",
+    "{out:d512_o600000_c-1.npz}"
+   ],
+   "env": null
+  },
+  "results/lm/night/d512_o600000_c11.json": {
+   "sha256": "20aab84924dad873d1fa357801fa21de7ecce593cf19f7717a0ee899f4fd9df7",
+   "bytes": 746,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/night/queue.json",
+   "name": "lm1_d512_o600000_c11",
+   "command": [
+    "python",
+    "mechanism/lm_mech.py",
+    "--out",
+    "{out:d512_o600000_c11.json}",
+    "--train",
+    "20000",
+    "--val",
+    "5000",
+    "--active",
+    "512",
+    "--scale",
+    "1.0",
+    "--mode",
+    "frozen",
+    "--features",
+    "kc,mbon_v,mbon_spk,central",
+    "--l2",
+    "1e-2",
+    "--offset",
+    "600000",
+    "--code-seed",
+    "11",
+    "--cache",
+    "{out:d512_o600000_c11.npz}"
+   ],
+   "env": null
+  },
+  "results/lm/night/d512_o600000_c23.json": {
+   "sha256": "d0d44f8b203d07bcd3212f8cd7b073b900f83f2783d20c39a7ef85544cfc9b48",
+   "bytes": 744,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/night/queue.json",
+   "name": "lm1_d512_o600000_c23",
+   "command": [
+    "python",
+    "mechanism/lm_mech.py",
+    "--out",
+    "{out:d512_o600000_c23.json}",
+    "--train",
+    "20000",
+    "--val",
+    "5000",
+    "--active",
+    "512",
+    "--scale",
+    "1.0",
+    "--mode",
+    "frozen",
+    "--features",
+    "kc,mbon_v,mbon_spk,central",
+    "--l2",
+    "1e-2",
+    "--offset",
+    "600000",
+    "--code-seed",
+    "23",
+    "--cache",
+    "{out:d512_o600000_c23.npz}"
+   ],
+   "env": null
+  },
+  "results/lm/night/kc_ablate.json": {
+   "sha256": "188bcc0f9e5c5c09caf8bcf7af19687f274f041501c9ae7e31550800c06125df",
+   "bytes": 1097,
+   "provenance": "script-known",
+   "script": "mechanism/kc_ablate.py"
+  },
+  "results/lm/night/kc_ablate_100k.json": {
+   "sha256": "c047348f34498efd532bf9c94c5143aba82602edac4d349910b5ad0495335bbf",
+   "bytes": 341,
+   "provenance": "script-known",
+   "script": "mechanism/kc_ablate.py"
+  },
+  "results/lm/night/lm_controls.json": {
+   "sha256": "1565141a8bd76af4cfbb60d0311c04c41968912da43667376b0f5adc97c6334d",
+   "bytes": 2996,
+   "provenance": "script-known",
+   "claims": [
+    "L7"
+   ],
+   "script": "`lm_controls.py` (A2)"
+  },
+  "results/lm/night/lm_controls2.json": {
+   "sha256": "93bf5d8151862e31018c2a69b5ebb24df3b0be25987daf89a1c1e72822b34d9c",
+   "bytes": 2271,
+   "provenance": "script-known",
+   "script": "mechanism/lm_controls2.py"
+  },
+  "results/lm/night/mech_m2_12pairs.json": {
+   "sha256": "ab21706a44598b8df1ee8d556247c043a43b5d464d3f6e6bdac12a49c43bd208",
+   "bytes": 123797,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/night/queue.json",
+   "name": "mech3_m2_12pairs",
+   "command": [
+    "python",
+    "mechanism/m2_current.py",
+    "{out:mech_m2_12pairs.json}",
+    "ac,bd,eg,fh,ik,jl,mo,np,qs,rt,uw,vx",
+    "160:1.5,192:1.5,512:1.0"
+   ],
+   "env": null
+  },
+  "results/lm/night/mech_route_160_glom.json": {
+   "sha256": "12754e3197710be8d59b70c3118c1cc28f1ba3d783fb80f21d3f10addafaeecd",
+   "bytes": 4078,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/night/queue.json",
+   "name": "mech3_route_160_glom",
+   "command": [
+    "python",
+    "mechanism/m3_kcmbon.py",
+    "{out:mech_route_160_glom.json}",
+    "160:1.5",
+    "profile_type_side:3,profile_type_side:4,profile_type_side:5,kc_perm:3,kc_perm:4,profile_type:3,profile_type:4,pn_perm:3,pn_perm:4",
+    "glom"
+   ],
+   "env": null
+  },
+  "results/lm/night/mech_route_160_random.json": {
+   "sha256": "58d187923c839203f262cd2498192789c8182c959e1ccdc27838b195031471c4",
+   "bytes": 3687,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/night/queue.json",
+   "name": "mech3_route_160_random",
+   "command": [
+    "python",
+    "mechanism/m3_kcmbon.py",
+    "{out:mech_route_160_random.json}",
+    "160:1.5",
+    "profile_type_side:3,profile_type_side:4,profile_type_side:5,kc_perm:3,kc_perm:4,profile_type:3,profile_type:4,pn_perm:3,pn_perm:4",
+    "random"
+   ],
+   "env": null
+  },
+  "results/lm/night/mech_route_192_glom.json": {
+   "sha256": "b4411c9ff73de61eca2091c327e23238bece13200ee9c9796158a81d822756c5",
+   "bytes": 4080,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/night/queue.json",
+   "name": "mech3_route_192_glom",
+   "command": [
+    "python",
+    "mechanism/m3_kcmbon.py",
+    "{out:mech_route_192_glom.json}",
+    "192:1.5",
+    "profile_type_side:3,profile_type_side:4,profile_type_side:5,kc_perm:3,kc_perm:4,profile_type:3,profile_type:4,pn_perm:3,pn_perm:4",
+    "glom"
+   ],
+   "env": null
+  },
+  "results/lm/night/mech_route_192_random.json": {
+   "sha256": "3c42df2275cb064537c02958c647650c41a57c7a84e5dce132ac10a0fbb4c45d",
+   "bytes": 3693,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/night/queue.json",
+   "name": "mech3_route_192_random",
+   "command": [
+    "python",
+    "mechanism/m3_kcmbon.py",
+    "{out:mech_route_192_random.json}",
+    "192:1.5",
+    "profile_type_side:3,profile_type_side:4,profile_type_side:5,kc_perm:3,kc_perm:4,profile_type:3,profile_type:4,pn_perm:3,pn_perm:4",
+    "random"
+   ],
+   "env": null
+  },
+  "results/lm/night/s160_100k.json": {
+   "sha256": "c41fd48f07f666a53c8f5aa0e3c950d44e95209328e164362d6a387da84b5e83",
+   "bytes": 731,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/night/queue.json",
+   "name": "lm2_s160_100k",
+   "command": [
+    "python",
+    "mechanism/lm_mech.py",
+    "--out",
+    "{out:s160_100k.json}",
+    "--train",
+    "100000",
+    "--val",
+    "20000",
+    "--active",
+    "160",
+    "--scale",
+    "1.5",
+    "--mode",
+    "frozen",
+    "--features",
+    "kc,mbon_v,mbon_spk,central",
+    "--l2",
+    "1e-2",
+    "--cache",
+    "{out:s160_100k.npz}"
+   ],
+   "env": null
+  },
+  "results/lm/night/s160_o0_c-1.json": {
+   "sha256": "d1b5d8bea777f30a3e9a448c4972c6c31df9339d0d069a14d0ab94a6cd1da939",
+   "bytes": 747,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/night/queue.json",
+   "name": "lm1_s160_o0_c-1",
+   "command": [
+    "python",
+    "mechanism/lm_mech.py",
+    "--out",
+    "{out:s160_o0_c-1.json}",
+    "--train",
+    "20000",
+    "--val",
+    "5000",
+    "--active",
+    "160",
+    "--scale",
+    "1.5",
+    "--mode",
+    "frozen",
+    "--features",
+    "kc,mbon_v,mbon_spk,central",
+    "--l2",
+    "1e-2",
+    "--offset",
+    "0",
+    "--code-seed",
+    "-1",
+    "--cache",
+    "{out:s160_o0_c-1.npz}"
+   ],
+   "env": null
+  },
+  "results/lm/night/s160_o0_c11.json": {
+   "sha256": "9114f5f0f02802efeb9bfbbff3d4c14071c6590fbd953bc73e0162de72f88fcb",
+   "bytes": 747,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/night/queue.json",
+   "name": "lm1_s160_o0_c11",
+   "command": [
+    "python",
+    "mechanism/lm_mech.py",
+    "--out",
+    "{out:s160_o0_c11.json}",
+    "--train",
+    "20000",
+    "--val",
+    "5000",
+    "--active",
+    "160",
+    "--scale",
+    "1.5",
+    "--mode",
+    "frozen",
+    "--features",
+    "kc,mbon_v,mbon_spk,central",
+    "--l2",
+    "1e-2",
+    "--offset",
+    "0",
+    "--code-seed",
+    "11",
+    "--cache",
+    "{out:s160_o0_c11.npz}"
+   ],
+   "env": null
+  },
+  "results/lm/night/s160_o0_c23.json": {
+   "sha256": "d4d952d29df7edd2063e96660df344918b9bc770067407e2ed7fa0af8e531486",
+   "bytes": 747,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/night/queue.json",
+   "name": "lm1_s160_o0_c23",
+   "command": [
+    "python",
+    "mechanism/lm_mech.py",
+    "--out",
+    "{out:s160_o0_c23.json}",
+    "--train",
+    "20000",
+    "--val",
+    "5000",
+    "--active",
+    "160",
+    "--scale",
+    "1.5",
+    "--mode",
+    "frozen",
+    "--features",
+    "kc,mbon_v,mbon_spk,central",
+    "--l2",
+    "1e-2",
+    "--offset",
+    "0",
+    "--code-seed",
+    "23",
+    "--cache",
+    "{out:s160_o0_c23.npz}"
+   ],
+   "env": null
+  },
+  "results/lm/night/s160_o300000_c-1.json": {
+   "sha256": "05eb2e539e4cc921ff33b4a0b068291eaac3febc90877e9d3e3fca963e89f422",
+   "bytes": 746,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/night/queue.json",
+   "name": "lm1_s160_o300000_c-1",
+   "command": [
+    "python",
+    "mechanism/lm_mech.py",
+    "--out",
+    "{out:s160_o300000_c-1.json}",
+    "--train",
+    "20000",
+    "--val",
+    "5000",
+    "--active",
+    "160",
+    "--scale",
+    "1.5",
+    "--mode",
+    "frozen",
+    "--features",
+    "kc,mbon_v,mbon_spk,central",
+    "--l2",
+    "1e-2",
+    "--offset",
+    "300000",
+    "--code-seed",
+    "-1",
+    "--cache",
+    "{out:s160_o300000_c-1.npz}"
+   ],
+   "env": null
+  },
+  "results/lm/night/s160_o300000_c11.json": {
+   "sha256": "c0a51f73c932dee577ae591285571a90862bace39f699d8264d5cf5ea6771f29",
+   "bytes": 746,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/night/queue.json",
+   "name": "lm1_s160_o300000_c11",
+   "command": [
+    "python",
+    "mechanism/lm_mech.py",
+    "--out",
+    "{out:s160_o300000_c11.json}",
+    "--train",
+    "20000",
+    "--val",
+    "5000",
+    "--active",
+    "160",
+    "--scale",
+    "1.5",
+    "--mode",
+    "frozen",
+    "--features",
+    "kc,mbon_v,mbon_spk,central",
+    "--l2",
+    "1e-2",
+    "--offset",
+    "300000",
+    "--code-seed",
+    "11",
+    "--cache",
+    "{out:s160_o300000_c11.npz}"
+   ],
+   "env": null
+  },
+  "results/lm/night/s160_o300000_c23.json": {
+   "sha256": "4c4c499b47c9951d0636b5bf8ff5327577068d96415aea78c7946484d81c9cc2",
+   "bytes": 746,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/night/queue.json",
+   "name": "lm1_s160_o300000_c23",
+   "command": [
+    "python",
+    "mechanism/lm_mech.py",
+    "--out",
+    "{out:s160_o300000_c23.json}",
+    "--train",
+    "20000",
+    "--val",
+    "5000",
+    "--active",
+    "160",
+    "--scale",
+    "1.5",
+    "--mode",
+    "frozen",
+    "--features",
+    "kc,mbon_v,mbon_spk,central",
+    "--l2",
+    "1e-2",
+    "--offset",
+    "300000",
+    "--code-seed",
+    "23",
+    "--cache",
+    "{out:s160_o300000_c23.npz}"
+   ],
+   "env": null
+  },
+  "results/lm/night/s160_o600000_c-1.json": {
+   "sha256": "20913e1a43b1d3ecc9f3b5031dd33be15551f1c08d4b52b9b46057abc1600e31",
+   "bytes": 744,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/night/queue.json",
+   "name": "lm1_s160_o600000_c-1",
+   "command": [
+    "python",
+    "mechanism/lm_mech.py",
+    "--out",
+    "{out:s160_o600000_c-1.json}",
+    "--train",
+    "20000",
+    "--val",
+    "5000",
+    "--active",
+    "160",
+    "--scale",
+    "1.5",
+    "--mode",
+    "frozen",
+    "--features",
+    "kc,mbon_v,mbon_spk,central",
+    "--l2",
+    "1e-2",
+    "--offset",
+    "600000",
+    "--code-seed",
+    "-1",
+    "--cache",
+    "{out:s160_o600000_c-1.npz}"
+   ],
+   "env": null
+  },
+  "results/lm/night/s160_o600000_c11.json": {
+   "sha256": "51b3acaf72f3f68732be0f4af14dd84b9c551b6ab502b5c641ad062dfe144dca",
+   "bytes": 761,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/night/queue.json",
+   "name": "lm1_s160_o600000_c11",
+   "command": [
+    "python",
+    "mechanism/lm_mech.py",
+    "--out",
+    "{out:s160_o600000_c11.json}",
+    "--train",
+    "20000",
+    "--val",
+    "5000",
+    "--active",
+    "160",
+    "--scale",
+    "1.5",
+    "--mode",
+    "frozen",
+    "--features",
+    "kc,mbon_v,mbon_spk,central",
+    "--l2",
+    "1e-2",
+    "--offset",
+    "600000",
+    "--code-seed",
+    "11",
+    "--cache",
+    "{out:s160_o600000_c11.npz}"
+   ],
+   "env": null
+  },
+  "results/lm/night/s160_o600000_c23.json": {
+   "sha256": "eebc46a62b1359df5a78ceb8117631f1b0ff4087a8da02447d5edd7050401c6d",
+   "bytes": 759,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/night/queue.json",
+   "name": "lm1_s160_o600000_c23",
+   "command": [
+    "python",
+    "mechanism/lm_mech.py",
+    "--out",
+    "{out:s160_o600000_c23.json}",
+    "--train",
+    "20000",
+    "--val",
+    "5000",
+    "--active",
+    "160",
+    "--scale",
+    "1.5",
+    "--mode",
+    "frozen",
+    "--features",
+    "kc,mbon_v,mbon_spk,central",
+    "--l2",
+    "1e-2",
+    "--offset",
+    "600000",
+    "--code-seed",
+    "23",
+    "--cache",
+    "{out:s160_o600000_c23.npz}"
+   ],
+   "env": null
+  },
+  "results/lm/night/s192_o0_c-1.json": {
+   "sha256": "ba4c30db95ecb1ea881f8050dd52ea5bf627e054f03a1fec456039891605ea0c",
+   "bytes": 733,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/night/queue.json",
+   "name": "lm1_s192_o0_c-1",
+   "command": [
+    "python",
+    "mechanism/lm_mech.py",
+    "--out",
+    "{out:s192_o0_c-1.json}",
+    "--train",
+    "20000",
+    "--val",
+    "5000",
+    "--active",
+    "192",
+    "--scale",
+    "1.5",
+    "--mode",
+    "frozen",
+    "--features",
+    "kc,mbon_v,mbon_spk,central",
+    "--l2",
+    "1e-2",
+    "--offset",
+    "0",
+    "--code-seed",
+    "-1",
+    "--cache",
+    "{out:s192_o0_c-1.npz}"
+   ],
+   "env": null
+  },
+  "results/lm/night/s192_o0_c11.json": {
+   "sha256": "de6ae0f9420ae9cabc2c96f48ec3ba081edec7f448afde9c3fe72b5d2e556577",
+   "bytes": 728,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/night/queue.json",
+   "name": "lm1_s192_o0_c11",
+   "command": [
+    "python",
+    "mechanism/lm_mech.py",
+    "--out",
+    "{out:s192_o0_c11.json}",
+    "--train",
+    "20000",
+    "--val",
+    "5000",
+    "--active",
+    "192",
+    "--scale",
+    "1.5",
+    "--mode",
+    "frozen",
+    "--features",
+    "kc,mbon_v,mbon_spk,central",
+    "--l2",
+    "1e-2",
+    "--offset",
+    "0",
+    "--code-seed",
+    "11",
+    "--cache",
+    "{out:s192_o0_c11.npz}"
+   ],
+   "env": null
+  },
+  "results/lm/night/s192_o0_c23.json": {
+   "sha256": "9fc086cf83be99149879f7b12176efd56737e87b0646387631b0d562ccb18fb2",
+   "bytes": 745,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/night/queue.json",
+   "name": "lm1_s192_o0_c23",
+   "command": [
+    "python",
+    "mechanism/lm_mech.py",
+    "--out",
+    "{out:s192_o0_c23.json}",
+    "--train",
+    "20000",
+    "--val",
+    "5000",
+    "--active",
+    "192",
+    "--scale",
+    "1.5",
+    "--mode",
+    "frozen",
+    "--features",
+    "kc,mbon_v,mbon_spk,central",
+    "--l2",
+    "1e-2",
+    "--offset",
+    "0",
+    "--code-seed",
+    "23",
+    "--cache",
+    "{out:s192_o0_c23.npz}"
+   ],
+   "env": null
+  },
+  "results/lm/night/s192_o300000_c-1.json": {
+   "sha256": "fc8ac4552d34c9ed1fb5cb942697097c8d50f58da7d55b172d1713f669197de4",
+   "bytes": 760,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/night/queue.json",
+   "name": "lm1_s192_o300000_c-1",
+   "command": [
+    "python",
+    "mechanism/lm_mech.py",
+    "--out",
+    "{out:s192_o300000_c-1.json}",
+    "--train",
+    "20000",
+    "--val",
+    "5000",
+    "--active",
+    "192",
+    "--scale",
+    "1.5",
+    "--mode",
+    "frozen",
+    "--features",
+    "kc,mbon_v,mbon_spk,central",
+    "--l2",
+    "1e-2",
+    "--offset",
+    "300000",
+    "--code-seed",
+    "-1",
+    "--cache",
+    "{out:s192_o300000_c-1.npz}"
+   ],
+   "env": null
+  },
+  "results/lm/night/s192_o300000_c11.json": {
+   "sha256": "6fe8033452da40ec111b858651863330d8142fd29fdf5c2a36bda8ebf8a1d4f9",
+   "bytes": 746,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/night/queue.json",
+   "name": "lm1_s192_o300000_c11",
+   "command": [
+    "python",
+    "mechanism/lm_mech.py",
+    "--out",
+    "{out:s192_o300000_c11.json}",
+    "--train",
+    "20000",
+    "--val",
+    "5000",
+    "--active",
+    "192",
+    "--scale",
+    "1.5",
+    "--mode",
+    "frozen",
+    "--features",
+    "kc,mbon_v,mbon_spk,central",
+    "--l2",
+    "1e-2",
+    "--offset",
+    "300000",
+    "--code-seed",
+    "11",
+    "--cache",
+    "{out:s192_o300000_c11.npz}"
+   ],
+   "env": null
+  },
+  "results/lm/night/s192_o300000_c23.json": {
+   "sha256": "0abbf1ae9c85b9eea7a4252e836834ed60244819b001cdda379fc84e7e4f4f98",
+   "bytes": 746,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/night/queue.json",
+   "name": "lm1_s192_o300000_c23",
+   "command": [
+    "python",
+    "mechanism/lm_mech.py",
+    "--out",
+    "{out:s192_o300000_c23.json}",
+    "--train",
+    "20000",
+    "--val",
+    "5000",
+    "--active",
+    "192",
+    "--scale",
+    "1.5",
+    "--mode",
+    "frozen",
+    "--features",
+    "kc,mbon_v,mbon_spk,central",
+    "--l2",
+    "1e-2",
+    "--offset",
+    "300000",
+    "--code-seed",
+    "23",
+    "--cache",
+    "{out:s192_o300000_c23.npz}"
+   ],
+   "env": null
+  },
+  "results/lm/night/s192_o600000_c-1.json": {
+   "sha256": "cf6af5312bc88d2560228e2de38f7056b5f648014cb0a0feedd8e85265c7eb11",
+   "bytes": 745,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/night/queue.json",
+   "name": "lm1_s192_o600000_c-1",
+   "command": [
+    "python",
+    "mechanism/lm_mech.py",
+    "--out",
+    "{out:s192_o600000_c-1.json}",
+    "--train",
+    "20000",
+    "--val",
+    "5000",
+    "--active",
+    "192",
+    "--scale",
+    "1.5",
+    "--mode",
+    "frozen",
+    "--features",
+    "kc,mbon_v,mbon_spk,central",
+    "--l2",
+    "1e-2",
+    "--offset",
+    "600000",
+    "--code-seed",
+    "-1",
+    "--cache",
+    "{out:s192_o600000_c-1.npz}"
+   ],
+   "env": null
+  },
+  "results/lm/night/s192_o600000_c11.json": {
+   "sha256": "af163c09da9dc43aa917a1f9a6f8f1bfc9fa2b45a182a0ea1527cbed6b57de27",
+   "bytes": 761,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/night/queue.json",
+   "name": "lm1_s192_o600000_c11",
+   "command": [
+    "python",
+    "mechanism/lm_mech.py",
+    "--out",
+    "{out:s192_o600000_c11.json}",
+    "--train",
+    "20000",
+    "--val",
+    "5000",
+    "--active",
+    "192",
+    "--scale",
+    "1.5",
+    "--mode",
+    "frozen",
+    "--features",
+    "kc,mbon_v,mbon_spk,central",
+    "--l2",
+    "1e-2",
+    "--offset",
+    "600000",
+    "--code-seed",
+    "11",
+    "--cache",
+    "{out:s192_o600000_c11.npz}"
+   ],
+   "env": null
+  },
+  "results/lm/night/s192_o600000_c23.json": {
+   "sha256": "9e7bc7f0ef9c96127aff61fcc2bd21fddd441857b150c2e8e7a6421fb12bced5",
+   "bytes": 746,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/night/queue.json",
+   "name": "lm1_s192_o600000_c23",
+   "command": [
+    "python",
+    "mechanism/lm_mech.py",
+    "--out",
+    "{out:s192_o600000_c23.json}",
+    "--train",
+    "20000",
+    "--val",
+    "5000",
+    "--active",
+    "192",
+    "--scale",
+    "1.5",
+    "--mode",
+    "frozen",
+    "--features",
+    "kc,mbon_v,mbon_spk,central",
+    "--l2",
+    "1e-2",
+    "--offset",
+    "600000",
+    "--code-seed",
+    "23",
+    "--cache",
+    "{out:s192_o600000_c23.npz}"
+   ],
+   "env": null
+  },
+  "results/lm/night/select_d512.json": {
+   "sha256": "7c13d20e7c36f7dfbc4415cc12c3bc89edb39bd4339d0b835f3b3f2895b7ffc8",
+   "bytes": 10965,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/night/queue.json",
+   "name": "lm1_select_d512",
+   "command": [
+    "python",
+    "mechanism/lm_select.py",
+    "{out:select_d512.json}",
+    "E:/mechanism_20260928/night/d512_o0_c-1.npz:0:20000:5000",
+    "E:/mechanism_20260928/night/d512_o0_c11.npz:0:20000:5000",
+    "E:/mechanism_20260928/night/d512_o0_c23.npz:0:20000:5000",
+    "E:/mechanism_20260928/night/d512_o300000_c-1.npz:300000:20000:5000",
+    "E:/mechanism_20260928/night/d512_o300000_c11.npz:300000:20000:5000",
+    "E:/mechanism_20260928/night/d512_o300000_c23.npz:300000:20000:5000",
+    "E:/mechanism_20260928/night/d512_o600000_c-1.npz:600000:20000:5000",
+    "E:/mechanism_20260928/night/d512_o600000_c11.npz:600000:20000:5000",
+    "E:/mechanism_20260928/night/d512_o600000_c23.npz:600000:20000:5000"
+   ],
+   "env": null
+  },
+  "results/lm/night/select_d512_100k.json": {
+   "sha256": "cf6fe140b1c92963468ef421e31039f563a9fb48a59b7c5f2ca699fdbe93f611",
+   "bytes": 1199,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/night/queue.json",
+   "name": "lm2_select_d512_100k",
+   "command": [
+    "python",
+    "mechanism/lm_select.py",
+    "{out:select_d512_100k.json}",
+    "E:/mechanism_20260928/night/d512_100k.npz:0:100000:20000"
+   ],
+   "env": null
+  },
+  "results/lm/night/select_s160.json": {
+   "sha256": "f2906e400c6e377df91f4a6f6b041616ad5cc88a57ac2c18933c62c68bf88bff",
+   "bytes": 10944,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/night/queue.json",
+   "name": "lm1_select_s160",
+   "command": [
+    "python",
+    "mechanism/lm_select.py",
+    "{out:select_s160.json}",
+    "E:/mechanism_20260928/night/s160_o0_c-1.npz:0:20000:5000",
+    "E:/mechanism_20260928/night/s160_o0_c11.npz:0:20000:5000",
+    "E:/mechanism_20260928/night/s160_o0_c23.npz:0:20000:5000",
+    "E:/mechanism_20260928/night/s160_o300000_c-1.npz:300000:20000:5000",
+    "E:/mechanism_20260928/night/s160_o300000_c11.npz:300000:20000:5000",
+    "E:/mechanism_20260928/night/s160_o300000_c23.npz:300000:20000:5000",
+    "E:/mechanism_20260928/night/s160_o600000_c-1.npz:600000:20000:5000",
+    "E:/mechanism_20260928/night/s160_o600000_c11.npz:600000:20000:5000",
+    "E:/mechanism_20260928/night/s160_o600000_c23.npz:600000:20000:5000"
+   ],
+   "env": null
+  },
+  "results/lm/night/select_s160_100k.json": {
+   "sha256": "dd9734854c6cec1c65f3f60a3f1e528aaac0bde8d0c7c36ef3e2289ced7b579d",
+   "bytes": 1228,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/night/queue.json",
+   "name": "lm2_select_s160_100k",
+   "command": [
+    "python",
+    "mechanism/lm_select.py",
+    "{out:select_s160_100k.json}",
+    "E:/mechanism_20260928/night/s160_100k.npz:0:100000:20000"
+   ],
+   "env": null
+  },
+  "results/lm/night/select_s192.json": {
+   "sha256": "ba339f0516962ac336f0adc2e0254d698c2d0cd97e5147d750a4113cd4f7f175",
+   "bytes": 10937,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/night/queue.json",
+   "name": "lm1_select_s192",
+   "command": [
+    "python",
+    "mechanism/lm_select.py",
+    "{out:select_s192.json}",
+    "E:/mechanism_20260928/night/s192_o0_c-1.npz:0:20000:5000",
+    "E:/mechanism_20260928/night/s192_o0_c11.npz:0:20000:5000",
+    "E:/mechanism_20260928/night/s192_o0_c23.npz:0:20000:5000",
+    "E:/mechanism_20260928/night/s192_o300000_c-1.npz:300000:20000:5000",
+    "E:/mechanism_20260928/night/s192_o300000_c11.npz:300000:20000:5000",
+    "E:/mechanism_20260928/night/s192_o300000_c23.npz:300000:20000:5000",
+    "E:/mechanism_20260928/night/s192_o600000_c-1.npz:600000:20000:5000",
+    "E:/mechanism_20260928/night/s192_o600000_c11.npz:600000:20000:5000",
+    "E:/mechanism_20260928/night/s192_o600000_c23.npz:600000:20000:5000"
+   ],
+   "env": null
+  },
+  "results/lm/s160_frozen_20k_skip0_l21e-2.json": {
+   "sha256": "a3e4677cad1edcfd35c45199e23e98ff4200c50f22e5798950c22b9f2cbcb023",
+   "bytes": 706,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py"
+  },
+  "results/lm/s160_frozen_20k_skip0_l23e-2.json": {
+   "sha256": "99887fa0f394abc2c7a949e294d358ffea970bfc7f5ca3bce4f06e9ffdf60e1b",
+   "bytes": 722,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py"
+  },
+  "results/lm/s160_frozen_20k_skip3.json": {
+   "sha256": "7927d048d09ea287f71bdc8181489f206aeee70264deddcc1e72e4e7a1c969ee",
+   "bytes": 705,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py"
+  },
+  "results/lm/s160_frozen_20k_skip3_l21e-2.json": {
+   "sha256": "5a752a2bd40fbe68616c5ab820def8012588687120a062a8a9a54199f41f82b4",
+   "bytes": 722,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py"
+  },
+  "results/lm/s160_frozen_20k_skip3_l23e-2.json": {
+   "sha256": "ed423bd8ff473e5d4254d826d66ca70fcea6e10c509cb34395431aaedb9c22a3",
+   "bytes": 708,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py"
+  },
+  "results/lm/s160_skip3_ep30.json": {
+   "sha256": "a8dd26988dc483e4a9e718f7bea8ebf6caed4ba92634191e2604fe3d42e67b4e",
+   "bytes": 709,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py"
+  },
+  "results/lm/s160_skip3_kc_only.json": {
+   "sha256": "d5f55483efe6728c6b1fe31fccedf8716e8eca2422e2ecd3d2fee5ed88dae7c3",
+   "bytes": 672,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py"
+  },
+  "results/lm/s160_skip3_l25e-3.json": {
+   "sha256": "883981f125722ab2353d1cd16acd845704957af8af0988ff197acda8d8f197b5",
+   "bytes": 711,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py"
+  },
+  "results/lm/s160_skip3_lag01.json": {
+   "sha256": "a5b13ed14113f6c6774923224e9a64551994045c32a46cece6af3879e1de3ae3",
+   "bytes": 696,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py"
+  },
+  "results/lm/s160_skip3_lag012.json": {
+   "sha256": "5a0baf20cbe688622080f1958cc0d86453a5bbaecdbbf5a1c2a0e0c39455c812",
+   "bytes": 715,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py"
+  },
+  "results/lm/s160_skip3_nokc.json": {
+   "sha256": "fdeae68e1e98568c55b2dfa3708aa7f5eb5380d8c4f21c376c3081e9f5ebf88f",
+   "bytes": 691,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py"
+  },
+  "results/lm/s192_6k_all_skip0.json": {
+   "sha256": "bbe7db0258c67cfe91f4dfe88580183639fafcced9acc255f727c7d39a3ebc8a",
+   "bytes": 707,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py"
+  },
+  "results/lm/s192_6k_all_skip3_fix.json": {
+   "sha256": "b0c18e1506a3c2c64c6608c1ea9617d4f4b5eba4cfaba8fdb94ca8cc580558aa",
+   "bytes": 711,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py"
+  },
+  "results/lm/s192_biopulse_20k_skip0_l21e-2.json": {
+   "sha256": "9cfff046985ae299325aae57654a938e007ff652d72ec61499e5bc2cc71fb024",
+   "bytes": 741,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py"
+  },
+  "results/lm/s192_biopulse_20k_skip0_l23e-2.json": {
+   "sha256": "d7e0e86f3b516a027c71a80a74681829648d27e3de0ec880e34cd238d6e8538a",
+   "bytes": 731,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py"
+  },
+  "results/lm/s192_biopulse_20k_skip3.json": {
+   "sha256": "95647ac1ada9093f362b9834456cd110285317e033bfddd24c03c779107a4437",
+   "bytes": 716,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py"
+  },
+  "results/lm/s192_biopulse_20k_skip3_l21e-2.json": {
+   "sha256": "969ffe176b802538b771539fcab63d65ce994f40af43ea0e0e2c083fd5257882",
+   "bytes": 716,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py"
+  },
+  "results/lm/s192_biopulse_20k_skip3_l23e-2.json": {
+   "sha256": "62b26925f0e08a2997fef6ae8497d316270ef22625bbb1d1cb271287c19cf418",
+   "bytes": 736,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py"
+  },
+  "results/lm/s192_frozen_20k_skip0_l21e-2.json": {
+   "sha256": "1caea4af16d4386b29d4277965cb147d4dcf926db5485b6932628aab7375107e",
+   "bytes": 707,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py"
+  },
+  "results/lm/s192_frozen_20k_skip0_l23e-2.json": {
+   "sha256": "0d99db87c977c424df23c68f94ce4ed1091509d1c8e75cc90780aba9aa112d33",
+   "bytes": 709,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py"
+  },
+  "results/lm/s192_frozen_20k_skip3.json": {
+   "sha256": "ef956990deb03e25a58c382e30b59b1474cd15eb0d1656a5741aeac2af079401",
+   "bytes": 722,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py"
+  },
+  "results/lm/s192_frozen_20k_skip3_l21e-2.json": {
+   "sha256": "48df76f0b94c192ad39e87675100dd9ac3db71bb309753e6a220ecd34d5c7225",
+   "bytes": 707,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py"
+  },
+  "results/lm/s192_frozen_20k_skip3_l23e-2.json": {
+   "sha256": "073f4a0defd3a692274ca5c943a3a8bb134f4a918f33fd0f694148960da7c65f",
+   "bytes": 709,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py"
+  },
+  "results/lm/sparse_all_skip0.json": {
+   "sha256": "bb9ea85c25b36d30d015fdaa63e69ebc8a15757bc3ed7ae3ce16212bb9cf5c7a",
+   "bytes": 674,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py"
+  },
+  "results/lm/sparse_all_skip3_l2e2.json": {
+   "sha256": "d819d40ef39218cd981f13a79878efd3cd90810c2158136f05d3e7b2c8e284b5",
+   "bytes": 680,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py"
+  },
+  "results/lm/sparse_bio_6k_all_skip3.json": {
+   "sha256": "1dae240948a40aa3c129a5d3e2da6767451113868dcd50a53beb2eca20dc03dc",
+   "bytes": 703,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py"
+  },
+  "results/lm/sparse_frozen_6k_all_skip3.json": {
+   "sha256": "183aae23803b85cfb60dc3f328425e6a69bd41cc41600cb657a60d462f392230",
+   "bytes": 705,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py"
+  },
+  "results/lm/sparse_kc_skip0.json": {
+   "sha256": "de9d29ea546d97584ce1855671a2bbc82e1b71497d96711494e6d8e3448c3f4c",
+   "bytes": 678,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py"
+  },
+  "results/lm/sparse_kc_skip3.json": {
+   "sha256": "53407415b011f30c48e33916794941dcf4007dd41c4299723651056df595d65d",
+   "bytes": 666,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py"
+  },
+  "results/lm/sparse_nokc_skip0.json": {
+   "sha256": "79c86b7269e414b78e285e06b1842cdf56442d5dbdd62ce3189cc2f3c6064cd2",
+   "bytes": 700,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py"
+  },
+  "results/lm/sparse_nokc_skip3.json": {
+   "sha256": "2fecbbfc5cf71e830dd7d6aa7c4c4fe156dd64cd23689ca895b41d236916aa5c",
+   "bytes": 699,
+   "provenance": "config-recorded",
+   "config_key": "config",
+   "script": "mechanism/lm_mech.py"
+  },
+  "results/lm/stats/lm_stats.json": {
+   "sha256": "4c9fe5f1b92602b51e80ff5284293dc5945612eba932c645e340b25f1072143d",
+   "bytes": 2134,
+   "provenance": "derived"
+  },
+  "results/lm/stats/perchar_fly_malecns.npz": {
+   "sha256": "88ad283abf6bbb9d03d4314cd77fa6d5bb150ff9e3566917012e545d203373cd",
+   "bytes": 49566,
+   "provenance": "derived"
+  },
+  "results/lm/stats/perchar_worm_cook2019.npz": {
+   "sha256": "2599713d6d1da99012f3fd5f0f142433b48f02f3c5c2af34042b236eaa0dccb1",
+   "bytes": 49539,
+   "provenance": "derived"
+  },
+  "results/lm_limits/conn/class_o0.json": {
+   "sha256": "c5da91409d8c4c593c5c8c433cad1396dde2005c8ae5311d49b088127003cf31",
+   "bytes": 736,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/conn/queue.json",
+   "name": "conn_class_o0",
+   "command": [
+    "python",
+    "mechanism/with_env.py",
+    "MB_DATA=E:/mechanism_20260928/conn_class",
+    "--",
+    "mechanism/lm_mech.py",
+    "--out",
+    "{out:class_o0.json}",
+    "--train",
+    "20000",
+    "--val",
+    "5000",
+    "--active",
+    "160",
+    "--scale",
+    "1.5",
+    "--mode",
+    "frozen",
+    "--features",
+    "kc,mbon_v,mbon_spk,central",
+    "--l2",
+    "5e-3",
+    "--offset",
+    "0",
+    "--cache",
+    "{out:class_o0.npz}"
+   ],
+   "env": null
+  },
+  "results/lm_limits/conn/class_o300000.json": {
+   "sha256": "27fe0bcf9dd5baca9ddc86ce9f1f9660a218f518c48c3cea5f4ba4bd459551e5",
+   "bytes": 753,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/conn/queue.json",
+   "name": "conn_class_o300000",
+   "command": [
+    "python",
+    "mechanism/with_env.py",
+    "MB_DATA=E:/mechanism_20260928/conn_class",
+    "--",
+    "mechanism/lm_mech.py",
+    "--out",
+    "{out:class_o300000.json}",
+    "--train",
+    "20000",
+    "--val",
+    "5000",
+    "--active",
+    "160",
+    "--scale",
+    "1.5",
+    "--mode",
+    "frozen",
+    "--features",
+    "kc,mbon_v,mbon_spk,central",
+    "--l2",
+    "5e-3",
+    "--offset",
+    "300000",
+    "--cache",
+    "{out:class_o300000.npz}"
+   ],
+   "env": null
+  },
+  "results/lm_limits/conn/class_o600000.json": {
+   "sha256": "38db1a952efbdd71162b36aa9d13990876aedac3dd0ce0086a0db666c5728e61",
+   "bytes": 738,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/conn/queue.json",
+   "name": "conn_class_o600000",
+   "command": [
+    "python",
+    "mechanism/with_env.py",
+    "MB_DATA=E:/mechanism_20260928/conn_class",
+    "--",
+    "mechanism/lm_mech.py",
+    "--out",
+    "{out:class_o600000.json}",
+    "--train",
+    "20000",
+    "--val",
+    "5000",
+    "--active",
+    "160",
+    "--scale",
+    "1.5",
+    "--mode",
+    "frozen",
+    "--features",
+    "kc,mbon_v,mbon_spk,central",
+    "--l2",
+    "5e-3",
+    "--offset",
+    "600000",
+    "--cache",
+    "{out:class_o600000.npz}"
+   ],
+   "env": null
+  },
+  "results/lm_limits/conn/full_o0.json": {
+   "sha256": "306aff469ca750e3bd2fee08d07c937a290bd326411e55734684ae42ae354cd3",
+   "bytes": 723,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/conn/queue.json",
+   "name": "conn_full_o0",
+   "command": [
+    "python",
+    "mechanism/with_env.py",
+    "MB_DATA=E:/mechanism_20260928/conn_full",
+    "--",
+    "mechanism/lm_mech.py",
+    "--out",
+    "{out:full_o0.json}",
+    "--train",
+    "20000",
+    "--val",
+    "5000",
+    "--active",
+    "160",
+    "--scale",
+    "1.5",
+    "--mode",
+    "frozen",
+    "--features",
+    "kc,mbon_v,mbon_spk,central",
+    "--l2",
+    "5e-3",
+    "--offset",
+    "0",
+    "--cache",
+    "{out:full_o0.npz}"
+   ],
+   "env": null
+  },
+  "results/lm_limits/conn/full_o300000.json": {
+   "sha256": "1cb906371459a0f40311437f9b68aafa2b20b453317786c3e8df00dbf737aad5",
+   "bytes": 737,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/conn/queue.json",
+   "name": "conn_full_o300000",
+   "command": [
+    "python",
+    "mechanism/with_env.py",
+    "MB_DATA=E:/mechanism_20260928/conn_full",
+    "--",
+    "mechanism/lm_mech.py",
+    "--out",
+    "{out:full_o300000.json}",
+    "--train",
+    "20000",
+    "--val",
+    "5000",
+    "--active",
+    "160",
+    "--scale",
+    "1.5",
+    "--mode",
+    "frozen",
+    "--features",
+    "kc,mbon_v,mbon_spk,central",
+    "--l2",
+    "5e-3",
+    "--offset",
+    "300000",
+    "--cache",
+    "{out:full_o300000.npz}"
+   ],
+   "env": null
+  },
+  "results/lm_limits/conn/full_o600000.json": {
+   "sha256": "38b026ba5c17b09779caa93efcaa78f73bd2b4286d89f00217f5dd00bddeff8b",
+   "bytes": 735,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/conn/queue.json",
+   "name": "conn_full_o600000",
+   "command": [
+    "python",
+    "mechanism/with_env.py",
+    "MB_DATA=E:/mechanism_20260928/conn_full",
+    "--",
+    "mechanism/lm_mech.py",
+    "--out",
+    "{out:full_o600000.json}",
+    "--train",
+    "20000",
+    "--val",
+    "5000",
+    "--active",
+    "160",
+    "--scale",
+    "1.5",
+    "--mode",
+    "frozen",
+    "--features",
+    "kc,mbon_v,mbon_spk,central",
+    "--l2",
+    "5e-3",
+    "--offset",
+    "600000",
+    "--cache",
+    "{out:full_o600000.npz}"
+   ],
+   "env": null
+  },
+  "results/lm_limits/lm_explain_all.json": {
+   "sha256": "4719d8ca7704bbff19256d14eb59f274d9a12a61c31dd238741cc210b7fbd4a4",
+   "bytes": 2466,
+   "provenance": "script-known",
+   "script": "mechanism/lm_explain_all.py"
+  },
+  "results/lm_limits/lm_explain_conn.json": {
+   "sha256": "822a47272c8e50da84ae0f995188cb2bbd41de8fbe00a84ee8820cd489132bb5",
+   "bytes": 7780,
+   "provenance": "script-known",
+   "claims": [
+    "L11"
+   ],
+   "script": "`lm_explain_conn.py`; `uctf bench --match-activity`"
+  },
+  "results/lm_limits/lm_explain_real.json": {
+   "sha256": "fa9e28722908458f5357b8e00799158e790fa73561f3981ef8092efb34c1fa28",
+   "bytes": 3890,
+   "provenance": "script-known",
+   "claims": [
+    "L8",
+    "L9",
+    "L10"
+   ],
+   "script": "`lm_explain.py`; `uctf bench`"
+  },
+  "results/lm_limits/lm_gru.json": {
+   "sha256": "7b064cb5ab563180218d752af349499932ac6b869afd5f762b0fec797371956e",
+   "bytes": 609,
+   "provenance": "script-known",
+   "claims": [
+    "L12"
+   ],
+   "script": "`lm_gru.py`"
+  },
+  "results/lm_limits/lm_online_eval.json": {
+   "sha256": "a322603e78f82b4af981a155c05616064473f0aa2081513afb3d62bc791ee3c7",
+   "bytes": 1682,
+   "provenance": "script-known",
+   "claims": [
+    "L14"
+   ],
+   "script": "`lm_online_eval.py`"
+  },
+  "results/lm_limits/lm_online_eval_cacheonly.json": {
+   "sha256": "8a39dfef5cb7f86f3b4d1d8d2803395361a73cef572dc92e749ee739ccf14e92",
+   "bytes": 706,
+   "provenance": "script-known",
+   "script": "mechanism/lm_online_eval.py"
+  },
+  "results/lm_limits/mb_online_v2_s0.json": {
+   "sha256": "e9bd90b8d7e97be65128a9057136169c6c49c8101f600e81f8dd9ffd177f17fa",
+   "bytes": 2657,
+   "provenance": "script-known",
+   "script": "mechanism/mb_online.py"
+  },
+  "results/lm_limits/mb_online_v2_s1.json": {
+   "sha256": "20afe518bfe55cf1ecd7675ab06839f4353e94c2f32b950c7c9db93fc4251a3d",
+   "bytes": 2626,
+   "provenance": "script-known",
+   "script": "mechanism/mb_online.py"
+  },
+  "results/lm_limits/mb_online_v2_s2.json": {
+   "sha256": "fde4c0f41d238778051d156b6aac1307cefbd7c02a28dab6e338a71feaa90c4d",
+   "bytes": 2625,
+   "provenance": "script-known",
+   "script": "mechanism/mb_online.py"
+  },
+  "results/lm_limits/mb_online_v2_s3.json": {
+   "sha256": "b61fb2a88b7fc7c98124b3bd00215da53ea9571ef1a77e7e30d013ceae0a2573",
+   "bytes": 2659,
+   "provenance": "script-known",
+   "script": "mechanism/mb_online.py"
+  },
+  "results/lm_limits/mb_online_v2_s4.json": {
+   "sha256": "5a7745791f00f10d7641f5ad3ec8369ad4986591048a6fbe01bd4014cbeee0b8",
+   "bytes": 2658,
+   "provenance": "script-known",
+   "script": "mechanism/mb_online.py"
+  },
+  "results/m1_cross.json": {
+   "sha256": "b5e3a3361674cca52cda1c61641e5aad7d55b14f35a59198db3a32b44e581c88",
+   "bytes": 92216,
+   "provenance": "rerun-verified",
+   "rerun_manifest": {
+    "id": "m1_cross",
+    "claims": [
+     "M2",
+     "M3"
+    ],
+    "output": "m1_cross.json",
+    "output_sha256": "b10d56074cd827bc9092195634f9a1fb729ebca72a3b12194e6666040c6092be",
+    "command": [
+     "python",
+     "mechanism/m1_cross.py",
+     "E:\\repro_20260930\\headline\\m1_cross.json"
+    ],
+    "cwd": "<repository root>",
+    "git_commit": "7f2d294d4bb1adfe88397b66d846bfda2b360b6c",
+    "git_dirty": false,
+    "started": "2026-09-30T07:57:38",
+    "finished": "2026-09-30T07:58:33",
+    "seconds": 55.0,
+    "exit_code": 0,
+    "environment": {
+     "python": "3.12.14",
+     "platform": "Windows-11-10.0.26200-SP0",
+     "numpy": "2.5.3",
+     "scipy": "1.18.1",
+     "numba": "0.67.0",
+     "cupy": "14.2.0",
+     "torch": "2.14.0+cu126",
+     "flybrain": "0.1.0.post1",
+     "flybrain_brain_py_sha256": "106e8dd26d7fa577a94e53b44a11d3d8f712a7efb0f9ae45eed1f78faaab78fb",
+     "cuda_runtime": 12090,
+     "cuda_driver": 13010,
+     "gpu": "NVIDIA GeForce RTX 3070 Ti Laptop GPU",
+     "nvidia_smi": "NVIDIA GeForce RTX 3070 Ti Laptop GPU, 591.59"
+    },
+    "requirements_lock_sha256": "ee611c4e15866399b4cf7d418ad7ac9ca60bf769a1e388f6162ff6b816201a4c",
+    "data_sha256": {
+     "brain.npz": "cc9bd1ecd00bd703a6fa648bc6ad145c93c7c1ee53debdcc9ce0d1f4305e6aca",
+     "weights.npz": "c29919aa44069a271b1ee978abe05fa9bf6e45e4ba3e436e92b624ef1b5be40c"
+    },
+    "threads": 4,
+    "env_vars": {},
+    "compare_to": "results/m1_cross.json"
+   },
+   "numbers_compared": 1888,
+   "max_abs_diff": 2.5286957844317115e-07,
+   "tolerance": "1e-5 + 1e-3 relative",
+   "claims": [
+    "M2"
+   ]
+  },
+  "results/m1_cross_a192.json": {
+   "sha256": "0f8599b6f3a99e89706db7f4843c98a8db233e004f0e0f9f8b500236a855b6f9",
+   "bytes": 90970,
+   "provenance": "rerun-verified",
+   "rerun_manifest": {
+    "id": "m1_cross_a192",
+    "claims": [
+     "M2",
+     "M3"
+    ],
+    "output": "m1_cross_a192.json",
+    "output_sha256": "a55f9235ca0f24d21f469b80a42778c18ba61e3882bb3f2e811b2a0831d3971f",
+    "command": [
+     "python",
+     "mechanism/m1_cross.py",
+     "E:\\repro_20260930\\headline\\m1_cross_a192.json",
+     "192",
+     "1.5"
+    ],
+    "cwd": "<repository root>",
+    "git_commit": "7f2d294d4bb1adfe88397b66d846bfda2b360b6c",
+    "git_dirty": false,
+    "started": "2026-09-30T07:58:33",
+    "finished": "2026-09-30T07:59:21",
+    "seconds": 48.6,
+    "exit_code": 0,
+    "environment": {
+     "python": "3.12.14",
+     "platform": "Windows-11-10.0.26200-SP0",
+     "numpy": "2.5.3",
+     "scipy": "1.18.1",
+     "numba": "0.67.0",
+     "cupy": "14.2.0",
+     "torch": "2.14.0+cu126",
+     "flybrain": "0.1.0.post1",
+     "flybrain_brain_py_sha256": "106e8dd26d7fa577a94e53b44a11d3d8f712a7efb0f9ae45eed1f78faaab78fb",
+     "cuda_runtime": 12090,
+     "cuda_driver": 13010,
+     "gpu": "NVIDIA GeForce RTX 3070 Ti Laptop GPU",
+     "nvidia_smi": "NVIDIA GeForce RTX 3070 Ti Laptop GPU, 591.59"
+    },
+    "requirements_lock_sha256": "ee611c4e15866399b4cf7d418ad7ac9ca60bf769a1e388f6162ff6b816201a4c",
+    "data_sha256": {
+     "brain.npz": "cc9bd1ecd00bd703a6fa648bc6ad145c93c7c1ee53debdcc9ce0d1f4305e6aca",
+     "weights.npz": "c29919aa44069a271b1ee978abe05fa9bf6e45e4ba3e436e92b624ef1b5be40c"
+    },
+    "threads": 4,
+    "env_vars": {},
+    "compare_to": "results/m1_cross_a192.json"
+   },
+   "numbers_compared": 1888,
+   "max_abs_diff": 2.2924002284378112e-07,
+   "tolerance": "1e-5 + 1e-3 relative",
+   "claims": [
+    "M2"
+   ]
+  },
+  "results/m1_validate_g0.json": {
+   "sha256": "d4f9b996593bd459341bf05f13fdea67f0cb54b324644db1da74a12f1d13860d",
+   "bytes": 989,
+   "provenance": "rerun-verified",
+   "rerun_manifest": {
+    "id": "m1_validate_g0",
+    "claims": [
+     "M1"
+    ],
+    "output": "m1_validate_g0.json",
+    "output_sha256": "abc0775394ff979ae391f4424c37f6d866126ebe72ec82c4f402495859ab90f6",
+    "command": [
+     "python",
+     "mechanism/m1_validate.py",
+     "E:\\repro_20260930\\headline\\m1_validate_g0.json",
+     "0"
+    ],
+    "cwd": "<repository root>",
+    "git_commit": "7f2d294d4bb1adfe88397b66d846bfda2b360b6c",
+    "git_dirty": false,
+    "started": "2026-09-30T07:56:55",
+    "finished": "2026-09-30T07:57:16",
+    "seconds": 21.5,
+    "exit_code": 0,
+    "environment": {
+     "python": "3.12.14",
+     "platform": "Windows-11-10.0.26200-SP0",
+     "numpy": "2.5.3",
+     "scipy": "1.18.1",
+     "numba": "0.67.0",
+     "cupy": "14.2.0",
+     "torch": "2.14.0+cu126",
+     "flybrain": "0.1.0.post1",
+     "flybrain_brain_py_sha256": "106e8dd26d7fa577a94e53b44a11d3d8f712a7efb0f9ae45eed1f78faaab78fb",
+     "cuda_runtime": 12090,
+     "cuda_driver": 13010,
+     "gpu": "NVIDIA GeForce RTX 3070 Ti Laptop GPU",
+     "nvidia_smi": "NVIDIA GeForce RTX 3070 Ti Laptop GPU, 591.59"
+    },
+    "requirements_lock_sha256": null,
+    "data_sha256": {
+     "brain.npz": "cc9bd1ecd00bd703a6fa648bc6ad145c93c7c1ee53debdcc9ce0d1f4305e6aca",
+     "weights.npz": "c29919aa44069a271b1ee978abe05fa9bf6e45e4ba3e436e92b624ef1b5be40c"
+    },
+    "threads": 4,
+    "env_vars": {},
+    "compare_to": "results/m1_validate_g0.json"
+   },
+   "numbers_compared": 26,
+   "max_abs_diff": 1.1920928955078125e-07,
+   "tolerance": "1e-5 + 1e-3 relative",
+   "claims": [
+    "M1"
+   ]
+  },
+  "results/m1_validate_g32.json": {
+   "sha256": "0a1401a7ec55654f78023e08731d8b185ae27af5a4dc9a3bf276b111dc036da3",
+   "bytes": 990,
+   "provenance": "rerun-verified",
+   "rerun_manifest": {
+    "id": "m1_validate_g32",
+    "claims": [
+     "M1"
+    ],
+    "output": "m1_validate_g32.json",
+    "output_sha256": "06562e7dd1836fffc65f6d9d47604d01767b454624937801147d1022f9eedc7b",
+    "command": [
+     "python",
+     "mechanism/m1_validate.py",
+     "E:\\repro_20260930\\headline\\m1_validate_g32.json",
+     "32"
+    ],
+    "cwd": "<repository root>",
+    "git_commit": "7f2d294d4bb1adfe88397b66d846bfda2b360b6c",
+    "git_dirty": false,
+    "started": "2026-09-30T07:57:16",
+    "finished": "2026-09-30T07:57:38",
+    "seconds": 21.4,
+    "exit_code": 0,
+    "environment": {
+     "python": "3.12.14",
+     "platform": "Windows-11-10.0.26200-SP0",
+     "numpy": "2.5.3",
+     "scipy": "1.18.1",
+     "numba": "0.67.0",
+     "cupy": "14.2.0",
+     "torch": "2.14.0+cu126",
+     "flybrain": "0.1.0.post1",
+     "flybrain_brain_py_sha256": "106e8dd26d7fa577a94e53b44a11d3d8f712a7efb0f9ae45eed1f78faaab78fb",
+     "cuda_runtime": 12090,
+     "cuda_driver": 13010,
+     "gpu": "NVIDIA GeForce RTX 3070 Ti Laptop GPU",
+     "nvidia_smi": "NVIDIA GeForce RTX 3070 Ti Laptop GPU, 591.59"
+    },
+    "requirements_lock_sha256": null,
+    "data_sha256": {
+     "brain.npz": "cc9bd1ecd00bd703a6fa648bc6ad145c93c7c1ee53debdcc9ce0d1f4305e6aca",
+     "weights.npz": "c29919aa44069a271b1ee978abe05fa9bf6e45e4ba3e436e92b624ef1b5be40c"
+    },
+    "threads": 4,
+    "env_vars": {},
+    "compare_to": "results/m1_validate_g32.json"
+   },
+   "numbers_compared": 26,
+   "max_abs_diff": 1.1920928955078125e-07,
+   "tolerance": "1e-5 + 1e-3 relative",
+   "claims": [
+    "M1"
+   ]
+  },
+  "results/m2_address.json": {
+   "sha256": "26ef4c4eee8302e78ec4a3c5d4ac7f2df9e8a8b7ee4900f92aa138f5dac544cb",
+   "bytes": 56196,
+   "provenance": "script-known",
+   "script": "mechanism/m2_address.py"
+  },
+  "results/m2_address_a160.json": {
+   "sha256": "cf5f4014228f82470aa7d5ac7210d1bdcdb9fcd0cabb4a10dddf011a3c82daeb",
+   "bytes": 51234,
+   "provenance": "script-known",
+   "script": "mechanism/m2_address.py"
+  },
+  "results/m2_address_a192.json": {
+   "sha256": "d5a7995a9180b9d1f5f6082b3610053859aaa4aa8a057380951a144ed1d9f505",
+   "bytes": 54344,
+   "provenance": "script-known",
+   "script": "mechanism/m2_address.py"
+  },
+  "results/m2_address_a224.json": {
+   "sha256": "1a85534aa8f21ed334145b9a4f2fdeab3e0eaec701ba4afcc2db2b08a91c0d90",
+   "bytes": 52023,
+   "provenance": "script-known",
+   "script": "mechanism/m2_address.py"
+  },
+  "results/m2_current.json": {
+   "sha256": "3b944d4a7787836d5da66c85518e86f0d2d2fcc17ade944cb5fd12d83a29482a",
+   "bytes": 41456,
+   "provenance": "script-known",
+   "script": "mechanism/m2_current.py"
+  },
+  "results/m2_current_6pairs.json": {
+   "sha256": "2037014c85c4dab76355fda4039c2ef87613dacaac01c977adba11c63c2d2317",
+   "bytes": 61994,
+   "provenance": "rerun-verified",
+   "rerun_manifest": {
+    "id": "m2_current_6pairs",
+    "claims": [
+     "M8"
+    ],
+    "output": "m2_current_6pairs.json",
+    "output_sha256": "2037014c85c4dab76355fda4039c2ef87613dacaac01c977adba11c63c2d2317",
+    "command": [
+     "python",
+     "mechanism/m2_current.py",
+     "E:\\repro_20260930\\headline\\m2_current_6pairs.json",
+     "ac,bd,eg,fh,ik,jl",
+     "160:1.5,192:1.5,512:1.0"
+    ],
+    "cwd": "<repository root>",
+    "git_commit": "3e05e00540f2ab0767523acc87d6c59515c622ee",
+    "git_dirty": false,
+    "started": "2026-09-30T08:06:25",
+    "finished": "2026-09-30T08:08:24",
+    "seconds": 119.7,
+    "exit_code": 0,
+    "environment": {
+     "python": "3.12.14",
+     "platform": "Windows-11-10.0.26200-SP0",
+     "numpy": "2.5.3",
+     "scipy": "1.18.1",
+     "numba": "0.67.0",
+     "cupy": "14.2.0",
+     "torch": "2.14.0+cu126",
+     "flybrain": "0.1.0.post1",
+     "flybrain_brain_py_sha256": "106e8dd26d7fa577a94e53b44a11d3d8f712a7efb0f9ae45eed1f78faaab78fb",
+     "cuda_runtime": 12090,
+     "cuda_driver": 13010,
+     "gpu": "NVIDIA GeForce RTX 3070 Ti Laptop GPU",
+     "nvidia_smi": "NVIDIA GeForce RTX 3070 Ti Laptop GPU, 591.59"
+    },
+    "requirements_lock_sha256": "ee611c4e15866399b4cf7d418ad7ac9ca60bf769a1e388f6162ff6b816201a4c",
+    "data_sha256": {
+     "brain.npz": "cc9bd1ecd00bd703a6fa648bc6ad145c93c7c1ee53debdcc9ce0d1f4305e6aca",
+     "weights.npz": "c29919aa44069a271b1ee978abe05fa9bf6e45e4ba3e436e92b624ef1b5be40c"
+    },
+    "threads": 4,
+    "env_vars": {},
+    "compare_to": "results/m2_current_6pairs.json"
+   },
+   "numbers_compared": 2220,
+   "max_abs_diff": 0.0,
+   "tolerance": "1e-5 + 1e-3 relative",
+   "claims": [
+    "M8"
+   ]
+  },
+  "results/m2_diag.json": {
+   "sha256": "45ccc2dbb6481ba3015df3b2ac849ebbfcea39970ab5e7a28bae76dfbe7abe93",
+   "bytes": 1622,
+   "provenance": "script-known",
+   "claims": [
+    "W2"
+   ],
+   "script": "`m2_diag.py`"
+  },
+  "results/m3_kcmbon.json": {
+   "sha256": "a92fc4932c8b0542393dd16b66d80164cdaea003d7ec4c85382d51d197cbd003",
+   "bytes": 3442,
+   "provenance": "rerun-verified",
+   "rerun_manifest": {
+    "id": "m3_kcmbon",
+    "claims": [
+     "M10"
+    ],
+    "output": "m3_kcmbon.json",
+    "output_sha256": "a92fc4932c8b0542393dd16b66d80164cdaea003d7ec4c85382d51d197cbd003",
+    "command": [
+     "python",
+     "mechanism/m3_kcmbon.py",
+     "E:\\repro_20260930\\headline\\m3_kcmbon.json",
+     "160:1.5,192:1.5,512:1.0"
+    ],
+    "cwd": "<repository root>",
+    "git_commit": "3e05e00540f2ab0767523acc87d6c59515c622ee",
+    "git_dirty": false,
+    "started": "2026-09-30T08:08:24",
+    "finished": "2026-09-30T08:12:35",
+    "seconds": 250.5,
+    "exit_code": 0,
+    "environment": {
+     "python": "3.12.14",
+     "platform": "Windows-11-10.0.26200-SP0",
+     "numpy": "2.5.3",
+     "scipy": "1.18.1",
+     "numba": "0.67.0",
+     "cupy": "14.2.0",
+     "torch": "2.14.0+cu126",
+     "flybrain": "0.1.0.post1",
+     "flybrain_brain_py_sha256": "106e8dd26d7fa577a94e53b44a11d3d8f712a7efb0f9ae45eed1f78faaab78fb",
+     "cuda_runtime": 12090,
+     "cuda_driver": 13010,
+     "gpu": "NVIDIA GeForce RTX 3070 Ti Laptop GPU",
+     "nvidia_smi": "NVIDIA GeForce RTX 3070 Ti Laptop GPU, 591.59"
+    },
+    "requirements_lock_sha256": "ee611c4e15866399b4cf7d418ad7ac9ca60bf769a1e388f6162ff6b816201a4c",
+    "data_sha256": {
+     "brain.npz": "cc9bd1ecd00bd703a6fa648bc6ad145c93c7c1ee53debdcc9ce0d1f4305e6aca",
+     "weights.npz": "c29919aa44069a271b1ee978abe05fa9bf6e45e4ba3e436e92b624ef1b5be40c"
+    },
+    "threads": 4,
+    "env_vars": {},
+    "compare_to": "results/m3_kcmbon.json"
+   },
+   "numbers_compared": 87,
+   "max_abs_diff": 0.0,
+   "tolerance": "1e-5 + 1e-3 relative"
+  },
+  "results/m3_kcmbon_levels.json": {
+   "sha256": "216e0914a8b616b53afdb6441023867b0d9849d10a25140afaa39344ac7d4758",
+   "bytes": 3668,
+   "provenance": "script-known",
+   "script": "mechanism/m3_kcmbon.py"
+  },
+  "results/m3_kcmbon_pninput.json": {
+   "sha256": "eef240225db4c6ba2b00859f816b5c365d5e16378c6ee321535814e472264f02",
+   "bytes": 3844,
+   "provenance": "script-known",
+   "script": "mechanism/m3_kcmbon.py"
+  },
+  "results/m3_kcmbon_profile.json": {
+   "sha256": "3934a2f810dd53aea05100a47f418d3bdaebd2c505be0ee4b0e4724a48af36e9",
+   "bytes": 3662,
+   "provenance": "script-known",
+   "script": "mechanism/m3_kcmbon.py"
+  },
+  "results/m3_pnkc.json": {
+   "sha256": "9e83752d233c49efaaf6142b60a4819d0b209afe61def3b6c1778e16d051f772",
+   "bytes": 5907,
+   "provenance": "script-known",
+   "claims": [
+    "M9"
+   ],
+   "script": "`m3_pnkc.py`"
+  },
+  "results/m3_pnkc_glom.json": {
+   "sha256": "e333d538a73511ca843309830051fac2783641fc3f8eaaa391c0a8d1cbffbd3f",
+   "bytes": 7005,
+   "provenance": "script-known",
+   "script": "mechanism/m3_pnkc.py"
+  },
+  "results/m3_pnkc_glom_s11.json": {
+   "sha256": "e66f4da6d4a6ad5aab74371ce34671e068ea2ee8417e5b41cf0a153850f1ec7b",
+   "bytes": 9887,
+   "provenance": "script-known",
+   "script": "mechanism/m3_pnkc.py"
+  },
+  "results/m3_pnkc_glom_s12.json": {
+   "sha256": "23f51cf0c146bb06421c8cf72e2854dcc06c681a5493c50e3320b22619f8cc4a",
+   "bytes": 9909,
+   "provenance": "script-known",
+   "script": "mechanism/m3_pnkc.py"
+  },
+  "results/m4_curve.json": {
+   "sha256": "5e8df1aaa038df68a544b640cb2b4d9345338b78bf718353d67241e8f79e4d8e",
+   "bytes": 66299,
+   "provenance": "script-known",
+   "claims": [
+    "M4"
+   ],
+   "script": "`m4_curve.py`"
+  },
+  "results/m4_curve_a192.json": {
+   "sha256": "48e9fc3feeb727ef6d569dac031e88412980e010f090da17e5ec3c968efe1ff8",
+   "bytes": 46864,
+   "provenance": "rerun-verified",
+   "rerun_manifest": {
+    "id": "m4_curve_a192",
+    "claims": [
+     "M4",
+     "M5"
+    ],
+    "output": "m4_curve_a192.json",
+    "output_sha256": "4f446c0893ebd0a9f5257961d51d8e4542edd21510165a7be2357c371b20d507",
+    "command": [
+     "python",
+     "mechanism/m4_curve.py",
+     "E:\\repro_20260930\\headline\\m4_curve_a192.json",
+     "192",
+     "1.5",
+     "16,1e12"
+    ],
+    "cwd": "<repository root>",
+    "git_commit": "c376a24154c43db604b9cace0228cd42d1fe42dc",
+    "git_dirty": false,
+    "started": "2026-09-30T08:38:29",
+    "finished": "2026-09-30T08:41:14",
+    "seconds": 164.3,
+    "exit_code": 0,
+    "environment": {
+     "python": "3.12.14",
+     "platform": "Windows-11-10.0.26200-SP0",
+     "numpy": "2.5.3",
+     "scipy": "1.18.1",
+     "numba": "0.67.0",
+     "cupy": "14.2.0",
+     "torch": "2.14.0+cu126",
+     "flybrain": "0.1.0.post1",
+     "flybrain_brain_py_sha256": "106e8dd26d7fa577a94e53b44a11d3d8f712a7efb0f9ae45eed1f78faaab78fb",
+     "cuda_runtime": 12090,
+     "cuda_driver": 13010,
+     "gpu": "NVIDIA GeForce RTX 3070 Ti Laptop GPU",
+     "nvidia_smi": "NVIDIA GeForce RTX 3070 Ti Laptop GPU, 591.59"
+    },
+    "requirements_lock_sha256": "ee611c4e15866399b4cf7d418ad7ac9ca60bf769a1e388f6162ff6b816201a4c",
+    "data_sha256": {
+     "brain.npz": "cc9bd1ecd00bd703a6fa648bc6ad145c93c7c1ee53debdcc9ce0d1f4305e6aca",
+     "weights.npz": "c29919aa44069a271b1ee978abe05fa9bf6e45e4ba3e436e92b624ef1b5be40c"
+    },
+    "threads": 4,
+    "env_vars": {},
+    "args_template": [
+     "mechanism/m4_curve.py",
+     "{out}",
+     "192",
+     "1.5",
+     "16,1e12"
+    ],
+    "compare_to": "results/m4_curve_a192.json"
+   },
+   "numbers_compared": 1163,
+   "max_abs_diff": 2.9362942008392956e-07,
+   "tolerance": "1e-5 + 1e-3 relative",
+   "claims": [
+    "M4",
+    "M5"
+   ]
+  },
+  "results/m5_downstream.json": {
+   "sha256": "fe96600815c3d4aff781ea05a01a8ec87eab13e43780fca74e35b293e26848fa",
+   "bytes": 28897,
+   "provenance": "rerun-verified",
+   "rerun_manifest": {
+    "id": "m5_downstream",
+    "claims": [
+     "M19"
+    ],
+    "output": "m5_downstream.json",
+    "output_sha256": "dc92ac08fbc3bb02287f57db0471c89be83b0dd83b992a1cc2b9056bd17f5f4d",
+    "command": [
+     "python",
+     "mechanism/m5_downstream.py",
+     "E:\\repro_20260930\\headline\\m5_downstream.json"
+    ],
+    "cwd": "<repository root>",
+    "git_commit": "c376a24154c43db604b9cace0228cd42d1fe42dc",
+    "git_dirty": false,
+    "started": "2026-09-30T08:35:17",
+    "finished": "2026-09-30T08:36:24",
+    "seconds": 67.4,
+    "exit_code": 0,
+    "environment": {
+     "python": "3.12.14",
+     "platform": "Windows-11-10.0.26200-SP0",
+     "numpy": "2.5.3",
+     "scipy": "1.18.1",
+     "numba": "0.67.0",
+     "cupy": "14.2.0",
+     "torch": "2.14.0+cu126",
+     "flybrain": "0.1.0.post1",
+     "flybrain_brain_py_sha256": "106e8dd26d7fa577a94e53b44a11d3d8f712a7efb0f9ae45eed1f78faaab78fb",
+     "cuda_runtime": 12090,
+     "cuda_driver": 13010,
+     "gpu": "NVIDIA GeForce RTX 3070 Ti Laptop GPU",
+     "nvidia_smi": "NVIDIA GeForce RTX 3070 Ti Laptop GPU, 591.59"
+    },
+    "requirements_lock_sha256": "ee611c4e15866399b4cf7d418ad7ac9ca60bf769a1e388f6162ff6b816201a4c",
+    "data_sha256": {
+     "brain.npz": "cc9bd1ecd00bd703a6fa648bc6ad145c93c7c1ee53debdcc9ce0d1f4305e6aca",
+     "weights.npz": "c29919aa44069a271b1ee978abe05fa9bf6e45e4ba3e436e92b624ef1b5be40c"
+    },
+    "threads": 4,
+    "env_vars": {},
+    "compare_to": "results/m5_downstream.json"
+   },
+   "numbers_compared": 808,
+   "max_abs_diff": 2.1424058871399865e-07,
+   "tolerance": "1e-5 + 1e-3 relative",
+   "claims": [
+    "M19"
+   ]
+  },
+  "results/m5b_timing.json": {
+   "sha256": "c9273572e3d8bd5e452754adf145d063cf44ac7739e2db39cba5f43095eb8885",
+   "bytes": 30577,
+   "provenance": "rerun-verified",
+   "rerun_manifest": {
+    "id": "m5b_timing",
+    "claims": [
+     "M19"
+    ],
+    "output": "m5b_timing.json",
+    "output_sha256": "7c7c65ddbbbc1a7832500a48a3b36bd456ec54922420bae7923d4bcd8688b8c3",
+    "command": [
+     "python",
+     "mechanism/m5b_timing.py",
+     "E:\\repro_20260930\\headline\\m5b_timing.json"
+    ],
+    "cwd": "<repository root>",
+    "git_commit": "c376a24154c43db604b9cace0228cd42d1fe42dc",
+    "git_dirty": false,
+    "started": "2026-09-30T08:36:24",
+    "finished": "2026-09-30T08:37:40",
+    "seconds": 76.4,
+    "exit_code": 0,
+    "environment": {
+     "python": "3.12.14",
+     "platform": "Windows-11-10.0.26200-SP0",
+     "numpy": "2.5.3",
+     "scipy": "1.18.1",
+     "numba": "0.67.0",
+     "cupy": "14.2.0",
+     "torch": "2.14.0+cu126",
+     "flybrain": "0.1.0.post1",
+     "flybrain_brain_py_sha256": "106e8dd26d7fa577a94e53b44a11d3d8f712a7efb0f9ae45eed1f78faaab78fb",
+     "cuda_runtime": 12090,
+     "cuda_driver": 13010,
+     "gpu": "NVIDIA GeForce RTX 3070 Ti Laptop GPU",
+     "nvidia_smi": "NVIDIA GeForce RTX 3070 Ti Laptop GPU, 591.59"
+    },
+    "requirements_lock_sha256": "ee611c4e15866399b4cf7d418ad7ac9ca60bf769a1e388f6162ff6b816201a4c",
+    "data_sha256": {
+     "brain.npz": "cc9bd1ecd00bd703a6fa648bc6ad145c93c7c1ee53debdcc9ce0d1f4305e6aca",
+     "weights.npz": "c29919aa44069a271b1ee978abe05fa9bf6e45e4ba3e436e92b624ef1b5be40c"
+    },
+    "threads": 4,
+    "env_vars": {},
+    "compare_to": "results/m5b_timing.json"
+   },
+   "numbers_compared": 896,
+   "max_abs_diff": 2.3084779657169682e-07,
+   "tolerance": "1e-5 + 1e-3 relative",
+   "claims": [
+    "M19"
+   ]
+  },
+  "results/m6_cluster_a160.json": {
+   "sha256": "3c9793eb8520a593767a9a86c4f5ee58b575e58df95245ac4f9052c8c6d744df",
+   "bytes": 3374,
+   "provenance": "script-known",
+   "script": "mechanism/m3_kcmbon.py"
+  },
+  "results/m6_cluster_a192.json": {
+   "sha256": "3060c76039329921e6ad36705f10ac8deb830d0f4f4054b5e63b55c7a8d215c6",
+   "bytes": 3379,
+   "provenance": "script-known",
+   "script": "mechanism/m3_kcmbon.py"
+  },
+  "results/m6_coherence.json": {
+   "sha256": "ede33deb7e774f9fd873d3ab0eafcbef67e31e48a3cccf8307ed98869ef26850",
+   "bytes": 9056,
+   "provenance": "script-known",
+   "claims": [
+    "M13"
+   ],
+   "script": "`m6_coherence.py`"
+  },
+  "results/m6_gate.json": {
+   "sha256": "7a729d21b0dc884ea9aae316f842f7e3d150f48bb539c963871cb3e0f320a615",
+   "bytes": 1507,
+   "provenance": "script-known",
+   "claims": [
+    "M15"
+   ],
+   "script": "`m6_gate.py`"
+  },
+  "results/m6_glom_route.json": {
+   "sha256": "6283371182f1b3f7e08b1c7ed5708579fe46a1eb13b7635dc1c10c1ee7d8c433",
+   "bytes": 7958,
+   "provenance": "rerun-verified",
+   "rerun_manifest": {
+    "id": "m6_glom_route",
+    "claims": [
+     "M12"
+    ],
+    "output": "m6_glom_route.json",
+    "output_sha256": "6283371182f1b3f7e08b1c7ed5708579fe46a1eb13b7635dc1c10c1ee7d8c433",
+    "command": [
+     "python",
+     "mechanism/m3_kcmbon.py",
+     "E:\\repro_20260930\\headline\\m6_glom_route.json",
+     "160:1.5,192:1.5,224:1.5",
+     "real:0,profile_type:1,profile_type_side:1,profile_side:1,kc_perm:1,pn_perm:1",
+     "glom"
+    ],
+    "cwd": "<repository root>",
+    "git_commit": "c376a24154c43db604b9cace0228cd42d1fe42dc",
+    "git_dirty": false,
+    "started": "2026-09-30T08:22:22",
+    "finished": "2026-09-30T08:30:10",
+    "seconds": 467.5,
+    "exit_code": 0,
+    "environment": {
+     "python": "3.12.14",
+     "platform": "Windows-11-10.0.26200-SP0",
+     "numpy": "2.5.3",
+     "scipy": "1.18.1",
+     "numba": "0.67.0",
+     "cupy": "14.2.0",
+     "torch": "2.14.0+cu126",
+     "flybrain": "0.1.0.post1",
+     "flybrain_brain_py_sha256": "106e8dd26d7fa577a94e53b44a11d3d8f712a7efb0f9ae45eed1f78faaab78fb",
+     "cuda_runtime": 12090,
+     "cuda_driver": 13010,
+     "gpu": "NVIDIA GeForce RTX 3070 Ti Laptop GPU",
+     "nvidia_smi": "NVIDIA GeForce RTX 3070 Ti Laptop GPU, 591.59"
+    },
+    "requirements_lock_sha256": "ee611c4e15866399b4cf7d418ad7ac9ca60bf769a1e388f6162ff6b816201a4c",
+    "data_sha256": {
+     "brain.npz": "cc9bd1ecd00bd703a6fa648bc6ad145c93c7c1ee53debdcc9ce0d1f4305e6aca",
+     "weights.npz": "c29919aa44069a271b1ee978abe05fa9bf6e45e4ba3e436e92b624ef1b5be40c"
+    },
+    "threads": 4,
+    "env_vars": {},
+    "compare_to": "results/m6_glom_route.json"
+   },
+   "numbers_compared": 198,
+   "max_abs_diff": 0.0,
+   "tolerance": "1e-5 + 1e-3 relative",
+   "claims": [
+    "M12"
+   ]
+  },
+  "results/m6_hemi.json": {
+   "sha256": "d1051f71c5b911c04a62c5711652e3cf6162d5c99df0032edbcc5a2411e35cc4",
+   "bytes": 49494,
+   "provenance": "rerun-verified",
+   "rerun_manifest": {
+    "id": "m6_hemi",
+    "claims": [
+     "M11"
+    ],
+    "output": "m6_hemi.json",
+    "output_sha256": "d1051f71c5b911c04a62c5711652e3cf6162d5c99df0032edbcc5a2411e35cc4",
+    "command": [
+     "python",
+     "mechanism/m6_hemi.py",
+     "E:\\repro_20260930\\headline\\m6_hemi.json",
+     "160:1.5,192:1.5,512:1.0"
+    ],
+    "cwd": "<repository root>",
+    "git_commit": "c376a24154c43db604b9cace0228cd42d1fe42dc",
+    "git_dirty": false,
+    "started": "2026-09-30T08:30:10",
+    "finished": "2026-09-30T08:31:37",
+    "seconds": 87.4,
+    "exit_code": 0,
+    "environment": {
+     "python": "3.12.14",
+     "platform": "Windows-11-10.0.26200-SP0",
+     "numpy": "2.5.3",
+     "scipy": "1.18.1",
+     "numba": "0.67.0",
+     "cupy": "14.2.0",
+     "torch": "2.14.0+cu126",
+     "flybrain": "0.1.0.post1",
+     "flybrain_brain_py_sha256": "106e8dd26d7fa577a94e53b44a11d3d8f712a7efb0f9ae45eed1f78faaab78fb",
+     "cuda_runtime": 12090,
+     "cuda_driver": 13010,
+     "gpu": "NVIDIA GeForce RTX 3070 Ti Laptop GPU",
+     "nvidia_smi": "NVIDIA GeForce RTX 3070 Ti Laptop GPU, 591.59"
+    },
+    "requirements_lock_sha256": "ee611c4e15866399b4cf7d418ad7ac9ca60bf769a1e388f6162ff6b816201a4c",
+    "data_sha256": {
+     "brain.npz": "cc9bd1ecd00bd703a6fa648bc6ad145c93c7c1ee53debdcc9ce0d1f4305e6aca",
+     "weights.npz": "c29919aa44069a271b1ee978abe05fa9bf6e45e4ba3e436e92b624ef1b5be40c"
+    },
+    "threads": 4,
+    "env_vars": {},
+    "compare_to": "results/m6_hemi.json"
+   },
+   "numbers_compared": 1344,
+   "max_abs_diff": 0.0,
+   "tolerance": "1e-5 + 1e-3 relative",
+   "claims": [
+    "M11"
+   ]
+  },
+  "results/m6_hemi_glom.json": {
+   "sha256": "df075ccd4e3f9c628585ce5eb5971bac8db8d15c680cae8931adee0728f55c1b",
+   "bytes": 32537,
+   "provenance": "script-known",
+   "claims": [
+    "M12"
+   ],
+   "script": "`m6_hemi.py`, `m3_kcmbon.py`"
+  },
+  "results/m6_side_a160.json": {
+   "sha256": "27efd4ec626f05686d17a613e8836da6356d33c318d3ebff612f1e99ef5f1a22",
+   "bytes": 3843,
+   "provenance": "rerun-verified",
+   "rerun_manifest": {
+    "id": "m6_side_a160",
+    "claims": [
+     "M10"
+    ],
+    "output": "m6_side_a160.json",
+    "output_sha256": "2c708f20a07087d78018d6321e554316c58bcfb42890c858a9e583600764632c",
+    "command": [
+     "python",
+     "mechanism/m3_kcmbon.py",
+     "E:\\repro_20260930\\headline\\m6_side_a160.json",
+     "160:1.5",
+     "real:0,profile_side:1,profile_side:2,profile_type_side:1,profile_type_side:2,kc_perm_side:1,pn_perm_side:1,pn_perm_side:2,pn_perm_type:1,pn_perm_type_side:1"
+    ],
+    "cwd": "<repository root>",
+    "git_commit": "c376a24154c43db604b9cace0228cd42d1fe42dc",
+    "git_dirty": false,
+    "started": "2026-09-30T08:12:35",
+    "finished": "2026-09-30T08:16:44",
+    "seconds": 249.0,
+    "exit_code": 0,
+    "environment": {
+     "python": "3.12.14",
+     "platform": "Windows-11-10.0.26200-SP0",
+     "numpy": "2.5.3",
+     "scipy": "1.18.1",
+     "numba": "0.67.0",
+     "cupy": "14.2.0",
+     "torch": "2.14.0+cu126",
+     "flybrain": "0.1.0.post1",
+     "flybrain_brain_py_sha256": "106e8dd26d7fa577a94e53b44a11d3d8f712a7efb0f9ae45eed1f78faaab78fb",
+     "cuda_runtime": 12090,
+     "cuda_driver": 13010,
+     "gpu": "NVIDIA GeForce RTX 3070 Ti Laptop GPU",
+     "nvidia_smi": "NVIDIA GeForce RTX 3070 Ti Laptop GPU, 591.59"
+    },
+    "requirements_lock_sha256": "ee611c4e15866399b4cf7d418ad7ac9ca60bf769a1e388f6162ff6b816201a4c",
+    "data_sha256": {
+     "brain.npz": "cc9bd1ecd00bd703a6fa648bc6ad145c93c7c1ee53debdcc9ce0d1f4305e6aca",
+     "weights.npz": "c29919aa44069a271b1ee978abe05fa9bf6e45e4ba3e436e92b624ef1b5be40c"
+    },
+    "threads": 4,
+    "env_vars": {},
+    "compare_to": "results/m6_side_a160.json"
+   },
+   "numbers_compared": 103,
+   "max_abs_diff": 0.0,
+   "tolerance": "1e-5 + 1e-3 relative"
+  },
+  "results/m6_side_a192.json": {
+   "sha256": "0e2a56158e0ba6579a538c32bd37fb632d212095b429d034b995b04e7c0a79b9",
+   "bytes": 3836,
+   "provenance": "rerun-verified",
+   "rerun_manifest": {
+    "id": "m6_side_a192",
+    "claims": [
+     "M10"
+    ],
+    "output": "m6_side_a192.json",
+    "output_sha256": "2ea85aee0041eeb4c40f2632eabdd36bb9bd909028d71dceefb8c4598c7d2af1",
+    "command": [
+     "python",
+     "mechanism/m3_kcmbon.py",
+     "E:\\repro_20260930\\headline\\m6_side_a192.json",
+     "192:1.5",
+     "real:0,profile_side:1,profile_side:2,profile_type_side:1,profile_type_side:2,kc_perm_side:1,pn_perm_side:1,pn_perm_side:2,pn_perm_type:1,pn_perm_type_side:1"
+    ],
+    "cwd": "<repository root>",
+    "git_commit": "c376a24154c43db604b9cace0228cd42d1fe42dc",
+    "git_dirty": false,
+    "started": "2026-09-30T08:16:44",
+    "finished": "2026-09-30T08:22:22",
+    "seconds": 338.1,
+    "exit_code": 0,
+    "environment": {
+     "python": "3.12.14",
+     "platform": "Windows-11-10.0.26200-SP0",
+     "numpy": "2.5.3",
+     "scipy": "1.18.1",
+     "numba": "0.67.0",
+     "cupy": "14.2.0",
+     "torch": "2.14.0+cu126",
+     "flybrain": "0.1.0.post1",
+     "flybrain_brain_py_sha256": "106e8dd26d7fa577a94e53b44a11d3d8f712a7efb0f9ae45eed1f78faaab78fb",
+     "cuda_runtime": 12090,
+     "cuda_driver": 13010,
+     "gpu": "NVIDIA GeForce RTX 3070 Ti Laptop GPU",
+     "nvidia_smi": "NVIDIA GeForce RTX 3070 Ti Laptop GPU, 591.59"
+    },
+    "requirements_lock_sha256": "ee611c4e15866399b4cf7d418ad7ac9ca60bf769a1e388f6162ff6b816201a4c",
+    "data_sha256": {
+     "brain.npz": "cc9bd1ecd00bd703a6fa648bc6ad145c93c7c1ee53debdcc9ce0d1f4305e6aca",
+     "weights.npz": "c29919aa44069a271b1ee978abe05fa9bf6e45e4ba3e436e92b624ef1b5be40c"
+    },
+    "threads": 4,
+    "env_vars": {},
+    "compare_to": "results/m6_side_a192.json"
+   },
+   "numbers_compared": 103,
+   "max_abs_diff": 0.0,
+   "tolerance": "1e-5 + 1e-3 relative"
+  },
+  "results/m6_structure.json": {
+   "sha256": "b759e533eb351b42a2b927bd3a0388ce249313da9dc5bbb616344bb0425208f7",
+   "bytes": 3830,
+   "provenance": "script-known",
+   "script": "mechanism/m6_structure.py"
+  },
+  "results/m7_map.json": {
+   "sha256": "e5a1aaa4bf31df70ead51803676f948f4588afb980621e5e8ce6e8a044a21c23",
+   "bytes": 96141,
+   "provenance": "rerun-verified",
+   "rerun_manifest": {
+    "id": "m7_map",
+    "claims": [
+     "M14"
+    ],
+    "output": "m7_map.json",
+    "output_sha256": "e5a1aaa4bf31df70ead51803676f948f4588afb980621e5e8ce6e8a044a21c23",
+    "command": [
+     "python",
+     "mechanism/m7_map.py",
+     "E:\\repro_20260930\\headline\\m7_map.json"
+    ],
+    "cwd": "<repository root>",
+    "git_commit": "c376a24154c43db604b9cace0228cd42d1fe42dc",
+    "git_dirty": false,
+    "started": "2026-09-30T08:37:40",
+    "finished": "2026-09-30T08:38:13",
+    "seconds": 32.6,
+    "exit_code": 0,
+    "environment": {
+     "python": "3.12.14",
+     "platform": "Windows-11-10.0.26200-SP0",
+     "numpy": "2.5.3",
+     "scipy": "1.18.1",
+     "numba": "0.67.0",
+     "cupy": "14.2.0",
+     "torch": "2.14.0+cu126",
+     "flybrain": "0.1.0.post1",
+     "flybrain_brain_py_sha256": "106e8dd26d7fa577a94e53b44a11d3d8f712a7efb0f9ae45eed1f78faaab78fb",
+     "cuda_runtime": 12090,
+     "cuda_driver": 13010,
+     "gpu": "NVIDIA GeForce RTX 3070 Ti Laptop GPU",
+     "nvidia_smi": "NVIDIA GeForce RTX 3070 Ti Laptop GPU, 591.59"
+    },
+    "requirements_lock_sha256": "ee611c4e15866399b4cf7d418ad7ac9ca60bf769a1e388f6162ff6b816201a4c",
+    "data_sha256": {
+     "brain.npz": "cc9bd1ecd00bd703a6fa648bc6ad145c93c7c1ee53debdcc9ce0d1f4305e6aca",
+     "weights.npz": "c29919aa44069a271b1ee978abe05fa9bf6e45e4ba3e436e92b624ef1b5be40c"
+    },
+    "threads": 4,
+    "env_vars": {},
+    "compare_to": "results/m7_map.json"
+   },
+   "numbers_compared": 4522,
+   "max_abs_diff": 0.0,
+   "tolerance": "1e-5 + 1e-3 relative",
+   "claims": [
+    "M14"
+   ]
+  },
+  "results/m7_teacher.json": {
+   "sha256": "1395b7adc4c1e63002ee7ab0cb1b5a8eae1415f26a71380829c27b1d5a1fa4fd",
+   "bytes": 1360,
+   "provenance": "rerun-verified",
+   "rerun_manifest": {
+    "id": "m7_teacher",
+    "claims": [
+     "M16"
+    ],
+    "output": "m7_teacher.json",
+    "output_sha256": "1395b7adc4c1e63002ee7ab0cb1b5a8eae1415f26a71380829c27b1d5a1fa4fd",
+    "command": [
+     "python",
+     "mechanism/m7_teacher.py",
+     "E:\\repro_20260930\\headline\\m7_teacher.json"
+    ],
+    "cwd": "<repository root>",
+    "git_commit": "c376a24154c43db604b9cace0228cd42d1fe42dc",
+    "git_dirty": false,
+    "started": "2026-09-30T08:31:37",
+    "finished": "2026-09-30T08:32:33",
+    "seconds": 55.6,
+    "exit_code": 0,
+    "environment": {
+     "python": "3.12.14",
+     "platform": "Windows-11-10.0.26200-SP0",
+     "numpy": "2.5.3",
+     "scipy": "1.18.1",
+     "numba": "0.67.0",
+     "cupy": "14.2.0",
+     "torch": "2.14.0+cu126",
+     "flybrain": "0.1.0.post1",
+     "flybrain_brain_py_sha256": "106e8dd26d7fa577a94e53b44a11d3d8f712a7efb0f9ae45eed1f78faaab78fb",
+     "cuda_runtime": 12090,
+     "cuda_driver": 13010,
+     "gpu": "NVIDIA GeForce RTX 3070 Ti Laptop GPU",
+     "nvidia_smi": "NVIDIA GeForce RTX 3070 Ti Laptop GPU, 591.59"
+    },
+    "requirements_lock_sha256": "ee611c4e15866399b4cf7d418ad7ac9ca60bf769a1e388f6162ff6b816201a4c",
+    "data_sha256": {
+     "brain.npz": "cc9bd1ecd00bd703a6fa648bc6ad145c93c7c1ee53debdcc9ce0d1f4305e6aca",
+     "weights.npz": "c29919aa44069a271b1ee978abe05fa9bf6e45e4ba3e436e92b624ef1b5be40c"
+    },
+    "threads": 4,
+    "env_vars": {},
+    "compare_to": "results/m7_teacher.json"
+   },
+   "numbers_compared": 32,
+   "max_abs_diff": 0.0,
+   "tolerance": "1e-5 + 1e-3 relative",
+   "claims": [
+    "M16"
+   ]
+  },
+  "results/m8_interference.json": {
+   "sha256": "7309e9685f6a0780f75d823f6aad95a6a12573b496b4c91239e7db1a8e83b802",
+   "bytes": 6451,
+   "provenance": "rerun-verified",
+   "rerun_manifest": {
+    "id": "m8_interference",
+    "claims": [
+     "M18"
+    ],
+    "output": "m8_interference.json",
+    "output_sha256": "7309e9685f6a0780f75d823f6aad95a6a12573b496b4c91239e7db1a8e83b802",
+    "command": [
+     "python",
+     "mechanism/m8_interference.py",
+     "E:\\repro_20260930\\headline\\m8_interference.json",
+     "192:1.5:glom,512:1.0:random"
+    ],
+    "cwd": "<repository root>",
+    "git_commit": "c376a24154c43db604b9cace0228cd42d1fe42dc",
+    "git_dirty": false,
+    "started": "2026-09-30T08:32:33",
+    "finished": "2026-09-30T08:35:17",
+    "seconds": 164.0,
+    "exit_code": 0,
+    "environment": {
+     "python": "3.12.14",
+     "platform": "Windows-11-10.0.26200-SP0",
+     "numpy": "2.5.3",
+     "scipy": "1.18.1",
+     "numba": "0.67.0",
+     "cupy": "14.2.0",
+     "torch": "2.14.0+cu126",
+     "flybrain": "0.1.0.post1",
+     "flybrain_brain_py_sha256": "106e8dd26d7fa577a94e53b44a11d3d8f712a7efb0f9ae45eed1f78faaab78fb",
+     "cuda_runtime": 12090,
+     "cuda_driver": 13010,
+     "gpu": "NVIDIA GeForce RTX 3070 Ti Laptop GPU",
+     "nvidia_smi": "NVIDIA GeForce RTX 3070 Ti Laptop GPU, 591.59"
+    },
+    "requirements_lock_sha256": "ee611c4e15866399b4cf7d418ad7ac9ca60bf769a1e388f6162ff6b816201a4c",
+    "data_sha256": {
+     "brain.npz": "cc9bd1ecd00bd703a6fa648bc6ad145c93c7c1ee53debdcc9ce0d1f4305e6aca",
+     "weights.npz": "c29919aa44069a271b1ee978abe05fa9bf6e45e4ba3e436e92b624ef1b5be40c"
+    },
+    "threads": 4,
+    "env_vars": {},
+    "compare_to": "results/m8_interference.json"
+   },
+   "numbers_compared": 124,
+   "max_abs_diff": 0.0,
+   "tolerance": "1e-5 + 1e-3 relative",
+   "claims": [
+    "M18"
+   ]
+  },
+  "results/sens/SENS_SUMMARY.md": {
+   "sha256": "1e339bee227afb60fdea5d150fd7213a0ad73029636c50569e08a7d7fcfb5fb0",
+   "bytes": 2047,
+   "provenance": "derived"
+  },
+  "results/sens/m2_base.json": {
+   "sha256": "cc2e84cfd026f82e1e61026f6b25cfbe722f59847e644d093664ffbceed53482",
+   "bytes": 41320,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/apl/queue.json",
+   "name": "apl_base_m2",
+   "command": [
+    "python",
+    "mechanism/with_env.py",
+    "--",
+    "mechanism/m2_current.py",
+    "{out:m2_base.json}",
+    "ac,bd,eg,fh,ik,jl",
+    "160:1.5,512:1.0"
+   ],
+   "env": null
+  },
+  "results/sens/m2_gain1.2.json": {
+   "sha256": "2371e6cbdbf0b0754108a0e39c69c0ffadb918713456e6a9ae220ab6a8d396b1",
+   "bytes": 41332,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/sens/queue.json",
+   "name": "sens_gain1.2_m2",
+   "command": [
+    "python",
+    "mechanism/with_env.py",
+    "MB_GAIN=1.2",
+    "--",
+    "mechanism/m2_current.py",
+    "{out:m2_gain1.2.json}",
+    "ac,bd,eg,fh,ik,jl",
+    "160:1.5,512:1.0"
+   ],
+   "env": null
+  },
+  "results/sens/m2_gain1.8.json": {
+   "sha256": "3d29e78c86d0323c9d1572fa23ab3d21064f44a5aff5c12105b4c471899b2b13",
+   "bytes": 41347,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/sens/queue.json",
+   "name": "sens_gain1.8_m2",
+   "command": [
+    "python",
+    "mechanism/with_env.py",
+    "MB_GAIN=1.8",
+    "--",
+    "mechanism/m2_current.py",
+    "{out:m2_gain1.8.json}",
+    "ac,bd,eg,fh,ik,jl",
+    "160:1.5,512:1.0"
+   ],
+   "env": null
+  },
+  "results/sens/m2_noise2.json": {
+   "sha256": "9cdaa300bcb20159d27e658b68000cd4209476154105a5f807cb82b347f0149a",
+   "bytes": 41353,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/sens/queue.json",
+   "name": "sens_noise2_m2",
+   "command": [
+    "python",
+    "mechanism/with_env.py",
+    "MB_NOISE=2",
+    "--",
+    "mechanism/m2_current.py",
+    "{out:m2_noise2.json}",
+    "ac,bd,eg,fh,ik,jl",
+    "160:1.5,512:1.0"
+   ],
+   "env": null
+  },
+  "results/sens/m2_noise5.json": {
+   "sha256": "464af474a59dfa788abc709364d608a1027cd3be530f9e64f577d4444892960d",
+   "bytes": 41355,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/sens/queue.json",
+   "name": "sens_noise5_m2",
+   "command": [
+    "python",
+    "mechanism/with_env.py",
+    "MB_NOISE=5",
+    "--",
+    "mechanism/m2_current.py",
+    "{out:m2_noise5.json}",
+    "ac,bd,eg,fh,ik,jl",
+    "160:1.5,512:1.0"
+   ],
+   "env": null
+  },
+  "results/sens/m2_tonic0.03.json": {
+   "sha256": "f4a7fd748ffa95b76950e9eccd605cb8194a645eaa1e9417215bc62abd8a4185",
+   "bytes": 41333,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/sens/queue.json",
+   "name": "sens_tonic0.03_m2",
+   "command": [
+    "python",
+    "mechanism/with_env.py",
+    "MB_TONIC=0.03",
+    "--",
+    "mechanism/m2_current.py",
+    "{out:m2_tonic0.03.json}",
+    "ac,bd,eg,fh,ik,jl",
+    "160:1.5,512:1.0"
+   ],
+   "env": null
+  },
+  "results/sens/m2_tonic0.08.json": {
+   "sha256": "8b8ad66ba0b1a614033ef5c07de4cf74cc0e988b528082ff9a536a171bafcbdc",
+   "bytes": 41357,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/sens/queue.json",
+   "name": "sens_tonic0.08_m2",
+   "command": [
+    "python",
+    "mechanism/with_env.py",
+    "MB_TONIC=0.08",
+    "--",
+    "mechanism/m2_current.py",
+    "{out:m2_tonic0.08.json}",
+    "ac,bd,eg,fh,ik,jl",
+    "160:1.5,512:1.0"
+   ],
+   "env": null
+  },
+  "results/sens/route160r_base.json": {
+   "sha256": "03551645e90160cbb9379989126fa6b4f913e4285b43894065de12970e8d6ba2",
+   "bytes": 1563,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/apl/queue.json",
+   "name": "apl_base_route",
+   "command": [
+    "python",
+    "mechanism/with_env.py",
+    "--",
+    "mechanism/m3_kcmbon.py",
+    "{out:route160r_base.json}",
+    "160:1.5",
+    "real:0,profile_type_side:3,kc_perm:3",
+    "random"
+   ],
+   "env": null
+  },
+  "results/sens/route160r_gain1.2.json": {
+   "sha256": "8ffa819fbff65e9f34b2d0b4a11efdabe837d4217a3b00e54e5b193073892a5f",
+   "bytes": 1567,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/sens/queue.json",
+   "name": "sens_gain1.2_route160r",
+   "command": [
+    "python",
+    "mechanism/with_env.py",
+    "MB_GAIN=1.2",
+    "--",
+    "mechanism/m3_kcmbon.py",
+    "{out:route160r_gain1.2.json}",
+    "160:1.5",
+    "real:0,profile_type_side:3,profile_type:3,kc_perm:3",
+    "random"
+   ],
+   "env": null
+  },
+  "results/sens/route160r_gain1.8.json": {
+   "sha256": "9f5e70888be566d80c02bb4d787c26a14dec41d04a0a400cc4add09adb5e4497",
+   "bytes": 1567,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/sens/queue.json",
+   "name": "sens_gain1.8_route160r",
+   "command": [
+    "python",
+    "mechanism/with_env.py",
+    "MB_GAIN=1.8",
+    "--",
+    "mechanism/m3_kcmbon.py",
+    "{out:route160r_gain1.8.json}",
+    "160:1.5",
+    "real:0,profile_type_side:3,profile_type:3,kc_perm:3",
+    "random"
+   ],
+   "env": null
+  },
+  "results/sens/route160r_noise2.json": {
+   "sha256": "99617be26a5e3e28c00c405b7412239ec8404ba12477032e622f0ff19b45791a",
+   "bytes": 1564,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/sens/queue.json",
+   "name": "sens_noise2_route160r",
+   "command": [
+    "python",
+    "mechanism/with_env.py",
+    "MB_NOISE=2",
+    "--",
+    "mechanism/m3_kcmbon.py",
+    "{out:route160r_noise2.json}",
+    "160:1.5",
+    "real:0,profile_type_side:3,profile_type:3,kc_perm:3",
+    "random"
+   ],
+   "env": null
+  },
+  "results/sens/route160r_noise5.json": {
+   "sha256": "e9ee67f655bfcfcc6c51c7ba367d7cf727e0337e25f5abca82a1ba8d11062c8e",
+   "bytes": 1565,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/sens/queue.json",
+   "name": "sens_noise5_route160r",
+   "command": [
+    "python",
+    "mechanism/with_env.py",
+    "MB_NOISE=5",
+    "--",
+    "mechanism/m3_kcmbon.py",
+    "{out:route160r_noise5.json}",
+    "160:1.5",
+    "real:0,profile_type_side:3,profile_type:3,kc_perm:3",
+    "random"
+   ],
+   "env": null
+  },
+  "results/sens/route160r_tonic0.03.json": {
+   "sha256": "7d1e6dcebd70b70dd8fa3a79cafeafecef7141c6a28d4dad11edda78f2faba0e",
+   "bytes": 1564,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/sens/queue.json",
+   "name": "sens_tonic0.03_route160r",
+   "command": [
+    "python",
+    "mechanism/with_env.py",
+    "MB_TONIC=0.03",
+    "--",
+    "mechanism/m3_kcmbon.py",
+    "{out:route160r_tonic0.03.json}",
+    "160:1.5",
+    "real:0,profile_type_side:3,profile_type:3,kc_perm:3",
+    "random"
+   ],
+   "env": null
+  },
+  "results/sens/route160r_tonic0.08.json": {
+   "sha256": "a64f957f49715940ce194c651dbde63fbb28925938f82b3a93298ad9471add73",
+   "bytes": 1563,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/sens/queue.json",
+   "name": "sens_tonic0.08_route160r",
+   "command": [
+    "python",
+    "mechanism/with_env.py",
+    "MB_TONIC=0.08",
+    "--",
+    "mechanism/m3_kcmbon.py",
+    "{out:route160r_tonic0.08.json}",
+    "160:1.5",
+    "real:0,profile_type_side:3,profile_type:3,kc_perm:3",
+    "random"
+   ],
+   "env": null
+  },
+  "results/sens/route192g_base.json": {
+   "sha256": "c50a260692c08729018eff39063be4c6f4dbeeb0af6621d864ea081c9e6ac339",
+   "bytes": 1743,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/sens/queue.json",
+   "name": "sens_base_route192g",
+   "command": [
+    "python",
+    "mechanism/with_env.py",
+    "--",
+    "mechanism/m3_kcmbon.py",
+    "{out:route192g_base.json}",
+    "192:1.5",
+    "real:0,profile_type_side:3,profile_type:3,kc_perm:3",
+    "glom"
+   ],
+   "env": null
+  },
+  "results/sens/route192g_gain1.2.json": {
+   "sha256": "9502a90bb43f9d16cbc1813cc6bd1cbf9d24301a3953c36454cd1023fb5f4181",
+   "bytes": 1742,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/sens/queue.json",
+   "name": "sens_gain1.2_route192g",
+   "command": [
+    "python",
+    "mechanism/with_env.py",
+    "MB_GAIN=1.2",
+    "--",
+    "mechanism/m3_kcmbon.py",
+    "{out:route192g_gain1.2.json}",
+    "192:1.5",
+    "real:0,profile_type_side:3,profile_type:3,kc_perm:3",
+    "glom"
+   ],
+   "env": null
+  },
+  "results/sens/route192g_gain1.8.json": {
+   "sha256": "a728aa5fdc41d05af685fd4c9219b75a503d39dec1355d527c8f42f9ab1201a7",
+   "bytes": 1740,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/sens/queue.json",
+   "name": "sens_gain1.8_route192g",
+   "command": [
+    "python",
+    "mechanism/with_env.py",
+    "MB_GAIN=1.8",
+    "--",
+    "mechanism/m3_kcmbon.py",
+    "{out:route192g_gain1.8.json}",
+    "192:1.5",
+    "real:0,profile_type_side:3,profile_type:3,kc_perm:3",
+    "glom"
+   ],
+   "env": null
+  },
+  "results/sens/route192g_noise2.json": {
+   "sha256": "1ff0621c9fd55dc6ecfdbe4a79a8c0665bc0da1ff4b1954e7010d53545174781",
+   "bytes": 1739,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/sens/queue.json",
+   "name": "sens_noise2_route192g",
+   "command": [
+    "python",
+    "mechanism/with_env.py",
+    "MB_NOISE=2",
+    "--",
+    "mechanism/m3_kcmbon.py",
+    "{out:route192g_noise2.json}",
+    "192:1.5",
+    "real:0,profile_type_side:3,profile_type:3,kc_perm:3",
+    "glom"
+   ],
+   "env": null
+  },
+  "results/sens/route192g_noise5.json": {
+   "sha256": "2c7459a5906a5ed9c2426542368f44acafd85e36a5d98c980e0efee5e31bce39",
+   "bytes": 1741,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/sens/queue.json",
+   "name": "sens_noise5_route192g",
+   "command": [
+    "python",
+    "mechanism/with_env.py",
+    "MB_NOISE=5",
+    "--",
+    "mechanism/m3_kcmbon.py",
+    "{out:route192g_noise5.json}",
+    "192:1.5",
+    "real:0,profile_type_side:3,profile_type:3,kc_perm:3",
+    "glom"
+   ],
+   "env": null
+  },
+  "results/sens/route192g_tonic0.03.json": {
+   "sha256": "af50ccc35994d3480299056c092dbcc00bf7a2743342195dd338c19ca503a4b3",
+   "bytes": 1743,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/sens/queue.json",
+   "name": "sens_tonic0.03_route192g",
+   "command": [
+    "python",
+    "mechanism/with_env.py",
+    "MB_TONIC=0.03",
+    "--",
+    "mechanism/m3_kcmbon.py",
+    "{out:route192g_tonic0.03.json}",
+    "192:1.5",
+    "real:0,profile_type_side:3,profile_type:3,kc_perm:3",
+    "glom"
+   ],
+   "env": null
+  },
+  "results/sens/route192g_tonic0.08.json": {
+   "sha256": "805c77f9bd45fca3b7bec7bc1495f89547b1a8f0c57db55941149e4376bab696",
+   "bytes": 1736,
+   "provenance": "command-recorded",
+   "queue": "mechanism_20260928/sens/queue.json",
+   "name": "sens_tonic0.08_route192g",
+   "command": [
+    "python",
+    "mechanism/with_env.py",
+    "MB_TONIC=0.08",
+    "--",
+    "mechanism/m3_kcmbon.py",
+    "{out:route192g_tonic0.08.json}",
+    "192:1.5",
+    "real:0,profile_type_side:3,profile_type:3,kc_perm:3",
+    "glom"
+   ],
+   "env": null
+  },
+  "results/sign_m2_6pairs.json": {
+   "sha256": "f6e6d5287138500e0f3b9dcb6a60905e56e1c3f66a2957028feb880f0d72c706",
+   "bytes": 61983,
+   "provenance": "script-known",
+   "script": "mechanism/m2_current.py (MB_SIGN=depress)"
+  },
+  "results/sign_route_glom.json": {
+   "sha256": "1fba37782e5714098d85d72e7586b404e9ef3692fad6bebc0cb3674d4f2d37a2",
+   "bytes": 2660,
+   "provenance": "script-known",
+   "script": "mechanism/m3_kcmbon.py (MB_SIGN=depress)"
+  },
+  "results/sign_teacher.json": {
+   "sha256": "7094578f021593b53f2099d56a238ad0ba5578db77d086de3bd5794af5c20922",
+   "bytes": 1356,
+   "provenance": "script-known",
+   "script": "mechanism/m7_teacher.py (MB_SIGN=depress)"
+  },
+  "results/sweep_s1.0.json": {
+   "sha256": "987581b7be2b2bb22e29275b986a2a2757b60ea50919a3f6494c1eed7b8290f7",
+   "bytes": 11344,
+   "provenance": "script-known",
+   "script": "mechanism/sweep_opoint.py"
+  },
+  "results/sweep_s1.5.json": {
+   "sha256": "2c169932abcfc07ee499f839c0e062ed814b13872d200dee26ebb418e5d367b9",
+   "bytes": 11344,
+   "provenance": "rerun-verified",
+   "rerun_manifest": {
+    "id": "sweep_s1.5",
+    "claims": [
+     "M6",
+     "M7"
+    ],
+    "output": "sweep_s1.5.json",
+    "output_sha256": "4bf66b7484a15b5754925d64f8e18339a38897c9a35886448c71be718f7867ff",
+    "command": [
+     "python",
+     "mechanism/sweep_opoint.py",
+     "E:\\repro_20260930\\headline\\sweep_s1.5.json",
+     "160,192,224,256,320,384,448",
+     "1.5"
+    ],
+    "cwd": "<repository root>",
+    "git_commit": "3e05e00540f2ab0767523acc87d6c59515c622ee",
+    "git_dirty": false,
+    "started": "2026-09-30T08:04:09",
+    "finished": "2026-09-30T08:06:25",
+    "seconds": 135.4,
+    "exit_code": 0,
+    "environment": {
+     "python": "3.12.14",
+     "platform": "Windows-11-10.0.26200-SP0",
+     "numpy": "2.5.3",
+     "scipy": "1.18.1",
+     "numba": "0.67.0",
+     "cupy": "14.2.0",
+     "torch": "2.14.0+cu126",
+     "flybrain": "0.1.0.post1",
+     "flybrain_brain_py_sha256": "106e8dd26d7fa577a94e53b44a11d3d8f712a7efb0f9ae45eed1f78faaab78fb",
+     "cuda_runtime": 12090,
+     "cuda_driver": 13010,
+     "gpu": "NVIDIA GeForce RTX 3070 Ti Laptop GPU",
+     "nvidia_smi": "NVIDIA GeForce RTX 3070 Ti Laptop GPU, 591.59"
+    },
+    "requirements_lock_sha256": "ee611c4e15866399b4cf7d418ad7ac9ca60bf769a1e388f6162ff6b816201a4c",
+    "data_sha256": {
+     "brain.npz": "cc9bd1ecd00bd703a6fa648bc6ad145c93c7c1ee53debdcc9ce0d1f4305e6aca",
+     "weights.npz": "c29919aa44069a271b1ee978abe05fa9bf6e45e4ba3e436e92b624ef1b5be40c"
+    },
+    "threads": 4,
+    "env_vars": {},
+    "compare_to": "results/sweep_s1.5.json"
+   },
+   "numbers_compared": 259,
+   "max_abs_diff": 1.4292691717483756e-07,
+   "tolerance": "1e-5 + 1e-3 relative",
+   "claims": [
+    "M7"
+   ]
+  },
+  "results/sweep_s2.0.json": {
+   "sha256": "8e43bdb998e310ef6d1b5446e9d8071840f8a2fc71925e8c98af49b92225e707",
+   "bytes": 11459,
+   "provenance": "script-known",
+   "script": "mechanism/sweep_opoint.py"
+  }
+ }
+}

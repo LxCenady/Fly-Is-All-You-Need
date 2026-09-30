@@ -377,7 +377,7 @@ The identity of the output is a different matter (Table~\ref{tab:route},
 Fig.~\ref{fig:route}). In the connectome, the MBON currents evoked by eight
 different items have mean pairwise cosine 0.76, with 57--60\% of each item's
 current in five MBONs. Randomising the KC$\rightarrow$MBON wiring raises the
-cosine to 0.96--0.98 and spreads the current (top five MBONs: 27--29\%);
+cosine to 0.96--0.98 and spreads the current (top five MBONs: 26--29\%);
 randomising the PN$\rightarrow$KC wiring raises it to 0.97--0.99. Cue
 specificity is unchanged by either.
 
@@ -407,7 +407,7 @@ lateralisation disappears (0.43--0.56). Real odours activate homologous
 glomeruli on both sides, so we repeated the analysis with bilaterally
 symmetric glomerular codes (all PNs of a set of PN types). Lateralisation then
 nearly vanishes (standard deviation 0.06--0.08), distinctness is reduced but
-remains clearly above the nulls (0.88 against 0.96--0.99 for either
+remains above the nulls (0.88 against 0.96--0.99 for either
 randomisation), and it now depends on KC subtype rather than on side:
 swapping output profiles within subtype with sides mixed keeps it (0.89--0.90,
 reproduced with three new seeds), while
@@ -643,7 +643,7 @@ between items rose (Spearman $\rho=-0.96$ over the seven settings) (overlap 0.05
 0.94; specificity 9.9, 9.3, 4.7, 2.8, 2.9, 2.0, 1.95), whichever parameter
 raised it. Higher gain, stronger tonic drive and noise all densify the KC code
 and weaken the key; the dependence on sparseness, not on a particular
-parameter setting, is the robust result (Fig.~\ref{fig:sens}).
+parameter setting, is the result that held in every setting (Fig.~\ref{fig:sens}).
 
 In the fly, KC sparseness depends on feedback inhibition from the APL neuron
 \cite{lin2014}. In the model it does not. The connectome's KC$\rightarrow$APL
@@ -802,6 +802,15 @@ per experiment), their JSON outputs and a result register that maps each number
 above to its output file are available at
 \url{https://github.com/LxCenady/Fly-Is-All-You-Need}. The generalised framework
 (UCTF) and its \textit{C.~elegans} example are in the \texttt{uctf/} folder.
+
+The repository (\texttt{repro/}) fixes the complete software environment:
+exact versions and hashes of every package, and the patched simulator,
+flybrain 0.1.0.post1. The released flybrain 0.1.0 has the bug of
+Section~\ref{sec:corrections} and should not be used; a regression test
+guards against it. The folder also provides one command that rebuilds every
+figure from the committed results, a manifest with the hash and provenance of
+every result file, and the headline experiments rerun in that environment
+and compared with the committed results.
 
 \begin{thebibliography}{99}
 \bibitem{hige2015} T. Hige, Y. Aso, M. N. Modi, G. M. Rubin, and G. C. Turner,

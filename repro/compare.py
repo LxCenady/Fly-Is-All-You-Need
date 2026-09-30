@@ -25,8 +25,11 @@ def walk(a, b, path, out):
         for k in set(a) | set(b):
             if k in IGNORE:
                 continue
-            if k not in a or k not in b:
-                out["structure"].append(f"{path}/{k}: only in {'rerun' if k in a else 'committed'}")
+            if k not in b:                        # metadata the newer code adds (e.g. input_code)
+                out["added"].add(k)
+                continue
+            if k not in a:
+                out["structure"].append(f"{path}/{k}: only in committed")
                 continue
             walk(a[k], b[k], f"{path}/{k}", out)
     elif isinstance(a, list) and isinstance(b, list):
@@ -53,7 +56,7 @@ def walk(a, b, path, out):
 
 
 def compare(rerun: Path, committed: Path, rtol, atol) -> dict:
-    out = {"n": 0, "diffs": [], "structure": [], "max_abs": 0.0, "max_rel": 0.0, "rtol": rtol, "atol": atol}
+    out = {"n": 0, "diffs": [], "structure": [], "added": set(), "max_abs": 0.0, "max_rel": 0.0, "rtol": rtol, "atol": atol}
     walk(json.loads(rerun.read_text(encoding="utf-8")), json.loads(committed.read_text(encoding="utf-8")), "", out)
     return out
 
@@ -78,12 +81,12 @@ def main():
         rows.append((m["id"], m.get("claims", []), verdict, r))
     lines = ["# Rerun report", "",
              f"Tolerance: |rerun - committed| <= {a.atol} + {a.rtol} x |committed| for every number.", "",
-             "| Job | Claims | Numbers compared | Verdict | Max abs. diff | Max rel. diff |", "|---|---|---|---|---|---|"]
+             "| Job | Claims | Numbers compared | Verdict | Max abs. diff | Max rel. diff | Fields only in the rerun |", "|---|---|---|---|---|---|---|"]
     detail = []
     for jid, claims, verdict, r in rows:
         if r is None:
             lines.append(f"| {jid} | {', '.join(claims)} | - | {verdict} | | |"); continue
-        lines.append(f"| {jid} | {', '.join(claims)} | {r['n']:,} | {verdict} | {r['max_abs']:.2e} | {r['max_rel']:.2e} |")
+        lines.append(f"| {jid} | {', '.join(claims)} | {r['n']:,} | {verdict} | {r['max_abs']:.2e} | {r['max_rel']:.2e} | {', '.join(sorted(r['added'])) or '-'} |")
         if r["diffs"] or r["structure"]:
             detail.append(f"\n## {jid}\n")
             detail += [f"- structure: {s}" for s in r["structure"][:20]]

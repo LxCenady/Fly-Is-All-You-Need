@@ -251,8 +251,15 @@ With sparse input the brain lowered BPC in every case: by 0.078 $\pm$ 0.020
 (160 PNs) and 0.076 $\pm$ 0.014 (192), mean $\pm$ s.d.\ over 9 cases (context
 head alone 3.097 BPC on average; brain plus context 3.019 and 3.021). With the
 earlier dense input the change was $-0.007 \pm 0.019$, an increase in 4 of 9
-cases. Because every sparse case improves, the effect is larger than the
-readout-fit noise above. Accuracy, however, did not improve: 44.6\% and 44.5\%
+cases. As 95\% intervals over the 9 cases:
+\begin{itemize}
+\item sparse 160: $[-0.093, -0.063]$;
+\item sparse 192: $[-0.087, -0.065]$;
+\item dense: $[-0.021, +0.008]$.
+\end{itemize}
+Every sparse case improved (exact sign test $p = 0.004$ for each code size),
+so the sparse effect is larger than the readout-fit noise above.
+The dense effect cannot be distinguished from zero. Accuracy, however, did not improve: 44.6\% and 44.5\%
 with the sparse brain against 44.5\% for the context head alone, and 43.5\%
 with dense input, lower in all 9 cases. The brain therefore makes the
 probabilities better calibrated rather than changing the most likely
@@ -309,7 +316,8 @@ PNs, default code draw) with clipped KC features (L2 $5\cdot10^{-3}$).
 Kneser-Ney (KN) character models \cite{kneser1995,chen1999} on the same
 training characters. They are far stronger than the hashed head
 (Table~\ref{tab:base}): a 5-gram reaches 2.47--2.68 BPC, against 3.10 at best
-for any brain model on these splits. To ask whether the brain adds anything to
+for any brain model on these splits. On the first segment the gap is 0.442 BPC
+(95\% block-bootstrap interval 0.416--0.469, blocks of 250 characters). To ask whether the brain adds anything to
 such a model, we used the KN log-probabilities as a fixed offset in the
 softmax readout and added brain features (KN probabilities for training rows
 were cross-fitted over five folds, so that the readout does not learn to
@@ -343,8 +351,10 @@ GRU (hidden 256) & 2.857 & 2.985 & 2.637\\\bottomrule
 $t$ recovers character $t-k$ in 99.9\% of cases for $k=0$, 90--92\% for
 $k=1$, 57--60\% for $k=2$, 35--38\% for $k=3$, 24--26\% for $k=4$ and
 20--21\% for $k=5$, approaching the rate of always guessing the most frequent
-character (15--16\%) by $k\approx7$ (Fig.~\ref{fig:memory}, left). The brain
-thus holds about four characters, fading fast, which is less context than a
+character (15--16\%) by $k\approx7$ (Fig.~\ref{fig:memory}, left). From all
+readout features rather than KCs alone, the character two back is decoded in
+83.9\% (95\% interval 82.7--85.0) and three back in 49.7\% (47.5--51.7). The
+brain thus holds about four characters, fading fast, which is less context than a
 5-gram uses. This also explains the learning curve: with little data the
 hashed trigram table is sparse and the brain's smooth code of the last few
 characters generalises better; with more data the table fills in.
@@ -649,7 +659,12 @@ code under the author's direction and ran the \textit{C.~elegans} check.
 \section*{Data and code}
 \url{https://github.com/LxCenady/Fly-Is-All-You-Need}. UCTF is in its
 \texttt{uctf/} folder; the \textit{C.~elegans} example, including the script
-that fetches the data, is in \texttt{uctf/examples/celegans/}.
+that fetches the data, is in \texttt{uctf/examples/celegans/}. The
+\texttt{repro/} folder fixes the complete software environment (exact versions
+and hashes, and the patched simulator flybrain 0.1.0.post1). It rebuilds every
+figure from the committed results with one command, records the hash and
+provenance of every result file, and holds the confidence intervals of this
+report and the pre-registered confirmatory run.
 
 \begin{thebibliography}{99}
 \bibitem{berg2026} S. Berg \textit{et al.}, ``Sexual dimorphism in the
