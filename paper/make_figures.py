@@ -8,15 +8,16 @@ import glob
 import json
 from pathlib import Path
 
+import os
+os.environ.setdefault("SOURCE_DATE_EPOCH", "1790640000")      # reproducible PDFs (fixed timestamp)
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
-import sys
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "mechanism"))
-import paths  # noqa: E402
-E = paths.OUT
+import os
+# Inputs: the committed results in ../results (override with FIG_DATA=<folder>, e.g. a rerun).
+E = Path(os.environ.get("FIG_DATA") or Path(__file__).resolve().parent.parent / "results")
 OUT = Path(__file__).parent / "figures"
 OUT.mkdir(exist_ok=True)
 C1, C2, C3 = "#2a78d6", "#eb6834", "#1baf7a"

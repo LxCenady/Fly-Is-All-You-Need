@@ -110,6 +110,12 @@ def build(args, condition="intact"):
     live = p.xp.asnumpy(st["brain"]._W.indices[p.edge_pos_gpu]).astype(np.int64)
     assert np.array_equal(live, p.edge_pre_ids), "KC->MBON identity changed at the first SpMV (unfixed flybrain?)"
     assert bool(st["brain"]._W.has_sorted_indices), "GPU matrix not canonical (use flybrain 0.1.0.post1)"
+    if os.environ.get("MB_CODE_SEED"):
+        # Replication hook: a fresh random PN code for every character (new "stimuli");
+        # unset = the reference codes (seed 3).  Glomerular codes: MB_GLOM_SEED (m3_pnkc).
+        enc = st["enc"]
+        st["enc"] = type(enc)(enc.channels, len(enc.codes), active=enc.active, drive=enc.drive,
+                              window=enc.window, gamma=enc.gamma, seed=int(os.environ["MB_CODE_SEED"]))
     if os.environ.get("MB_LESION"):
         st["_lesion"] = _apl_lesion(st, os.environ["MB_LESION"])
     st["_other_mask"] = _other_positions(st)

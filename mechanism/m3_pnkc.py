@@ -100,7 +100,11 @@ def rewire(st, mode, seed):
 def set_glom_codes(st, target: int, seed: int = 11):
     """Glomerular input code: each character drives ALL PNs of a random set of
     PN cell types (glomeruli), accumulated until >= target PNs.  Fixed seed, so
-    every wiring condition sees the same codes."""
+    every wiring condition sees the same codes.  MB_GLOM_SEED overrides the seed
+    (replications with new glomerular codes); unset = the reference codes."""
+    import os
+    if os.environ.get("MB_GLOM_SEED"):
+        seed = int(os.environ["MB_GLOM_SEED"])
     b, enc = st["brain"], st["enc"]
     ct = np.asarray(b.cell_type).astype(str)
     chans = np.asarray(enc.channels)

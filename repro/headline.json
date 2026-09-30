@@ -1,0 +1,22 @@
+{
+ "about": "Canonical commands for the headline results of both papers. Each job reruns one committed result file; repro/compare.py checks the rerun against it. Claim ids refer to docs/CLAIMS_EVIDENCE.md. Commands run from the repository root with the pinned environment (repro/ENVIRONMENT.md).",
+ "jobs": [
+  {"id": "m1_validate_g0", "claims": ["M1"], "script": "mechanism/m1_validate.py", "args": ["{out}", "0"], "compare": "results/m1_validate_g0.json"},
+  {"id": "m1_validate_g32", "claims": ["M1"], "script": "mechanism/m1_validate.py", "args": ["{out}", "32"], "compare": "results/m1_validate_g32.json"},
+  {"id": "m1_cross", "claims": ["M2", "M3"], "script": "mechanism/m1_cross.py", "args": ["{out}"], "compare": "results/m1_cross.json"},
+  {"id": "m1_cross_a192", "claims": ["M2", "M3"], "script": "mechanism/m1_cross.py", "args": ["{out}", "192", "1.5"], "compare": "results/m1_cross_a192.json"},
+  {"id": "m4_curve_a192", "claims": ["M4", "M5"], "script": "mechanism/m4_curve.py", "args": ["{out}", "192", "1.5"], "compare": "results/m4_curve_a192.json"},
+  {"id": "sweep_s1.5", "claims": ["M6", "M7"], "script": "mechanism/sweep_opoint.py", "args": ["{out}", "160,192,224,256,320,384,448", "1.5"], "compare": "results/sweep_s1.5.json"},
+  {"id": "m2_current_6pairs", "claims": ["M8"], "script": "mechanism/m2_current.py", "args": ["{out}", "ac,bd,eg,fh,ik,jl", "160:1.5,192:1.5,512:1.0"], "compare": "results/m2_current_6pairs.json"},
+  {"id": "m3_kcmbon", "claims": ["M10"], "script": "mechanism/m3_kcmbon.py", "args": ["{out}", "160:1.5,192:1.5,512:1.0"], "compare": "results/m3_kcmbon.json"},
+  {"id": "m6_side_a160", "claims": ["M10"], "script": "mechanism/m3_kcmbon.py", "args": ["{out}", "160:1.5", "real:0,profile_side:1,profile_side:2,profile_type_side:1,profile_type_side:2,kc_perm_side:1,pn_perm_side:1,pn_perm_side:2,pn_perm_type:1,pn_perm_type_side:1"], "compare": "results/m6_side_a160.json"},
+  {"id": "m6_side_a192", "claims": ["M10"], "script": "mechanism/m3_kcmbon.py", "args": ["{out}", "192:1.5", "real:0,profile_side:1,profile_side:2,profile_type_side:1,profile_type_side:2,kc_perm_side:1,pn_perm_side:1,pn_perm_side:2,pn_perm_type:1,pn_perm_type_side:1"], "compare": "results/m6_side_a192.json"},
+  {"id": "m6_glom_route", "claims": ["M12"], "script": "mechanism/m3_kcmbon.py", "args": ["{out}", "160:1.5,192:1.5,224:1.5", "real:0,profile_type:1,profile_type_side:1,profile_side:1,kc_perm:1,pn_perm:1", "glom"], "compare": "results/m6_glom_route.json"},
+  {"id": "m6_hemi", "claims": ["M11"], "script": "mechanism/m6_hemi.py", "args": ["{out}", "160:1.5,192:1.5,512:1.0"], "compare": "results/m6_hemi.json"},
+  {"id": "m7_teacher", "claims": ["M16"], "script": "mechanism/m7_teacher.py", "args": ["{out}"], "compare": "results/m7_teacher.json"},
+  {"id": "m8_interference", "claims": ["M18"], "script": "mechanism/m8_interference.py", "args": ["{out}", "192:1.5:glom,512:1.0:random"], "compare": "results/m8_interference.json"},
+  {"id": "m5_downstream", "claims": ["M19"], "script": "mechanism/m5_downstream.py", "args": ["{out}"], "compare": "results/m5_downstream.json"},
+  {"id": "m5b_timing", "claims": ["M19"], "script": "mechanism/m5b_timing.py", "args": ["{out}"], "compare": "results/m5b_timing.json"},
+  {"id": "m7_map", "claims": ["M14"], "script": "mechanism/m7_map.py", "args": ["{out}"], "compare": "results/m7_map.json"}
+ ]
+}
