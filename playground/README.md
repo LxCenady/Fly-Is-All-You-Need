@@ -63,9 +63,13 @@ To run GPF-1 you need an **NVIDIA GPU** with a recent driver, and flybrain with 
 
 ```
 pip install -r requirements.txt
-pip install "flybrain[gpu]==0.1.0"
+pip install "flybrain[gpu] @ https://github.com/LxCenady/Fly-Is-All-You-Need/releases/download/flybrain-0.1.0.post1/flybrain-0.1.0.post1-py3-none-any.whl"
 python -m gpf --web               # then pick GPF-1 on the left
 ```
+
+That is flybrain with one fix (see `third_party/flybrain/PATCH.md`). GPF only reads the
+network and never writes synapses, so the unpatched `flybrain[gpu]==0.1.0` from PyPI also
+works for GPF. The research code needs the fix.
 
 The first time GPF-1 starts, flybrain downloads its prebuilt copy of the **MaleCNS v1.0
 connectome** (about 260 MB, CC BY 4.0, FlyEM / HHMI Janelia and partners) into `~/fly-data`

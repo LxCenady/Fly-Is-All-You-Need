@@ -219,7 +219,8 @@ def brain_features(ids, V, a, cache: Path | None):
         return simulate(ids, V, brain_spec(a), a.device or "auto"), key
     except ImportError as e:
         sys.exit(f"this substrate needs a package that is missing ({e}).  The MaleCNS connectome needs\n"
-                 "  pip install \"flybrain[gpu]==0.1.0\"   (and an NVIDIA GPU)")
+                 "  pip install \"flybrain[gpu]\"   (and an NVIDIA GPU; the patched 0.1.0.post1 is recommended,\n"
+                 "  see playground/README.md)")
 
 
 def train_brain(a):

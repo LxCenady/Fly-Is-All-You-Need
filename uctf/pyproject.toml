@@ -14,7 +14,7 @@ dependencies = ["numpy", "scipy"]
 
 [project.optional-dependencies]
 gpu = ["cupy-cuda12x"]
-malecns = ["flybrain[gpu]==0.1.0"]
+malecns = ["flybrain[gpu] @ https://github.com/LxCenady/Fly-Is-All-You-Need/releases/download/flybrain-0.1.0.post1/flybrain-0.1.0.post1-py3-none-any.whl"]
 
 [tool.setuptools]
 packages = ["uctf"]

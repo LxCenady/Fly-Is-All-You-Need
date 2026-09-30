@@ -56,17 +56,34 @@ audit_20260928/   evidence for the simulator bug
 docs/             claims-to-evidence map, literature index
 ```
 
-To reproduce the experiments (NVIDIA GPU needed; flybrain downloads the ~260 MB connectome
-to `~/fly-data` on first use):
+## Reproducing
+
+Everything needed is in [`repro/`](repro/). [`repro/ENVIRONMENT.md`](repro/ENVIRONMENT.md) has
+the details; in short (NVIDIA GPU needed; the ~260 MB connectome downloads on first use):
 
 ```
-pip install "flybrain[gpu]==0.1.0" scipy
-python mechanism/lm_mech.py --out outputs/test.json --train 900 --val 100 --active 160 --scale 1.5
+python -m pip install --require-hashes -r repro/requirements-lock.txt --extra-index-url https://download.pytorch.org/whl/cu126
+python repro/make.py env               # the environment matches the lock
+python repro/make.py test              # simulator regression test + framework tests
+python repro/make.py verify-figures    # every figure of both papers, rebuilt from results/
+python repro/make.py headline OUT      # rerun the headline experiments (about 1 h), then:
+python repro/make.py compare OUT
 ```
 
-Nothing is hard-coded: `mechanism/paths.py` reads data and output locations from
-environment variables (`FLY_DATA`, `FLY_OUT`, …) or a git-ignored
-`mechanism/paths_local.json`.
+- **Use the patched simulator.** flybrain 0.1.0 from PyPI moves cached synapse offsets at the
+  first GPU sparse product, so plasticity writes land on the wrong synapses. The lock installs
+  the fixed fork, flybrain 0.1.0.post1 ([release](https://github.com/LxCenady/Fly-Is-All-You-Need/releases/tag/flybrain-0.1.0.post1),
+  [`third_party/flybrain`](third_party/flybrain/), proposed upstream as
+  [alextitonis/fly.ai#10](https://github.com/alextitonis/fly.ai/pull/10)).
+- **Where each result comes from.** `results/MANIFEST.json` records the hash and provenance of
+  every result file. [`repro/RERUN_REPORT.md`](repro/RERUN_REPORT.md) shows the headline
+  experiments rerun in the pinned environment.
+- **How strong each claim is.** [`docs/CLAIMS_EVIDENCE.md`](docs/CLAIMS_EVIDENCE.md) classifies
+  every claim as in-model empirical, by construction or exploratory. Confidence intervals and
+  the pre-registered confirmatory run are in `repro/`.
+- **Nothing is hard-coded.** `mechanism/paths.py` reads data and output locations from
+  environment variables (`FLY_DATA`, `FLY_OUT`, …) or a git-ignored
+  `mechanism/paths_local.json`.
 
 ## Credits and license
 
