@@ -1,20 +1,33 @@
-"""UCTF, the Universal Connectome Training Framework: any wiring diagram as a character-level
-language model, with the controls that ask whether the wiring matters.
+"""UCTF, the Universal Connectome Training Framework.
 
-    data.py       connectomes as data (weights.npz + neuron table [+ gap.npz]), loaders, CSV importer
-    select.py     choosing neurons by annotation or by wiring
-    controls.py   degree-preserving rewiring (chemical and electrical synapses)
-    substrate.py  LIFSubstrate: a spec (specs/*.json) turned into characters -> neuron features
-    run.py        substrate registry, feature simulation and caching keys
-    readout.py    the linear readout (softmax over neuron features + hashed context table)
-    text.py       train/validation split and character set
-    baselines.py  unigram and Kneser-Ney n-gram baselines
-    bench.py      the standard comparison (n-grams, context table, connectome, rewired controls,
-                  memory span, activity matching)
+A small kernel that turns any connectome into a model that reads tokens, and
+plugins for everything that is a modelling choice:
 
-    python -m uctf import --neurons n.csv --edges e.csv --out my-connectome
-    python -m uctf bench --substrate my-spec.json --data text.txt
+    uctf/core      connectome data, spec, selectors, plugin registry, step loop
+    uctf/plugins   sources, transforms, neurons, synapses, encoders, features,
+                   tasks, readouts, probes, baselines
+    uctf/specs     built-in specs (malecns-v1)
 
-Modules are imported on demand; the package itself imports nothing heavy.
+Public API (imported on first use, so `import uctf` stays light):
+
+    from uctf import Network, load_spec, register, available
+    net = Network("my-spec.json", n_tokens=65)
+    features = net.step_token(token)
+
+Command line: python -m uctf import | bench | plugins
 """
-__version__ = "0.1.0"
+__version__ = "0.2.0"
+
+_API = {
+    "Connectome": "core.connectome", "Layer": "core.connectome",
+    "load_folder": "core.connectome", "Network": "core.network",
+    "available": "core.registry", "get": "core.registry",
+    "register": "core.registry", "load_spec": "core.spec",
+}
+
+
+def __getattr__(name):
+    if name in _API:
+        from importlib import import_module
+        return getattr(import_module(f".{_API[name]}", __name__), name)
+    raise AttributeError(name)

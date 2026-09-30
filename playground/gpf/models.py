@@ -44,10 +44,10 @@ class CharModel:
 
 # ------------------------------------------------------------------ Kneser-Ney
 class KNModel(CharModel):
-    """Interpolated modified Kneser-Ney character n-gram (uctf.baselines), fitted when loaded."""
+    """Interpolated modified Kneser-Ney character n-gram (uctf.plugins.baselines), fitted when loaded."""
 
     def __init__(self, order: int = 7, text: str | None = None, chars=None, name=None, log=print):
-        from uctf.baselines import KneserNey
+        from uctf.plugins.baselines import KneserNey
         self.n = order
         self.set_chars(chars or VOCAB)
         text = CORPUS.read_text(encoding="utf-8")[:1_000_000] if text is None else text
@@ -99,7 +99,7 @@ class GRUModel(CharModel):
 
 # ------------------------------------------------------------------ connectome
 def ctx_hash(hist, order, V, buckets):
-    from uctf.readout import ctx_hash as h
+    from uctf.plugins.readouts import ctx_hash as h
     return h(hist, order, V, buckets)
 
 
@@ -121,7 +121,8 @@ class BrainModel(CharModel):
         ro = meta.get("readout", {})
         self.order, self.buckets = int(ro.get("context_order", 3)), int(ro.get("buckets", self.E.shape[0]))
         b = meta["brain"]
-        log("building the connectome simulation (166,700 neurons; the first run downloads ~260 MB)...")
+        log(f"building the connectome simulation ({b.get('substrate', 'connectome')}; "
+            "MaleCNS downloads ~260 MB on first use)...")
         self.rt = fly.make_substrate(self.V, b)
         self.name = name or "GPF-1 (fly connectome)"
         log(f"{self.name} ready")

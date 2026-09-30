@@ -1,36 +1,196 @@
 {
+ "uctf": 2,
  "name": "celegans-cook2019",
  "description": "C. elegans hermaphrodite, whole animal (Cook et al. 2019): 300 neurons, 133 muscles, chemical synapses and gap junctions. Input to sensory neurons; readout from all other neurons (not the driven sensory neurons: the fly's readout also excludes its input neurons). Operating point chosen by hand (see README).",
- "connectome": {"loader": "folder", "path": "cook2019"},
- "populations": {
-  "SENSORY": {"col": "class", "equals": "sensory"},
-  "INTER": {"col": "class", "equals": "interneuron"},
-  "MOTOR": {"col": "class", "equals": "motor"},
-  "PHARYNX": {"col": "class", "equals": "pharynx"},
-  "MUSCLE": {"col": "class", "equals": "muscle"},
-  "READOUT": {"or": ["INTER", "MOTOR", "PHARYNX", {"col": "cell_type", "in": ["RIPL", "RIPR"]}]}
+ "connectome": {
+  "source": "folder",
+  "params": {
+   "path": "cook2019"
+  }
  },
- "neuron": {"dt": 0.02, "tau": 0.1, "threshold": 1.0, "reset": 0.0, "gain": 0.9, "tonic": 0.05,
-            "gap_gain": 0.5, "noise_hz": 0.0, "seed": 20260920},
- "input": {"population": "SENSORY", "active": 20, "drive": 1.5, "steps": 6, "sustain": 0.5, "code_seed": 3},
- "readout": [
-  {"name": "spikes", "population": "READOUT", "feature": "counts"},
-  {"name": "voltage", "population": "READOUT", "feature": "voltage"},
-  {"name": "trace", "population": "READOUT", "feature": "trace", "tau": 0.1}
+ "transforms": [],
+ "populations": {
+  "SENSORY": {
+   "col": "class",
+   "equals": "sensory"
+  },
+  "INTER": {
+   "col": "class",
+   "equals": "interneuron"
+  },
+  "MOTOR": {
+   "col": "class",
+   "equals": "motor"
+  },
+  "PHARYNX": {
+   "col": "class",
+   "equals": "pharynx"
+  },
+  "MUSCLE": {
+   "col": "class",
+   "equals": "muscle"
+  },
+  "READOUT": {
+   "or": [
+    "INTER",
+    "MOTOR",
+    "PHARYNX",
+    {
+     "col": "cell_type",
+     "in": [
+      "RIPL",
+      "RIPR"
+     ]
+    }
+   ]
+  }
+ },
+ "neuron": {
+  "model": "lif",
+  "params": {
+   "dt": 0.02,
+   "tau": 0.1,
+   "threshold": 1.0,
+   "reset": 0.0,
+   "tonic": 0.05,
+   "noise_hz": 0.0,
+   "seed": 20260920
+  }
+ },
+ "synapses": [
+  {
+   "layer": "chemical",
+   "model": "chemical",
+   "params": {
+    "gain": 0.9
+   }
+  },
+  {
+   "layer": "electrical",
+   "model": "electrical",
+   "params": {
+    "gain": 0.5,
+    "optional": true
+   }
+  }
  ],
- "classes": {"populations": ["SENSORY", "INTER", "MOTOR", "PHARYNX", "MUSCLE"], "else_col": "class"},
+ "input": {
+  "encoder": "random_subset",
+  "population": "SENSORY",
+  "steps": 6,
+  "params": {
+   "active": 20,
+   "drive": 1.5,
+   "sustain": 0.5,
+   "seed": 3
+  }
+ },
+ "readout": [
+  {
+   "name": "spikes",
+   "feature": "counts",
+   "population": "READOUT",
+   "params": {}
+  },
+  {
+   "name": "voltage",
+   "feature": "voltage",
+   "population": "READOUT",
+   "params": {}
+  },
+  {
+   "name": "trace",
+   "feature": "trace",
+   "population": "READOUT",
+   "params": {
+    "tau": 0.1
+   }
+  }
+ ],
+ "controls": {
+  "rewire-full": [
+   {
+    "transform": "rewire",
+    "params": {
+     "layers": {
+      "chemical": "permute_presynaptic",
+      "electrical": "double_edge_swap"
+     },
+     "classes": null,
+     "skip_missing": true
+    }
+   }
+  ],
+  "rewire-class": [
+   {
+    "transform": "rewire",
+    "params": {
+     "layers": {
+      "chemical": "permute_presynaptic",
+      "electrical": "double_edge_swap"
+     },
+     "classes": {
+      "populations": [
+       "SENSORY",
+       "INTER",
+       "MOTOR",
+       "PHARYNX",
+       "MUSCLE"
+      ],
+      "else_col": "class"
+     },
+     "skip_missing": true
+    }
+   }
+  ]
+ },
+ "activity_match": {
+  "param": "synapses.chemical.params.gain",
+  "readouts": [
+   "spikes"
+  ]
+ },
  "view": {
-  "project": ["-x", "z"],
+  "project": [
+   "-x",
+   "z"
+  ],
   "title": "Inside the worm",
   "caption": "No anatomy here: a schematic with one column per cell class. Each letter drives its own set of sensory neurons; interneurons and motor neurons carry what the network remembers.",
   "credit": "C. elegans connectome: Cook et al. 2019 (Nature), via OpenWorm ConnectomeToolbox (MIT).",
-  "other_color": "#64748b", "other_text": "other cells",
+  "other_color": "#64748b",
+  "other_text": "other cells",
   "groups": [
-   {"name": "sensory", "population": "SENSORY", "color": "#22d3ee", "text": "sensory neurons"},
-   {"name": "inter", "population": "INTER", "color": "#facc15", "text": "interneurons"},
-   {"name": "motor", "population": "MOTOR", "color": "#4ade80", "text": "motor neurons"},
-   {"name": "pharynx", "population": "PHARYNX", "color": "#fb923c", "text": "pharyngeal neurons"},
-   {"name": "muscle", "population": "MUSCLE", "color": "#e879f9", "text": "muscles"}
+   {
+    "name": "sensory",
+    "population": "SENSORY",
+    "color": "#22d3ee",
+    "text": "sensory neurons"
+   },
+   {
+    "name": "inter",
+    "population": "INTER",
+    "color": "#facc15",
+    "text": "interneurons"
+   },
+   {
+    "name": "motor",
+    "population": "MOTOR",
+    "color": "#4ade80",
+    "text": "motor neurons"
+   },
+   {
+    "name": "pharynx",
+    "population": "PHARYNX",
+    "color": "#fb923c",
+    "text": "pharyngeal neurons"
+   },
+   {
+    "name": "muscle",
+    "population": "MUSCLE",
+    "color": "#e879f9",
+    "text": "muscles"
+   }
   ],
   "labels": []
  }

@@ -4,20 +4,23 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "uctf"
-version = "0.1.0"
-description = "Universal Connectome Training Framework: any wiring diagram as a character-level language model, with the controls that ask whether the wiring matters"
+version = "0.2.0"
+description = "Universal Connectome Training Framework: a minimal plugin kernel that turns any connectome into a token model, with controls that ask whether the wiring matters"
 readme = "README.md"
 license = {text = "MIT"}
 authors = [{name = "Quanxi Li"}]
 requires-python = ">=3.10"
 dependencies = ["numpy", "scipy"]
 
+[project.scripts]
+uctf = "uctf.__main__:main"
+
 [project.optional-dependencies]
 gpu = ["cupy-cuda12x"]
 malecns = ["flybrain[gpu] @ https://github.com/LxCenady/Fly-Is-All-You-Need/releases/download/flybrain-0.1.0.post1/flybrain-0.1.0.post1-py3-none-any.whl"]
 
 [tool.setuptools]
-packages = ["uctf"]
+packages = ["uctf", "uctf.core", "uctf.plugins"]
 
 [tool.setuptools.package-data]
 uctf = ["specs/*.json"]

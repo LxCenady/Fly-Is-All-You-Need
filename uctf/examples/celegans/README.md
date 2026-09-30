@@ -13,7 +13,8 @@ python -m uctf import --neurons neurons.csv --edges edges.csv --out cook2019 \
     --sign-col nt --inhibitory gaba --type-col type
 python -m uctf bench --substrate celegans-cook2019.json --data <text> --vocab <vocab.json> \
     --train-chars 20001 --val-chars 5000 --device cpu --control-seeds 0,1,2 --match-activity
-python -m gpf train brain --substrate celegans-cook2019.json --data <text> --name worm-cook2019 --device cpu
+python -m gpf train brain --substrate celegans-cook2019.json --data <text> --vocab <vocab.json> \
+    --name worm-cook2019 --device cpu
 ```
 
 ## Modelling choices

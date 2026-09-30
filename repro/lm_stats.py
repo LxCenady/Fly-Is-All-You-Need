@@ -81,9 +81,9 @@ def heldout(lines, res):
 
 def per_char(bench_dir: Path, label: str, lines, res, vocab):
     """Per-character losses for context only / + connectome / KN-5 on the cached bench split."""
-    from uctf.baselines import KneserNey
-    from uctf.readout import ReadoutConfig, context_ids, fit_calibrated, readout_scores
-    from uctf.text import load_split
+    from uctf.plugins.baselines import KneserNey
+    from uctf.plugins.readouts import ReadoutConfig, context_ids, fit_calibrated, readout_scores
+    from uctf.plugins.tasks import load_split
     rep = json.loads((bench_dir / "report.json").read_text(encoding="utf-8"))
     sp = load_split(ROOT / "playground/gpf/data/tinyshakespeare.txt", rep["train_chars"], rep["val_chars"], 0, vocab)
     ids, n_tr, V = sp.ids, sp.n_tr, len(sp.chars)

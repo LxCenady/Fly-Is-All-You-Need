@@ -24,7 +24,7 @@ jobs:
           pip install numpy pyinstaller
           pyinstaller --noconfirm --onefile --name gpf \
             --add-data "gpf/data:gpf/data" --add-data "gpf/web.html:gpf" --add-data "gpf/logo.svg:gpf" \
-            --hidden-import gpf.web --hidden-import gpf.models --hidden-import gpf.brain --hidden-import gpf.__main__ --hidden-import gpf.train --paths ../uctf --hidden-import uctf.baselines --hidden-import uctf.text --hidden-import uctf.readout \
+            --hidden-import gpf.web --hidden-import gpf.models --hidden-import gpf.brain --hidden-import gpf.__main__ --hidden-import gpf.train --paths ../uctf --hidden-import uctf.plugins.baselines --hidden-import uctf.plugins.tasks --hidden-import uctf.plugins.readouts --hidden-import uctf.core.registry \
             --exclude-module textual --exclude-module torch gpf_app.py
       - name: Assemble .deb
         run: |
@@ -96,7 +96,7 @@ jobs:
           pyinstaller --noconfirm --onefile --name gpf \
             --add-data "gpf/data;gpf/data" --add-data "gpf/web.html;gpf" --add-data "gpf/logo.svg;gpf" \
             --icon gpf/assets/gpf.ico \
-            --hidden-import gpf.web --hidden-import gpf.models --hidden-import gpf.brain --hidden-import gpf.__main__ --hidden-import gpf.train --paths ../uctf --hidden-import uctf.baselines --hidden-import uctf.text --hidden-import uctf.readout \
+            --hidden-import gpf.web --hidden-import gpf.models --hidden-import gpf.brain --hidden-import gpf.__main__ --hidden-import gpf.train --paths ../uctf --hidden-import uctf.plugins.baselines --hidden-import uctf.plugins.tasks --hidden-import uctf.plugins.readouts --hidden-import uctf.core.registry \
             --exclude-module textual --exclude-module torch gpf_app.py
           VER="${GITHUB_REF_NAME#gpf-v}"; [ "$VER" = "$GITHUB_REF_NAME" ] && VER="0.0.0"
           cp dist/gpf.exe "../gpf-lite-${VER}-windows-x64.exe"

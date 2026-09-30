@@ -22,7 +22,7 @@ PROTOCOL = dict(active=160, drive=1.5, gain=1.5, tonic=0.05, k=6, sustain=0.5,
 
 
 def _patch_cupy_includes() -> None:
-    from uctf.gpu import patch_cupy_includes
+    from uctf.core.backend import patch_cupy_includes
     patch_cupy_includes()
 
 

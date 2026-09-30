@@ -23,6 +23,12 @@ n-gram baselines and rewired copies of itself. It has been run on two species so
 (MaleCNS v1.0) and the whole C. elegans worm (Cook et al. 2019). Both show the same pattern:
 a few characters of memory, far behind a 5-gram, and the real wiring is not special.
 
+UCTF is a small kernel plus plugins. Connectome sources, wiring transforms, neuron and synapse
+models (including per-transmitter synapses and gap junctions), input encoders, readout
+features, tasks, probes and baselines are all named plugins that a spec composes. Other
+packages can add plugins through the `uctf.plugins` entry-point group. The protocol is in
+[`uctf/PLUGINS.md`](uctf/PLUGINS.md).
+
 ## The research behind it
 
 This is independent research (a high-school project) on a spiking model of the adult male

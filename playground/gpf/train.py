@@ -13,11 +13,11 @@ the terminal UI and --cli as "user:<name>".  Every run prints validation bits pe
   gru    1-layer GRU.  Needs torch (uses the GPU if torch sees one).
   brain  A connectome as a frozen reservoir: a simulated nervous system turns each character
          into neuron features; only a linear readout (plus a hashed 3-character context table)
-         is trained.  --substrate picks the connectome spec (gpf/connectome/specs/ or your own
-         JSON); the default, malecns-v1, is the whole fly CNS with GPF-1's recipe (paper_lm/,
-         Section VI; flybrain + NVIDIA GPU, ~40-60 characters/s).  --control rewire-full or
-         rewire-class trains on a degree-preserving rewired copy instead: the null model that
-         asks whether the real wiring matters.  For the whole comparison use  python -m gpf bench.
+         is trained.  --substrate picks the connectome spec (a UCTF built-in, uctf/uctf/specs/, or your
+         own JSON); the default, malecns-v1, is the whole fly CNS with GPF-1's recipe (paper_lm/,
+         Section VI; flybrain + NVIDIA GPU, ~40-60 characters/s).  --control NAME (a control of
+         the spec, e.g. rewire-full or rewire-class) trains on a degree-preserving rewired copy
+         instead: the null model that asks whether the real wiring matters.  For the whole comparison use  python -m gpf bench.
 
 Options can also come from a JSON file: --config params.json (command-line flags win).
 """
@@ -49,8 +49,8 @@ LOG2 = math.log(2)
 
 # ------------------------------------------------------------------ data (UCTF)
 def load_split(a):
-    """The training part, the validation part after it, and the character set (uctf.text)."""
-    from uctf.text import load_split as split
+    """The training part, the validation part after it, and the character set (uctf.plugins.tasks)."""
+    from uctf.plugins.tasks import load_split as split
     try:
         sp = split(a.data, a.train_chars, a.val_chars, a.offset, a.vocab, a.max_vocab,
                    0.25 if a.kind == "brain" else 0.1)
@@ -63,13 +63,13 @@ def load_split(a):
 
 
 def unigram_bpc(ids, n_tr, V):
-    from uctf.baselines import unigram_bpc as u
+    from uctf.plugins.baselines import unigram_bpc as u
     return u(ids, n_tr, V)
 
 
 def kn_bpc(order, chars, ids, n_tr, log=lambda m: None):
     """Validation BPC and accuracy of a Kneser-Ney model fitted on the training characters."""
-    from uctf.baselines import kn_bpc as k
+    from uctf.plugins.baselines import kn_bpc as k
     return k(order, ids, n_tr, len(chars))
 
 
@@ -232,7 +232,7 @@ def train_brain(a):
     cache = target / "features.npz"
     X, key = brain_features(ids, V, a, cache if a.keep_features or cache.exists() else None)
     y = ids[1:]
-    from uctf.readout import ReadoutConfig, context_ids, fit_calibrated, readout_scores, score
+    from uctf.plugins.readouts import ReadoutConfig, context_ids, fit_calibrated, readout_scores, score
     cfg = ReadoutConfig(a.l2, a.epochs, a.lr, a.buckets, a.context_order, a.seed)
     cx = context_ids(ids, a.context_order, V, a.buckets)
     ntr = n_tr - 1                                   # rows: features at character i predict i+1
@@ -252,7 +252,7 @@ def train_brain(a):
                      else ["kc", "mbon_v", "mbon_spk", "central"]),
         "brain": dict(brain_spec(a), mode="frozen"),
         "readout": {"l2": a.l2, "epochs": a.epochs, "lr": a.lr, "context_order": a.context_order,
-                    "buckets": a.buckets, "E_dtype": "float16", "fit": "uctf.readout.fit_readout (CPU)"}})
+                    "buckets": a.buckets, "E_dtype": "float16", "fit": "uctf.plugins.readouts.fit_readout (CPU)"}})
     np.savez_compressed(out / "readout.npz", W=M["W"], E=M["E"].astype(np.float16), b=M["b"],
                         mu=M["mu"], sd=M["sd"])
     if a.keep_features:
@@ -295,11 +295,12 @@ def parser():
     g.add_argument("--device", help="auto, cpu or cuda")
     g = ap.add_argument_group("brain")
     g.add_argument("--substrate", help="connectome spec: a built-in name (malecns-v1) or a JSON file; "
-                                       "see gpf/connectome/ (flybrain-malecns-v1 = the legacy GPF-1 runtime)")
+                                       "see uctf/PLUGINS.md (flybrain-malecns-v1 = the legacy GPF-1 runtime)")
     g.add_argument("--spec-set", action="append", metavar="KEY=VALUE",
-                   help="override one spec entry, e.g. --spec-set neuron.gain=1.8 (repeatable)")
-    g.add_argument("--control", choices=["none", "rewire-full", "rewire-class"],
-                   help="train on a degree-preserving rewired copy of the connectome instead (null model)")
+                   help="override one spec entry, e.g. --spec-set synapses.chemical.params.gain=1.8 "
+                        "(repeatable)")
+    g.add_argument("--control", help="none, or a control named in the spec (rewire-full, rewire-class): "
+                                     "train on a rewired copy instead (null model)")
     g.add_argument("--control-seed", type=int, help="seed of the rewiring (0)")
     g.add_argument("--pn-active", type=int, help="input neurons driven per character (spec default; "
                                                  "MaleCNS: 160 of 675 projection neurons)")

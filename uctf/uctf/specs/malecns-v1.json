@@ -1,44 +1,251 @@
 {
+ "uctf": 2,
  "name": "malecns-v1",
  "description": "Adult male Drosophila CNS (MaleCNS v1.0, 166,700 neurons) via flybrain. Sparse olfactory input to the projection neurons; mushroom-body readout. The GPF-1 protocol (paper_lm/, Section VI).",
- "connectome": {"loader": "flybrain", "cut_inputs_to": "SENSORY"},
- "populations": {
-  "SENSORY": {"col": "superclass", "contains": "sensory"},
-  "PN": {"col": "cell_type", "contains": "PN"},
-  "KC": {"col": "cell_type", "contains": "KC"},
-  "MBON": {"col": "cell_type", "contains": "MBON"},
-  "DAN": {"or": [{"col": "cell_type", "contains": "PAM"}, {"col": "cell_type", "contains": "PPL"},
-                 {"col": "cell_type", "contains": "PPM"}]},
-  "APL": {"col": "cell_type", "contains": "APL"},
-  "CENTRAL": {"top_targets_of": "MBON", "n": 256,
-              "among": {"and": [{"not": "MBON"}, {"not": "DAN"}, {"not": "KC"}, {"not": "SENSORY"}]}}
+ "connectome": {
+  "source": "flybrain",
+  "params": {}
  },
- "neuron": {"dt": 0.02, "tau": 0.1, "threshold": 1.0, "reset": 0.0, "gain": 1.5, "tonic": 0.05,
-            "noise_hz": 0.0, "noise_amp": 0.22, "seed": 20260920},
- "input": {"population": "PN", "active": 160, "drive": 1.5, "steps": 6, "sustain": 0.5, "code_seed": 3},
- "readout": [
-  {"name": "kc", "population": "KC", "feature": "counts"},
-  {"name": "mbon_v", "population": "MBON", "feature": "voltage"},
-  {"name": "mbon_spk", "population": "MBON", "feature": "counts"},
-  {"name": "central_trace", "population": "CENTRAL", "feature": "trace", "tau": 0.1},
-  {"name": "central_v", "population": "CENTRAL", "feature": "voltage"}
+ "transforms": [
+  {
+   "transform": "cut_inputs",
+   "params": {
+    "population": "SENSORY",
+    "layers": [
+     "chemical"
+    ]
+   }
+  }
  ],
- "classes": {"populations": ["KC", "PN", "MBON", "DAN", "APL"], "else_col": "superclass"},
+ "populations": {
+  "SENSORY": {
+   "col": "superclass",
+   "contains": "sensory"
+  },
+  "PN": {
+   "col": "cell_type",
+   "contains": "PN"
+  },
+  "KC": {
+   "col": "cell_type",
+   "contains": "KC"
+  },
+  "MBON": {
+   "col": "cell_type",
+   "contains": "MBON"
+  },
+  "DAN": {
+   "or": [
+    {
+     "col": "cell_type",
+     "contains": "PAM"
+    },
+    {
+     "col": "cell_type",
+     "contains": "PPL"
+    },
+    {
+     "col": "cell_type",
+     "contains": "PPM"
+    }
+   ]
+  },
+  "APL": {
+   "col": "cell_type",
+   "contains": "APL"
+  },
+  "CENTRAL": {
+   "top_targets_of": "MBON",
+   "n": 256,
+   "among": {
+    "and": [
+     {
+      "not": "MBON"
+     },
+     {
+      "not": "DAN"
+     },
+     {
+      "not": "KC"
+     },
+     {
+      "not": "SENSORY"
+     }
+    ]
+   }
+  }
+ },
+ "neuron": {
+  "model": "lif",
+  "params": {
+   "dt": 0.02,
+   "tau": 0.1,
+   "threshold": 1.0,
+   "reset": 0.0,
+   "tonic": 0.05,
+   "noise_hz": 0.0,
+   "noise_amp": 0.22,
+   "seed": 20260920
+  }
+ },
+ "synapses": [
+  {
+   "layer": "chemical",
+   "model": "chemical",
+   "params": {
+    "gain": 1.5
+   }
+  }
+ ],
+ "input": {
+  "encoder": "random_subset",
+  "population": "PN",
+  "steps": 6,
+  "params": {
+   "active": 160,
+   "drive": 1.5,
+   "sustain": 0.5,
+   "seed": 3
+  }
+ },
+ "readout": [
+  {
+   "name": "kc",
+   "feature": "counts",
+   "population": "KC",
+   "params": {}
+  },
+  {
+   "name": "mbon_v",
+   "feature": "voltage",
+   "population": "MBON",
+   "params": {}
+  },
+  {
+   "name": "mbon_spk",
+   "feature": "counts",
+   "population": "MBON",
+   "params": {}
+  },
+  {
+   "name": "central_trace",
+   "feature": "trace",
+   "population": "CENTRAL",
+   "params": {
+    "tau": 0.1
+   }
+  },
+  {
+   "name": "central_v",
+   "feature": "voltage",
+   "population": "CENTRAL",
+   "params": {}
+  }
+ ],
+ "controls": {
+  "rewire-full": [
+   {
+    "transform": "rewire",
+    "params": {
+     "layers": {
+      "chemical": "permute_presynaptic",
+      "electrical": "double_edge_swap"
+     },
+     "classes": null,
+     "skip_missing": true
+    }
+   }
+  ],
+  "rewire-class": [
+   {
+    "transform": "rewire",
+    "params": {
+     "layers": {
+      "chemical": "permute_presynaptic",
+      "electrical": "double_edge_swap"
+     },
+     "classes": {
+      "populations": [
+       "KC",
+       "PN",
+       "MBON",
+       "DAN",
+       "APL"
+      ],
+      "else_col": "superclass"
+     },
+     "skip_missing": true
+    }
+   }
+  ]
+ },
+ "activity_match": {
+  "param": "synapses.chemical.params.gain",
+  "readouts": [
+   "kc",
+   "mbon_spk"
+  ]
+ },
  "view": {
-  "project": ["-x", "z"],
+  "project": [
+   "-x",
+   "z"
+  ],
   "title": "Inside the fly",
-  "other_color": "#f59e0b", "other_text": "everything else",
+  "other_color": "#f59e0b",
+  "other_text": "everything else",
   "groups": [
-   {"name": "PN", "population": "PN", "color": "#22d3ee", "text": "projection neurons"},
-   {"name": "KC", "population": "KC", "color": "#facc15", "text": "Kenyon cells"},
-   {"name": "MBON", "population": "MBON", "color": "#4ade80", "text": "output neurons"},
-   {"name": "DAN", "population": "DAN", "color": "#e879f9", "text": "dopamine neurons"}
+   {
+    "name": "PN",
+    "population": "PN",
+    "color": "#22d3ee",
+    "text": "projection neurons"
+   },
+   {
+    "name": "KC",
+    "population": "KC",
+    "color": "#facc15",
+    "text": "Kenyon cells"
+   },
+   {
+    "name": "MBON",
+    "population": "MBON",
+    "color": "#4ade80",
+    "text": "output neurons"
+   },
+   {
+    "name": "DAN",
+    "population": "DAN",
+    "color": "#e879f9",
+    "text": "dopamine neurons"
+   }
   ],
   "labels": [
-   {"text": "mushroom body", "population": "KC", "half": "right"},
-   {"text": "optic lobe", "population": {"col": "superclass", "equals": "ol_intrinsic"}, "half": "both"},
-   {"text": "antennal lobe", "population": "PN", "half": "left"},
-   {"text": "ventral nerve cord", "population": {"col": "superclass", "equals": "vnc_intrinsic"}}
+   {
+    "text": "mushroom body",
+    "population": "KC",
+    "half": "right"
+   },
+   {
+    "text": "optic lobe",
+    "population": {
+     "col": "superclass",
+     "equals": "ol_intrinsic"
+    },
+    "half": "both"
+   },
+   {
+    "text": "antennal lobe",
+    "population": "PN",
+    "half": "left"
+   },
+   {
+    "text": "ventral nerve cord",
+    "population": {
+     "col": "superclass",
+     "equals": "vnc_intrinsic"
+    }
+   }
   ]
  }
 }
