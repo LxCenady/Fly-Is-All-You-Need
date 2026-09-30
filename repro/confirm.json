@@ -1,0 +1,20 @@
+{
+ "about": "Pre-registered confirmatory run (repro/PREREGISTRATION.md): mechanism jobs with fresh input codes never used before (MB_CODE_SEED 201-203, MB_GLOM_SEED 21-23). The LM part runs through `python -m uctf bench` (commands in PREREGISTRATION.md). Evaluated only by repro/confirm_eval.py.",
+ "jobs": [
+  {"id": "m2_c201", "claims": ["M8"], "script": "mechanism/m2_current.py", "args": ["{out}", "ac,bd,eg,fh,ik,jl", "160:1.5,192:1.5,512:1.0"], "env": {"MB_CODE_SEED": 201}},
+  {"id": "m2_c202", "claims": ["M8"], "script": "mechanism/m2_current.py", "args": ["{out}", "ac,bd,eg,fh,ik,jl", "160:1.5,192:1.5,512:1.0"], "env": {"MB_CODE_SEED": 202}},
+  {"id": "m2_c203", "claims": ["M8"], "script": "mechanism/m2_current.py", "args": ["{out}", "ac,bd,eg,fh,ik,jl", "160:1.5,192:1.5,512:1.0"], "env": {"MB_CODE_SEED": 203}},
+  {"id": "route_c201", "claims": ["M10"], "script": "mechanism/m3_kcmbon.py", "args": ["{out}", "160:1.5,192:1.5", "real:0,profile_type_side:1,kc_perm:1"], "env": {"MB_CODE_SEED": 201}},
+  {"id": "route_c202", "claims": ["M10"], "script": "mechanism/m3_kcmbon.py", "args": ["{out}", "160:1.5,192:1.5", "real:0,profile_type_side:1,kc_perm:1"], "env": {"MB_CODE_SEED": 202}},
+  {"id": "route_c203", "claims": ["M10"], "script": "mechanism/m3_kcmbon.py", "args": ["{out}", "160:1.5,192:1.5", "real:0,profile_type_side:1,kc_perm:1"], "env": {"MB_CODE_SEED": 203}},
+  {"id": "teacher_g21", "claims": ["M16"], "script": "mechanism/m7_teacher.py", "args": ["{out}"], "env": {"MB_GLOM_SEED": 21}},
+  {"id": "teacher_g22", "claims": ["M16"], "script": "mechanism/m7_teacher.py", "args": ["{out}"], "env": {"MB_GLOM_SEED": 22}},
+  {"id": "teacher_g23", "claims": ["M16"], "script": "mechanism/m7_teacher.py", "args": ["{out}"], "env": {"MB_GLOM_SEED": 23}},
+  {"id": "down_c201", "claims": ["M19"], "script": "mechanism/m5_downstream.py", "args": ["{out}"], "env": {"MB_CODE_SEED": 201}},
+  {"id": "down_c202", "claims": ["M19"], "script": "mechanism/m5_downstream.py", "args": ["{out}"], "env": {"MB_CODE_SEED": 202}},
+  {"id": "down_c203", "claims": ["M19"], "script": "mechanism/m5_downstream.py", "args": ["{out}"], "env": {"MB_CODE_SEED": 203}},
+  {"id": "m1x_c201", "claims": ["M2"], "script": "mechanism/m1_cross.py", "args": ["{out}", "192", "1.5"], "env": {"MB_CODE_SEED": 201}},
+  {"id": "m1x_c202", "claims": ["M2"], "script": "mechanism/m1_cross.py", "args": ["{out}", "192", "1.5"], "env": {"MB_CODE_SEED": 202}},
+  {"id": "m1x_c203", "claims": ["M2"], "script": "mechanism/m1_cross.py", "args": ["{out}", "192", "1.5"], "env": {"MB_CODE_SEED": 203}}
+ ]
+}

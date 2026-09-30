@@ -121,8 +121,9 @@ def main(argv):
         cmd = [python, job["script"]] + [a.replace("{out}", str(out)) for a in job["args"]]
         t0 = time.time(); started = time.strftime("%Y-%m-%dT%H:%M:%S")
         print(f"run  {job['id']}: {' '.join(cmd[1:])}", flush=True)
+        jenv = dict(env, **{k: str(v) for k, v in job.get("env", {}).items()})   # e.g. MB_CODE_SEED
         with open(outdir / f"{job['id']}.log", "w", encoding="utf-8") as log:
-            rc = subprocess.run(cmd, cwd=ROOT, env=env, stdout=log, stderr=subprocess.STDOUT,
+            rc = subprocess.run(cmd, cwd=ROOT, env=jenv, stdout=log, stderr=subprocess.STDOUT,
                                 creationflags=flags if os.name == "nt" else 0,
                                 preexec_fn=(lambda: os.nice(10)) if os.name != "nt" else None).returncode
         record = {
@@ -132,7 +133,8 @@ def main(argv):
             "started": started, "finished": time.strftime("%Y-%m-%dT%H:%M:%S"), "seconds": round(time.time() - t0, 1),
             "exit_code": rc, "environment": envinfo, "requirements_lock_sha256": sha256(LOCK),
             "data_sha256": dh, "threads": int(threads),
-            "env_vars": {k: v for k, v in os.environ.items() if k.startswith(("MB_",))},
+            "env_vars": {k: v for k, v in jenv.items() if k.startswith(("MB_",))},
+            "args_template": [job["script"]] + job["args"],
             "compare_to": job.get("compare"),
         }
         man.write_text(json.dumps(record, indent=1), encoding="utf-8")

@@ -5,7 +5,7 @@
   {"id": "m1_validate_g32", "claims": ["M1"], "script": "mechanism/m1_validate.py", "args": ["{out}", "32"], "compare": "results/m1_validate_g32.json"},
   {"id": "m1_cross", "claims": ["M2", "M3"], "script": "mechanism/m1_cross.py", "args": ["{out}"], "compare": "results/m1_cross.json"},
   {"id": "m1_cross_a192", "claims": ["M2", "M3"], "script": "mechanism/m1_cross.py", "args": ["{out}", "192", "1.5"], "compare": "results/m1_cross_a192.json"},
-  {"id": "m4_curve_a192", "claims": ["M4", "M5"], "script": "mechanism/m4_curve.py", "args": ["{out}", "192", "1.5"], "compare": "results/m4_curve_a192.json"},
+  {"id": "m4_curve_a192", "claims": ["M4", "M5"], "script": "mechanism/m4_curve.py", "args": ["{out}", "192", "1.5", "16,1e12"], "compare": "results/m4_curve_a192.json"},
   {"id": "sweep_s1.5", "claims": ["M6", "M7"], "script": "mechanism/sweep_opoint.py", "args": ["{out}", "160,192,224,256,320,384,448", "1.5"], "compare": "results/sweep_s1.5.json"},
   {"id": "m2_current_6pairs", "claims": ["M8"], "script": "mechanism/m2_current.py", "args": ["{out}", "ac,bd,eg,fh,ik,jl", "160:1.5,192:1.5,512:1.0"], "compare": "results/m2_current_6pairs.json"},
   {"id": "m3_kcmbon", "claims": ["M10"], "script": "mechanism/m3_kcmbon.py", "args": ["{out}", "160:1.5,192:1.5,512:1.0"], "compare": "results/m3_kcmbon.json"},

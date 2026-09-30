@@ -1,0 +1,26 @@
+{
+ "about": "Exploratory replications of the key mechanism results with fresh input codes (MB_CODE_SEED: random PN codes; MB_GLOM_SEED: bilateral glomerular codes). The reference results use code seed 3 and glomerular seed 11. Seeds 101-105 / 12-16 are exploratory; seeds 201+ / 21+ are reserved for the pre-registered confirmatory run (repro/PREREGISTRATION.md). Summarised by repro/replication_stats.py.",
+ "jobs": [
+  {"id": "m2_c101", "claims": ["M8"], "script": "mechanism/m2_current.py", "args": ["{out}", "ac,bd,eg,fh,ik,jl", "160:1.5,192:1.5,512:1.0"], "env": {"MB_CODE_SEED": 101}},
+  {"id": "m2_c102", "claims": ["M8"], "script": "mechanism/m2_current.py", "args": ["{out}", "ac,bd,eg,fh,ik,jl", "160:1.5,192:1.5,512:1.0"], "env": {"MB_CODE_SEED": 102}},
+  {"id": "m2_c103", "claims": ["M8"], "script": "mechanism/m2_current.py", "args": ["{out}", "ac,bd,eg,fh,ik,jl", "160:1.5,192:1.5,512:1.0"], "env": {"MB_CODE_SEED": 103}},
+  {"id": "m2_c104", "claims": ["M8"], "script": "mechanism/m2_current.py", "args": ["{out}", "ac,bd,eg,fh,ik,jl", "160:1.5,192:1.5,512:1.0"], "env": {"MB_CODE_SEED": 104}},
+  {"id": "m2_c105", "claims": ["M8"], "script": "mechanism/m2_current.py", "args": ["{out}", "ac,bd,eg,fh,ik,jl", "160:1.5,192:1.5,512:1.0"], "env": {"MB_CODE_SEED": 105}},
+  {"id": "route_c101", "claims": ["M10"], "script": "mechanism/m3_kcmbon.py", "args": ["{out}", "160:1.5,192:1.5", "real:0,profile_type_side:1,kc_perm:1"], "env": {"MB_CODE_SEED": 101}},
+  {"id": "route_c102", "claims": ["M10"], "script": "mechanism/m3_kcmbon.py", "args": ["{out}", "160:1.5,192:1.5", "real:0,profile_type_side:1,kc_perm:1"], "env": {"MB_CODE_SEED": 102}},
+  {"id": "route_c103", "claims": ["M10"], "script": "mechanism/m3_kcmbon.py", "args": ["{out}", "160:1.5,192:1.5", "real:0,profile_type_side:1,kc_perm:1"], "env": {"MB_CODE_SEED": 103}},
+  {"id": "route_c104", "claims": ["M10"], "script": "mechanism/m3_kcmbon.py", "args": ["{out}", "160:1.5,192:1.5", "real:0,profile_type_side:1,kc_perm:1"], "env": {"MB_CODE_SEED": 104}},
+  {"id": "route_c105", "claims": ["M10"], "script": "mechanism/m3_kcmbon.py", "args": ["{out}", "160:1.5,192:1.5", "real:0,profile_type_side:1,kc_perm:1"], "env": {"MB_CODE_SEED": 105}},
+  {"id": "teacher_g12", "claims": ["M16"], "script": "mechanism/m7_teacher.py", "args": ["{out}"], "env": {"MB_GLOM_SEED": 12}},
+  {"id": "teacher_g13", "claims": ["M16"], "script": "mechanism/m7_teacher.py", "args": ["{out}"], "env": {"MB_GLOM_SEED": 13}},
+  {"id": "teacher_g14", "claims": ["M16"], "script": "mechanism/m7_teacher.py", "args": ["{out}"], "env": {"MB_GLOM_SEED": 14}},
+  {"id": "teacher_g15", "claims": ["M16"], "script": "mechanism/m7_teacher.py", "args": ["{out}"], "env": {"MB_GLOM_SEED": 15}},
+  {"id": "teacher_g16", "claims": ["M16"], "script": "mechanism/m7_teacher.py", "args": ["{out}"], "env": {"MB_GLOM_SEED": 16}},
+  {"id": "down_c101", "claims": ["M19"], "script": "mechanism/m5_downstream.py", "args": ["{out}"], "env": {"MB_CODE_SEED": 101}},
+  {"id": "down_c102", "claims": ["M19"], "script": "mechanism/m5_downstream.py", "args": ["{out}"], "env": {"MB_CODE_SEED": 102}},
+  {"id": "down_c103", "claims": ["M19"], "script": "mechanism/m5_downstream.py", "args": ["{out}"], "env": {"MB_CODE_SEED": 103}},
+  {"id": "m1x_c101", "claims": ["M2"], "script": "mechanism/m1_cross.py", "args": ["{out}", "192", "1.5"], "env": {"MB_CODE_SEED": 101}},
+  {"id": "m1x_c102", "claims": ["M2"], "script": "mechanism/m1_cross.py", "args": ["{out}", "192", "1.5"], "env": {"MB_CODE_SEED": 102}},
+  {"id": "m1x_c103", "claims": ["M2"], "script": "mechanism/m1_cross.py", "args": ["{out}", "192", "1.5"], "env": {"MB_CODE_SEED": 103}}
+ ]
+}
