@@ -121,8 +121,8 @@ class BrainModel(CharModel):
         ro = meta.get("readout", {})
         self.order, self.buckets = int(ro.get("context_order", 3)), int(ro.get("buckets", self.E.shape[0]))
         b = meta["brain"]
-        log(f"building the connectome simulation ({b.get('substrate', 'connectome')}; "
-            "MaleCNS downloads ~260 MB on first use)...")
+        what = b.get("substrate") or (b["spec"].get("name", "custom") if "spec" in b else fly.LEGACY)
+        log(f"building the connectome simulation ({what}; MaleCNS downloads ~260 MB on first use)...")
         self.rt = fly.make_substrate(self.V, b)
         self.name = name or "GPF-1 (fly connectome)"
         log(f"{self.name} ready")

@@ -203,14 +203,20 @@ def _legacy(vocab_size, spec, device="auto"):
                                    "encoder_seed": spec.get("encoder_seed", PROTOCOL["encoder_seed"])})
 
 
+LEGACY = "flybrain-malecns-v1"
+
+
 def make_substrate(vocab_size: int, spec: dict, device: str = "auto", log=print):
     from uctf import run
+    if "spec" not in spec and "substrate" not in spec:
+        # saved before brain specs named their substrate: the bundled GPF-1 readout
+        spec = {**spec, "substrate": LEGACY}
     return run.make_substrate(vocab_size, spec, device=device, log=log)
 
 
 def _register():
     from uctf import run
-    run.register("flybrain-malecns-v1", _legacy)
+    run.register(LEGACY, _legacy)
 
 
 _register()
