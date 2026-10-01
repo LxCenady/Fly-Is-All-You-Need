@@ -1,5 +1,9 @@
 # 论文稿 `E:\flybrain_e5a_v3_20260920\main.tex` 推翻清单（2026-09-28）
 
+> **Historical record (in Chinese).** This lists which claims of an earlier, unpublished draft were overturned after the simulator fix and the move to sparse input, and why. Paths refer to the author's machine. Current results: the papers ([`paper/`](../paper/), [`paper_lm/`](../paper_lm/)) and [`docs/CLAIMS_EVIDENCE.md`](../docs/CLAIMS_EVIDENCE.md).
+>
+> **历史记录**：列出早期未发表草稿中哪些结论在模拟器修复和改用稀疏输入后被推翻，以及原因。路径指作者本机。现行结论以论文和 `docs/CLAIMS_EVIDENCE.md` 为准。
+
 原稿 91,532 B / `8432B67D…`，**未改动**（它是被引对象）。修订稿另存。
 证据：`D:\苍蝇。\审核_20260928\`（CSR bug）、`D:\苍蝇。\mechanism\RESULTS_20260928.md`（重跑、M1、M2、KC 密度、记忆曲线）以及下文列出的代码行。
 

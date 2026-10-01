@@ -1,5 +1,9 @@
 # 可疑点审核（2026-09-28）
 
+> **Historical audit record (in Chinese).** This is the audit that found the CSR bug in the flybrain simulator: plastic writes landed on the wrong synapses. Paths refer to the author's machine. The fix is published as flybrain 0.1.0.post1 ([`third_party/flybrain/`](../third_party/flybrain/), with a regression test), and the corrections are described in both papers.
+>
+> **历史审核记录**：发现 flybrain 模拟器 CSR bug（可塑写入落在错误的突触上）的那次审核。路径指作者本机。修复已作为 flybrain 0.1.0.post1 发布（见 `third_party/flybrain/`，附回归测试），更正见两篇论文。
+
 只读审核，未改动任何冻结件或产物。复现：`D:\flybrain_lm_cuda` 下以 `PYTHONPATH=D:\flybrain_lm_cuda` 运行两个脚本（GPU 脚本需 sitecustomize）。
 
 ## F1（严重）资产 A 与整条持久记忆线早于 CSR 规范化修复
