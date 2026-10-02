@@ -4,7 +4,7 @@ evolution, fine-tuned on 20k characters of Shakespeare), or with an n-gram or a 
 Connectome models, training and benchmarks come from UCTF, the Universal Connectome Training
 Framework (../uctf).  Installed (pip install -e uctf) or not, a checkout of the repository works:
 the repository's uctf/ folder is used when the package is not installed."""
-__version__ = "0.1.0"
+__version__ = "0.6.0"
 
 import importlib.util as _u
 import sys as _sys

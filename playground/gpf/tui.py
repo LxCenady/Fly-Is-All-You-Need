@@ -12,7 +12,7 @@ from .models import MODELS, generate
 
 HELP = ("Pick a model, write a prompt, press Generate (ctrl+g). The prompt is fed to the model "
         "one character at a time, then the model writes on. The connectome model simulates "
-        "166,700 neurons per character (~20 characters/s on a laptop GPU).")
+        "166,700 neurons per character (about 60-120 characters/s on a laptop, GPU or CPU).")
 
 
 class GPFApp(App):

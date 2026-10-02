@@ -19,3 +19,6 @@ third_party/flybrain/build/
 third_party/flybrain/*.egg-info/
 uctf/build/
 *.egg-info/
+
+# GPF-1 CPU connectome bundle (138 MB): a release asset, not in git (python -m gpf get-brain)
+playground/gpf/data/gpf1_cpu.npz

@@ -15,7 +15,7 @@ the terminal UI and --cli as "user:<name>".  Every run prints validation bits pe
          into neuron features; only a linear readout (plus a hashed 3-character context table)
          is trained.  --substrate picks the connectome spec (a UCTF built-in, uctf/uctf/specs/, or your
          own JSON); the default, malecns-v1, is the whole fly CNS with GPF-1's recipe (paper_lm/,
-         Section VI; flybrain + NVIDIA GPU, ~40-60 characters/s).  --control NAME (a control of
+         Section VI; flybrain, GPU recommended: ~40-60 characters/s).  --control NAME (a control of
          the spec, e.g. rewire-full or rewire-class) trains on a degree-preserving rewired copy
          instead: the null model that asks whether the real wiring matters.  For the whole comparison use  python -m gpf bench.
 

@@ -17,17 +17,19 @@ behind it is in [`paper_lm/`](../paper_lm).
 
 ## Get it
 
-**Windows:** download `gpf-lite-…-windows-x64.exe` from
+**Windows:** download `gpf-full-…-windows-x64.exe` from
 [Releases](https://github.com/LxCenady/Fly-Is-All-You-Need/releases) and double-click it.
 GPF opens in your browser.
 
-**Ubuntu / Debian:** download `gpf-lite_…_amd64.deb`, then
+**Ubuntu / Debian:** download `gpf-full_…_amd64.deb`, then
 ```
-sudo apt install ./gpf-lite_*_amd64.deb
+sudo apt install ./gpf-full_*_amd64.deb
 gpf
 ```
 
-Nothing else to install: Python and everything GPF needs are inside. (Your antivirus may take
+Nothing else to install: Python, the fly's connectome and everything GPF needs are inside, and
+GPF-1 runs on the CPU (no GPU needed). The `gpf-lite` packages (~20 MB) are the same without
+the connectome; run `gpf get-brain` once to add it. (Your antivirus may take
 a second look at the .exe the first time; it is an unsigned app built by GitHub Actions from
 this repository.)
 
@@ -47,7 +49,7 @@ Prefer the terminal? `gpf --cli --model gru --prompt "ROMEO:\n" --n 300`
 
 | Model | What it is | Speed | In the Lite download |
 |---|---|---|---|
-| **GPF-1 (fly connectome)** | The whole fruit-fly brain, simulated for every character | ~20–30 characters/s, needs an NVIDIA GPU | no, see below |
+| **GPF-1 (fly connectome)** | The whole fruit-fly brain, simulated for every character | ~100 characters/s on a laptop CPU; no GPU needed | in the Full download; Lite: `gpf get-brain` |
 | Kneser-Ney 7-gram | Classic word-statistics model: which character usually follows the last six | instant | yes |
 | Kneser-Ney 5-gram, 20k | The same idea, trained on exactly the text the fly saw | instant | yes |
 | GRU | A small trained neural network, the best writer here | instant | yes |
@@ -55,11 +57,25 @@ Prefer the terminal? `gpf --cli --model gru --prompt "ROMEO:\n" --n 300`
 ## Running the fly (GPF-1)
 
 GPF-1 is built on **[flybrain](https://github.com/alextitonis/fly.ai)** by Alex Titonis
-(MIT License). flybrain simulates the complete fruit-fly nervous system and is a **required
-dependency**: without it, GPF-1 does not run. The Lite downloads leave it out and show GPF-1
-as unavailable.
+(MIT License), which simulates the complete fruit-fly nervous system.
 
-To run GPF-1 you need an **NVIDIA GPU** with a recent driver, and flybrain with GPU support:
+**On the CPU (any computer).** The Full downloads include the connectome and just work. From
+source, or with a Lite download, fetch it once (~138 MB, checked against its SHA-256):
+
+```
+python -m gpf get-brain           # or, in a Lite download: gpf get-brain
+python -m gpf --web               # then pick GPF-1 on the left
+```
+
+`gpf/cpu_brain.py` runs flybrain's simulation with numpy alone, summing only the synapses of
+neurons that fired (about 1 % per step). Against the GPU version on 3,000 characters it gives
+identical spikes, features equal to float32 rounding and the same BPC, and on a laptop it is
+faster (about 120 characters/s against 60). The bundle is flybrain's prebuilt MaleCNS v1.0 in
+a compact numpy format (`python -m gpf get-brain --from-flybrain DIR` rebuilds it from
+flybrain's data; needs scipy).
+
+**On a GPU.** With an NVIDIA GPU, a recent driver and flybrain with GPU support, GPF-1 uses the
+GPU instead (set `GPF_DEVICE=cpu` to force the CPU):
 
 ```
 pip install -r requirements.txt
@@ -74,13 +90,13 @@ works for GPF. The research code needs the fix.
 The first time GPF-1 starts, flybrain downloads its prebuilt copy of the **MaleCNS v1.0
 connectome** (about 260 MB, CC BY 4.0, FlyEM / HHMI Janelia and partners) into `~/fly-data`
 (set `FLY_DATA` to put it elsewhere). It is the exact data GPF-1 was trained on; the
-checksums match. GPF-1 runs at about 20–30 characters per second on a laptop GPU.
+checksums match.
 
 **Watch it think.** While GPF-1 writes, the *Inside the fly* panel on the right shows the brain
 from the front: every neuron is a faint dot, and the ones firing on the current character
 light up (odour-input neurons cyan, Kenyon cells yellow, mushroom-body outputs green,
 dopamine neurons magenta), with live counts per group. The look follows the dashboard that
-ships with fly.ai. Hide it with the button in the header if your GPU is struggling.
+ships with fly.ai. Hide it with the button in the header if your computer is struggling.
 
 ## Run from source
 

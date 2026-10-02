@@ -3,7 +3,9 @@ python -m gpf --web      -> web UI
 python -m gpf --cli --model brain --prompt "ROMEO:\\n" --n 300 --temp 0.7
 python -m gpf train kn|gru|brain --data my.txt --name my-model   (see gpf/train.py)
 python -m gpf bench --substrate malecns-v1 --data my.txt           (UCTF: uctf/uctf/bench.py)
-python -m gpf import --neurons n.csv --edges e.csv --out DIR       (UCTF: uctf/uctf/importer.py)"""
+python -m gpf import --neurons n.csv --edges e.csv --out DIR       (UCTF: uctf/uctf/importer.py)
+python -m gpf get-brain                    download the GPF-1 connectome for the CPU (~138 MB, no GPU needed)
+python -m gpf get-brain --from-flybrain DIR   build it from flybrain's data instead (needs scipy)"""
 import argparse
 import sys
 
@@ -29,6 +31,19 @@ def cli(argv):
     print()
 
 
+def get_brain(argv):
+    """GPF-1 on the CPU needs the connectome bundle (gpf/cpu_brain.py)."""
+    from pathlib import Path
+    from .cpu_brain import BUNDLE, fetch, prepare
+    if "--from-flybrain" in argv:
+        dest = Path.home() / ".gpf" / BUNDLE
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        prepare(argv[argv.index("--from-flybrain") + 1], dest)
+        print(f"wrote {dest}")
+    else:
+        fetch()
+
+
 def run(argv):
     if argv[:1] == ["train"]:
         from .train import main as train_main
@@ -39,6 +54,8 @@ def run(argv):
     elif argv[:1] == ["import"]:
         from uctf.importer import main as import_main
         import_main(argv[1:])
+    elif argv[:1] == ["get-brain"]:
+        get_brain(argv[1:])
     elif "--web" in argv:
         from .web import main as web_main
         port = int(argv[argv.index("--port") + 1]) if "--port" in argv else 8765

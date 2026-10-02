@@ -1,5 +1,6 @@
 """Character models for the playground.  KN and GRU need only numpy (torch only to train a GRU);
-the connectome model (GPF-1, gpf/brain.py) needs flybrain with GPU support and an NVIDIA GPU.
+the connectome model (GPF-1) runs on the GPU with flybrain (gpf/brain.py) or, without a GPU,
+on the CPU from the bundled connectome (gpf/cpu_brain.py; `python -m gpf get-brain` downloads it).
 
 Built-in models live in gpf/data/.  Models you train yourself (python -m gpf train ..., see
 gpf/train.py) live in ~/.gpf/models/<name>/ (or $GPF_MODELS) and are listed after the
@@ -104,13 +105,14 @@ def ctx_hash(hist, order, V, buckets):
 
 
 class BrainModel(CharModel):
-    """GPF-1: the MaleCNS v1.0 connectome simulated one character at a time (gpf/brain.py,
-    needs flybrain with GPU support) + a trained linear readout (model.json + readout.npz)."""
+    """GPF-1: the MaleCNS v1.0 connectome simulated one character at a time (GPU: gpf/brain.py,
+    CPU: gpf/cpu_brain.py) + a trained linear readout (model.json + readout.npz)."""
 
     def __init__(self, readout=DATA / "brain_readout_20k", name=None, log=print):
         from . import brain as fly
         if not fly.available():
-            raise RuntimeError("GPF-1 needs flybrain with GPU support (CuPy, CUDA 12) and an NVIDIA GPU")
+            raise RuntimeError("GPF-1 needs either flybrain with GPU support (CuPy, CUDA 12) or the "
+                               "bundled CPU connectome (gpf/data/gpf1_cpu.npz, in the full builds)")
         rd = Path(readout)
         meta = json.loads((rd / "model.json").read_text(encoding="utf-8"))
         d = np.load(rd / "readout.npz")
@@ -122,7 +124,9 @@ class BrainModel(CharModel):
         self.order, self.buckets = int(ro.get("context_order", 3)), int(ro.get("buckets", self.E.shape[0]))
         b = meta["brain"]
         what = b.get("substrate") or (b["spec"].get("name", "custom") if "spec" in b else fly.LEGACY)
-        log(f"building the connectome simulation ({what}; MaleCNS downloads ~260 MB on first use)...")
+        where = ("GPU; MaleCNS downloads ~260 MB on first use" if fly.use_gpu()
+                 else "CPU, bundled connectome")
+        log(f"building the connectome simulation ({what}; {where})...")
         self.rt = fly.make_substrate(self.V, b)
         self.name = name or "GPF-1 (fly connectome)"
         log(f"{self.name} ready")
@@ -155,8 +159,8 @@ class BrainModel(CharModel):
 # ------------------------------------------------------------------ registry
 # key -> (label, factory(log), description, needs the GPU brain)
 BUILTIN = {
-    "brain": ("GPF-1 (fly connectome; needs flybrain + NVIDIA GPU)", lambda log: BrainModel(log=log),
-              "166,700 simulated neurons per character, GPU. Pretrained by evolution.", True),
+    "brain": ("GPF-1 (fly connectome)", lambda log: BrainModel(log=log),
+              "166,700 simulated neurons per character, on the GPU or the CPU. Pretrained by evolution.", True),
     "kn7": ("Kneser-Ney 7-gram, 1M chars", lambda log: KNModel(7, log=log),
             "Counts of 7-character sequences in 1M characters. Instant.", False),
     "kn5-20k": ("Kneser-Ney 5-gram, 20k chars (same data as the brain)",

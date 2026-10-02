@@ -5,6 +5,7 @@
     gpf --cli ...          command-line generation (gpf --cli --help)
     gpf train ...          train your own model (the Lite build trains n-grams only)
     gpf bench | import     UCTF's benchmark and importer (full install; they need scipy)
+    gpf get-brain          download the GPF-1 connectome (~138 MB) so the lite build can run it
 
 Anything else is an error: the web UI starts only when asked for.
 """
@@ -53,6 +54,9 @@ def main(argv=None):
         train_main(argv[1:])
     elif argv[:1] in (["bench"], ["import"]):
         uctf_command(argv)
+    elif argv[:1] == ["get-brain"]:
+        from gpf.cpu_brain import fetch
+        fetch()
     elif "--cli" in argv:
         from gpf.__main__ import cli
         cli(argv)

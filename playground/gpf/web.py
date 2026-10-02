@@ -22,27 +22,29 @@ MAX_DOTS = 8000                     # most neurons drawn per character in the br
 _rng = np.random.default_rng(0)
 _cache: dict = {}
 _models: dict = {}
-_lock = threading.Lock()            # one generation at a time (the connectome model is one GPU state)
+_lock = threading.Lock()            # one generation at a time (the connectome model is one simulation state)
 
 
-def brain_available() -> bool:
-    """GPF-1 needs flybrain (GPU build) importable; see gpf/brain.py."""
+def brain_available(key: str = "brain") -> bool:
+    """GPF-1 runs on the GPU (flybrain + CuPy) or on the CPU from the bundled connectome
+    (gpf/cpu_brain.py).  A user's connectome model is built by UCTF, which also needs scipy."""
     from .brain import available
-    return available()
+    if key == "brain":
+        return available()
+    import importlib.util
+    return importlib.util.find_spec("scipy") is not None
 
 
 def model_list():
     """Built-in models first, then the user's own (python -m gpf train ...); re-scanned on every
     call so a model trained while the server runs shows up after a page reload."""
     refresh_models()
-    brain_ok = None
     out = []
     for key, (label, _, desc, needs_brain) in MODELS.items():
-        if needs_brain and brain_ok is None:
-            brain_ok = brain_available()
+        brain_ok = brain_available(key) if needs_brain else True
         name = {"brain": "GPF-1 (fly connectome)", "kn7": "Kneser-Ney 7-gram",
                 "kn5-20k": "Kneser-Ney 5-gram, 20k", "gru": "GRU"}.get(key, label)
-        out.append({"key": key, "name": name, "desc": desc, "available": bool(brain_ok) if needs_brain else True,
+        out.append({"key": key, "name": name, "desc": desc, "available": bool(brain_ok),
                     "user": key.startswith("user:"), "brain": needs_brain})
     return out
 

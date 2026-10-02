@@ -1,6 +1,7 @@
 """Standalone runtime for GPF-1: the frozen fly connectome, one character at a time.
 
-Depends only on flybrain (GPU build: CuPy + CUDA 12) and numpy.  It reproduces the feature
+Runs on the GPU with flybrain (CuPy + CUDA 12); without a GPU, gpf/cpu_brain.py runs the same
+simulation on the CPU with numpy only (identical spikes).  It reproduces the feature
 path used in the research code (mechanism/lm_mech.py, frozen mode) without that code's
 experiment harness or hard-coded paths.  Data: flybrain's own data location, or the folder
 given by GPF_FLY_DATA / FLY_DATA.
@@ -31,12 +32,26 @@ def data_dir():
     return d if d else None
 
 
-def available() -> bool:
+def gpu_available() -> bool:
+    """flybrain with CuPy importable (the GPU runtime, FlyRuntime)."""
     import importlib.util
     try:
         return all(importlib.util.find_spec(m) is not None for m in ("flybrain", "cupy"))
     except (ImportError, ValueError):
         return False
+
+
+def available() -> bool:
+    """GPF-1 can run: on the GPU, or on the CPU from the bundled connectome (gpf/cpu_brain.py)."""
+    from .cpu_brain import bundle_path
+    return gpu_available() or bundle_path() is not None
+
+
+def use_gpu(device: str = "auto") -> bool:
+    """GPU unless device is "cpu", GPF_DEVICE=cpu, or flybrain/CuPy are missing."""
+    if device == "cpu" or os.environ.get("GPF_DEVICE", "").lower() == "cpu":
+        return False
+    return gpu_available()
 
 
 class FlyRuntime:
@@ -199,8 +214,12 @@ class FlyRuntime:
 # described by a UCTF spec; {"substrate": "flybrain-malecns-v1", ...} is FlyRuntime above, which the
 # bundled GPF-1 was trained with (the same features as UCTF's malecns-v1 spec to float32 rounding).
 def _legacy(vocab_size, spec, device="auto"):
-    return FlyRuntime(vocab_size, {"active": spec["pn_active"], "drive": float(spec["drive_scale"]),
-                                   "encoder_seed": spec.get("encoder_seed", PROTOCOL["encoder_seed"])})
+    proto = {"active": spec["pn_active"], "drive": float(spec["drive_scale"]),
+             "encoder_seed": spec.get("encoder_seed", PROTOCOL["encoder_seed"])}
+    if use_gpu(device):
+        return FlyRuntime(vocab_size, proto)
+    from .cpu_brain import CPURuntime        # same spikes as FlyRuntime, numpy only
+    return CPURuntime(vocab_size, proto)
 
 
 LEGACY = "flybrain-malecns-v1"

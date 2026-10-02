@@ -9,11 +9,17 @@ writes on, one character at a time. Its main model, GPF-1, is a complete fruit-f
 system (166,700 simulated neurons, wired as in the real animal). You can watch its neurons
 fire while it writes, and compare it side by side with an n-gram model and a small GRU.
 
-- **Windows:** download `gpf-lite-…-windows-x64.exe` from
-  [Releases](https://github.com/LxCenady/Fly-Is-All-You-Need/releases) and double-click it.
-- **Ubuntu / Debian:** download `gpf-lite_…_amd64.deb`, then `sudo apt install ./gpf-lite_…_amd64.deb`.
-- **The fly model (GPF-1)** needs an NVIDIA GPU and [flybrain](https://github.com/alextitonis/fly.ai)
-  (required dependency). See the [GPF README](playground/) for setup.
+Download it from [Releases](https://github.com/LxCenady/Fly-Is-All-You-Need/releases). No
+GPU, Python or internet connection needed:
+
+- **Windows:** `gpf-full-…-windows-x64.exe` (with the fly brain, ~160 MB), double-click it.
+- **Ubuntu / Debian:** `gpf-full_…_amd64.deb`, then `sudo apt install ./gpf-full_…_amd64.deb`.
+- **Lite** (`gpf-lite-…`, ~20 MB): everything except the fly brain; `gpf get-brain` downloads it
+  later.
+
+GPF-1 runs on an ordinary CPU (about 100 characters a second on a laptop) with exactly the
+same spikes as on a GPU. The simulation comes from [flybrain](https://github.com/alextitonis/fly.ai)
+(MIT); see the [GPF README](playground/).
 
 ## UCTF: bring your own connectome
 
@@ -65,7 +71,7 @@ docs/             claims-to-evidence map, literature index
 ## Reproducing
 
 Everything needed is in [`repro/`](repro/). [`repro/ENVIRONMENT.md`](repro/ENVIRONMENT.md) has
-the details; in short (NVIDIA GPU needed; the ~260 MB connectome downloads on first use):
+the details; in short (the research code needs an NVIDIA GPU; the ~260 MB connectome downloads on first use):
 
 ```
 python -m pip install --require-hashes -r repro/requirements-lock.txt --extra-index-url https://download.pytorch.org/whl/cu126

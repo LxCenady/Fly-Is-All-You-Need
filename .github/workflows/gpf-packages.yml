@@ -1,7 +1,10 @@
 name: gpf-packages
 
-# Builds self-contained GPF Lite packages (Python runtime + numpy + models bundled):
-#   Windows: gpf-lite-<ver>-windows-x64.exe      Linux: gpf-lite_<ver>_amd64.deb
+# Builds self-contained GPF packages (Python runtime + numpy + models bundled), two editions:
+#   full: with the GPF-1 connectome bundle (runs the fly on the CPU, no GPU needed)
+#         Windows: gpf-full-<ver>-windows-x64.exe      Linux: gpf-full_<ver>_amd64.deb
+#   lite: without it (n-gram and GRU; `gpf get-brain` downloads the connectome later)
+#         Windows: gpf-lite-<ver>-windows-x64.exe      Linux: gpf-lite_<ver>_amd64.deb
 # Each package is installed/run and smoke-tested before it is attached to the release.
 on:
   release:
@@ -11,24 +14,48 @@ on:
 permissions:
   contents: write
 
+env:
+  BUNDLE_URL: https://github.com/LxCenady/Fly-Is-All-You-Need/releases/download/gpf1-cpu-data-v1/gpf1_cpu.npz
+  BUNDLE_SHA256: 096d6a3d06a1e7902682478dc23c47601d35d09a3bd0f978c81c5480960f60c4
+  # GPF-1 with this prompt, temperature 0.8 and seed 0 writes this on the GPU and on the CPU
+  BRAIN_EXPECTED: "ha  turn tr the side fore you."
+  HIDDEN: >-
+    --hidden-import gpf.web --hidden-import gpf.models --hidden-import gpf.brain
+    --hidden-import gpf.cpu_brain --hidden-import gpf.__main__ --hidden-import gpf.train
+    --paths ../uctf --hidden-import uctf.run --hidden-import uctf.plugins.baselines
+    --hidden-import uctf.plugins.tasks --hidden-import uctf.plugins.readouts
+    --hidden-import uctf.core.registry --exclude-module textual --exclude-module torch
+
 jobs:
   linux-deb:
     runs-on: ubuntu-22.04
+    strategy:
+      matrix: {edition: [lite, full]}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: "3.12"}
+      - name: Fetch the connectome bundle (full)
+        if: matrix.edition == 'full'
+        run: |
+          curl -sSfL -o playground/gpf/data/gpf1_cpu.npz "$BUNDLE_URL"
+          echo "$BUNDLE_SHA256  playground/gpf/data/gpf1_cpu.npz" | sha256sum -c -
       - name: Build binary
         working-directory: playground
         run: |
           pip install numpy pyinstaller
           pyinstaller --noconfirm --onefile --name gpf \
             --add-data "gpf/data:gpf/data" --add-data "gpf/web.html:gpf" --add-data "gpf/logo.svg:gpf" \
-            --hidden-import gpf.web --hidden-import gpf.models --hidden-import gpf.brain --hidden-import gpf.__main__ --hidden-import gpf.train --paths ../uctf --hidden-import uctf.plugins.baselines --hidden-import uctf.plugins.tasks --hidden-import uctf.plugins.readouts --hidden-import uctf.core.registry \
-            --exclude-module textual --exclude-module torch gpf_app.py
+            $HIDDEN gpf_app.py
       - name: Assemble .deb
+        env: {ED: "${{ matrix.edition }}"}
         run: |
           VER="${GITHUB_REF_NAME#gpf-v}"; [ "$VER" = "$GITHUB_REF_NAME" ] && VER="0.0.0"
+          if [ "$ED" = full ]; then
+            WHAT="the fly connectome model GPF-1 (runs on the CPU), and"; CONFLICT=gpf-lite
+          else
+            WHAT="(lite edition: add the fly connectome with 'gpf get-brain')"; CONFLICT=gpf-full
+          fi
           P=pkg
           mkdir -p $P/DEBIAN $P/usr/bin $P/usr/share/applications $P/usr/share/doc/gpf
           for s in 48 64 128 256 512; do
@@ -48,24 +75,25 @@ jobs:
           Categories=Education;Science;
           EOF
           cat > $P/DEBIAN/control <<EOF
-          Package: gpf-lite
+          Package: gpf-$ED
           Version: $VER
           Architecture: amd64
+          Conflicts: $CONFLICT
           Maintainer: Quanxi Li <noreply@github.com>
           Section: science
           Priority: optional
           Homepage: https://github.com/LxCenady/Fly-Is-All-You-Need
-          Description: GPF, the Generative Pretrained Fly (lite edition)
-           Continue a prompt, GPT-style, with Kneser-Ney n-gram or GRU character
-           models of Shakespeare, in the browser or on the command line.
+          Description: GPF, the Generative Pretrained Fly ($ED edition)
+           Continue a prompt, GPT-style, with $WHAT Kneser-Ney n-gram and GRU
+           character models of Shakespeare, in the browser or on the command line.
            Self-contained: bundles its own Python runtime and numpy.
           EOF
           sed -i 's/^          //' $P/DEBIAN/control $P/usr/share/applications/gpf.desktop
-          dpkg-deb --build --root-owner-group $P "gpf-lite_${VER}_amd64.deb"
-          dpkg-deb --info "gpf-lite_${VER}_amd64.deb"
+          dpkg-deb --build --root-owner-group $P "gpf-${ED}_${VER}_amd64.deb"
+          dpkg-deb --info "gpf-${ED}_${VER}_amd64.deb"
       - name: Install and smoke-test
         run: |
-          sudo apt-get install -y ./gpf-lite_*_amd64.deb
+          sudo apt-get install -y ./gpf-${{ matrix.edition }}_*_amd64.deb
           gpf --cli --model kn5-20k --prompt "ROMEO:\n" --n 80
           gpf --cli --model gru --prompt "JULIET:\n" --n 80
           head -c 30000 playground/gpf/data/tinyshakespeare.txt > /tmp/t.txt
@@ -75,19 +103,39 @@ jobs:
           curl -sf http://127.0.0.1:8765/api/models | tee /dev/stderr | grep -q '"gru"'
           curl -sfN -X POST http://127.0.0.1:8765/api/generate \
             -H 'Content-Type: application/json' -d '{"model":"kn7","prompt":"O, ","n":40}' | grep -q '"done": true'
+          if [ "${{ matrix.edition }}" = full ]; then
+            curl -sf http://127.0.0.1:8765/api/models | python3 -c \
+              "import json,sys; m={x['key']: x for x in json.load(sys.stdin)}; assert m['brain']['available'], 'GPF-1 unavailable'"
+          fi
+      - name: Smoke-test GPF-1 on the CPU (full)
+        if: matrix.edition == 'full'
+        run: |
+          OUT=$(gpf --cli --model brain --prompt "ROMEO:\n" --n 60 --temp 0.8 --seed 0)
+          echo "$OUT"
+          echo "$OUT" | grep -q "[a-z]" || { echo "GPF-1 wrote nothing"; exit 1; }
+          echo "$OUT" | grep -qF "$BRAIN_EXPECTED" \
+            || echo "::warning::GPF-1 on this runner differs from the reference text (CPU floating point)"
       - uses: actions/upload-artifact@v4
-        with: {name: gpf-deb, path: "gpf-lite_*_amd64.deb"}
+        with: {name: "gpf-deb-${{ matrix.edition }}", path: "gpf-${{ matrix.edition }}_*_amd64.deb"}
       - name: Attach to release
         if: startsWith(github.ref, 'refs/tags/gpf-v')
         env: {GH_TOKEN: "${{ github.token }}"}
-        run: gh release upload "$GITHUB_REF_NAME" gpf-lite_*_amd64.deb --clobber
+        run: gh release upload "$GITHUB_REF_NAME" gpf-${{ matrix.edition }}_*_amd64.deb --clobber
 
   windows-exe:
     runs-on: windows-latest
+    strategy:
+      matrix: {edition: [lite, full]}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: "3.12"}
+      - name: Fetch the connectome bundle (full)
+        if: matrix.edition == 'full'
+        shell: bash
+        run: |
+          curl -sSfL -o playground/gpf/data/gpf1_cpu.npz "$BUNDLE_URL"
+          echo "$BUNDLE_SHA256  playground/gpf/data/gpf1_cpu.npz" | sha256sum -c -
       - name: Build exe
         working-directory: playground
         shell: bash
@@ -95,23 +143,32 @@ jobs:
           pip install numpy pyinstaller
           pyinstaller --noconfirm --onefile --name gpf \
             --add-data "gpf/data;gpf/data" --add-data "gpf/web.html;gpf" --add-data "gpf/logo.svg;gpf" \
-            --icon gpf/assets/gpf.ico \
-            --hidden-import gpf.web --hidden-import gpf.models --hidden-import gpf.brain --hidden-import gpf.__main__ --hidden-import gpf.train --paths ../uctf --hidden-import uctf.plugins.baselines --hidden-import uctf.plugins.tasks --hidden-import uctf.plugins.readouts --hidden-import uctf.core.registry \
-            --exclude-module textual --exclude-module torch gpf_app.py
+            --icon gpf/assets/gpf.ico $HIDDEN gpf_app.py
           VER="${GITHUB_REF_NAME#gpf-v}"; [ "$VER" = "$GITHUB_REF_NAME" ] && VER="0.0.0"
-          cp dist/gpf.exe "../gpf-lite-${VER}-windows-x64.exe"
+          cp dist/gpf.exe "../gpf-${{ matrix.edition }}-${VER}-windows-x64.exe"
       - name: Smoke-test
         shell: bash
         run: |
-          ./gpf-lite-*-windows-x64.exe --cli --model gru --prompt "ROMEO:\n" --n 80
-          ./gpf-lite-*-windows-x64.exe --cli --model kn5-20k --prompt "JULIET:\n" --n 80
+          X=$(ls ./gpf-${{ matrix.edition }}-*-windows-x64.exe)
+          $X --cli --model gru --prompt "ROMEO:\n" --n 80
+          $X --cli --model kn5-20k --prompt "JULIET:\n" --n 80
           head -c 30000 playground/gpf/data/tinyshakespeare.txt > t.txt
-          GPF_MODELS=./gpfm ./gpf-lite-*-windows-x64.exe train kn --data t.txt --name ci-kn --order 4
-          GPF_MODELS=./gpfm ./gpf-lite-*-windows-x64.exe --cli --model user:ci-kn --prompt "ROMEO:\n" --n 60
+          GPF_MODELS=./gpfm $X train kn --data t.txt --name ci-kn --order 4
+          GPF_MODELS=./gpfm $X --cli --model user:ci-kn --prompt "ROMEO:\n" --n 60
+      - name: Smoke-test GPF-1 on the CPU (full)
+        if: matrix.edition == 'full'
+        shell: bash
+        run: |
+          X=$(ls ./gpf-full-*-windows-x64.exe)
+          OUT=$($X --cli --model brain --prompt "ROMEO:\n" --n 60 --temp 0.8 --seed 0)
+          echo "$OUT"
+          echo "$OUT" | grep -q "[a-z]" || { echo "GPF-1 wrote nothing"; exit 1; }
+          echo "$OUT" | grep -qF "$BRAIN_EXPECTED" \
+            || echo "::warning::GPF-1 on this runner differs from the reference text (CPU floating point)"
       - uses: actions/upload-artifact@v4
-        with: {name: gpf-exe, path: "gpf-lite-*-windows-x64.exe"}
+        with: {name: "gpf-exe-${{ matrix.edition }}", path: "gpf-${{ matrix.edition }}-*-windows-x64.exe"}
       - name: Attach to release
         if: startsWith(github.ref, 'refs/tags/gpf-v')
         shell: bash
         env: {GH_TOKEN: "${{ github.token }}"}
-        run: gh release upload "$GITHUB_REF_NAME" gpf-lite-*-windows-x64.exe --clobber
+        run: gh release upload "$GITHUB_REF_NAME" gpf-${{ matrix.edition }}-*-windows-x64.exe --clobber
