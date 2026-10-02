@@ -12,9 +12,9 @@ fire while it writes, and compare it side by side with an n-gram model and a sma
 Download it from [Releases](https://github.com/LxCenady/Fly-Is-All-You-Need/releases). No
 GPU, Python or internet connection needed:
 
-- **Windows:** `gpf-full-…-windows-x64.exe` (with the fly brain, ~160 MB), double-click it.
+- **Windows:** `gpf-full-…-windows-x64.exe` (with the fly brain, 161 MB), double-click it.
 - **Ubuntu / Debian:** `gpf-full_…_amd64.deb`, then `sudo apt install ./gpf-full_…_amd64.deb`.
-- **Lite** (`gpf-lite-…`, ~20 MB): everything except the fly brain; `gpf get-brain` downloads it
+- **Lite** (`gpf-lite-…`, 23–40 MB): everything except the fly brain; `gpf get-brain` downloads it
   later.
 
 GPF-1 runs on an ordinary CPU (about 100 characters a second on a laptop) with exactly the

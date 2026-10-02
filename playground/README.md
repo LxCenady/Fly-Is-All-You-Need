@@ -28,7 +28,7 @@ gpf
 ```
 
 Nothing else to install: Python, the fly's connectome and everything GPF needs are inside, and
-GPF-1 runs on the CPU (no GPU needed). The `gpf-lite` packages (~20 MB) are the same without
+GPF-1 runs on the CPU (no GPU needed). The `gpf-lite` packages (23–40 MB) are the same without
 the connectome; run `gpf get-brain` once to add it. (Your antivirus may take
 a second look at the .exe the first time; it is an unsigned app built by GitHub Actions from
 this repository.)
