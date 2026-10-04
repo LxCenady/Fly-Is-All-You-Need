@@ -18,7 +18,14 @@ def ridge_span(X, ids, n_tr, span, lam=10.0, clip=3.0):
     Ztr = np.c_[Z[:ntr], np.ones(ntr, np.float32)]
     Zva = np.c_[Z[ntr:], np.ones(len(Z) - ntr, np.float32)]
     eye = np.eye(Ztr.shape[1], dtype=np.float32)
-    A = cho_factor(Ztr.T @ Ztr + lam * eye)
+    try:
+        A = cho_factor(Ztr.T @ Ztr + lam * eye)
+    except np.linalg.LinAlgError:
+        # Near-collinear columns (counts and traces of one quiet neuron)
+        # can break float32 positive-definiteness: retry in float64.
+        # Results that factor in float32 are unchanged.
+        Z64 = Ztr.astype(np.float64)
+        A = cho_factor(Z64.T @ Z64 + lam * np.eye(Z64.shape[1]))
     V = int(ids.max()) + 1
     acc, majority = [], []
     for k in range(span + 1):

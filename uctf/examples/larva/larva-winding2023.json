@@ -1,0 +1,56 @@
+{
+ "uctf": 2,
+ "name": "larva-winding2023",
+ "description": "Drosophila larva brain (Winding et al. 2023): 2,952 neurons, chemical synapses (synapse counts, all compartments). Input to the second-order projection neurons (PN); readout from every neuron that is neither a PN nor sensory. Signs: LN inhibitory, all else excitatory (assumed; no neurotransmitter data). Operating point chosen by activity only (select_gain.py, see README).",
+ "connectome": {"source": "folder", "params": {"path": "winding2023"}},
+ "transforms": [
+  {"transform": "cut_inputs", "params": {"population": "SENSORY", "layers": ["chemical"]}}
+ ],
+ "populations": {
+  "SENSORY": {"col": "class", "equals": "sensory"},
+  "PN": {"col": "class", "equals": "PN"},
+  "KC": {"col": "class", "equals": "KC"},
+  "MBON": {"col": "class", "equals": "MBON"},
+  "MBIN": {"col": "class", "equals": "MBIN"},
+  "LN": {"col": "class", "equals": "LN"},
+  "READOUT": {"not": {"or": ["PN", "SENSORY"]}}
+ },
+ "neuron": {
+  "model": "lif",
+  "params": {"dt": 0.02, "tau": 0.1, "threshold": 1.0, "reset": 0.0, "tonic": 0.05,
+             "noise_hz": 0.0, "seed": 20260920}
+ },
+ "synapses": [
+  {"layer": "chemical", "model": "chemical", "params": {"gain": 1.7}}
+ ],
+ "input": {
+  "encoder": "random_subset", "population": "PN", "steps": 6,
+  "params": {"active": 50, "drive": 1.5, "sustain": 0.5, "seed": 3}
+ },
+ "readout": [
+  {"name": "spikes", "feature": "counts", "population": "READOUT", "params": {}},
+  {"name": "voltage", "feature": "voltage", "population": "READOUT", "params": {}},
+  {"name": "trace", "feature": "trace", "population": "READOUT", "params": {"tau": 0.1}}
+ ],
+ "controls": {
+  "rewire-full": [{"transform": "rewire", "params": {
+   "layers": {"chemical": "permute_presynaptic"}, "classes": null, "skip_missing": true}}],
+  "rewire-class": [{"transform": "rewire", "params": {
+   "layers": {"chemical": "permute_presynaptic"},
+   "classes": {"populations": ["SENSORY", "PN", "KC", "MBON", "MBIN", "LN"], "else_col": "class"},
+   "skip_missing": true}}]
+ },
+ "activity_match": {"param": "synapses.chemical.params.gain", "readouts": ["spikes"]},
+ "view": {
+  "groups": [
+   {"name": "PN", "population": "PN", "color": "#22d3ee", "text": "projection neurons (input)"},
+   {"name": "KC", "population": "KC", "color": "#facc15", "text": "Kenyon cells"},
+   {"name": "MBON", "population": "MBON", "color": "#4ade80", "text": "mushroom-body outputs"},
+   {"name": "MBIN", "population": "MBIN", "color": "#e879f9", "text": "mushroom-body inputs (dopamine and others)"},
+   {"name": "LN", "population": "LN", "color": "#f87171", "text": "local neurons (inhibitory, assumed)"}
+  ],
+  "title": "Inside the larva",
+  "caption": "No positions in the data: one column per cell class.",
+  "credit": "Winding et al. 2023, Science 379:eadd9330"
+ }
+}

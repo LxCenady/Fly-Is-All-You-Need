@@ -12,6 +12,7 @@ uctf/examples/*/neurons.csv
 uctf/examples/*/edges.csv
 uctf/examples/celegans/cook2019/
 uctf/examples/toy_connectome/toy/
+uctf/examples/larva/winding2023/
 
 # fork build outputs (the wheel is published as a GitHub release asset)
 third_party/flybrain/dist/

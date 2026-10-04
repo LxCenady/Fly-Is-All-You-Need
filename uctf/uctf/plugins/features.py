@@ -27,13 +27,22 @@ class _Feature:
 
 @register("feature", "counts")
 class Counts(_Feature):
-    """Spikes per neuron during the token."""
+    """Spikes per neuron during the token. Optional "window": [a, b] counts
+    only the token's steps a..b-1 (e.g. [0, 1] = the first step)."""
+
+    def __init__(self, ids, xp, dt, params):
+        super().__init__(ids, xp, dt, params)
+        w = params.get("window")
+        self.window = None if w is None else (int(w[0]), int(w[1]))
 
     def begin(self):
         self._n = self.xp.zeros(self.size, self.xp.float32)
+        self._step = 0
 
     def on_spikes(self, spikes):
-        self._n += spikes[self.ids]
+        if self.window is None or self.window[0] <= self._step < self.window[1]:
+            self._n += spikes[self.ids]
+        self._step += 1
 
     def value(self):
         return to_host(self._n)
