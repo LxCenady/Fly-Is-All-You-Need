@@ -1,0 +1,14 @@
+# x0 dose-response, worm, one variable at a time (base: active 9, drive 1.5, sustain 0.5, gain 2.5875)
+base 2.5875
+act2 2.5875 --set input.params.active=2
+act4 2.5875 --set input.params.active=4
+act18 2.5875 --set input.params.active=18
+act36 2.5875 --set input.params.active=36
+drv075 2.5875 --set input.params.drive=0.75
+drv3 2.5875 --set input.params.drive=3.0
+sus025 2.5875 --set input.params.sustain=0.25
+sus075 2.5875 --set input.params.sustain=0.75
+g100 1.0
+g150 1.5
+g200 2.0
+g230 2.3

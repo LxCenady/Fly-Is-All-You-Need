@@ -1,0 +1,13 @@
+# x0 dose-response, fly, one variable at a time (base: active 3570 of 14,876 input neurons,
+# drive 1.5, sustain 0.5, gain 4.5). Shuffled text. About 20 min per condition on a T4 (3 codes).
+base 4.5
+act9 4.5 --set input.params.active=9
+act100 4.5 --set input.params.active=100
+act1000 4.5 --set input.params.active=1000
+act7000 4.5 --set input.params.active=7000
+drv075 4.5 --set input.params.drive=0.75
+drv3 4.5 --set input.params.drive=3.0
+sus025 4.5 --set input.params.sustain=0.25
+sus075 4.5 --set input.params.sustain=0.75
+g30 3.0
+g60 6.0
