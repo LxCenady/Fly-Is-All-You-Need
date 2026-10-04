@@ -69,6 +69,7 @@ def main():
     act = (X[:, :n] > 0).mean(1)
     info.update(readout_active_mean=float(act.mean()), readout_active_max=float(act.max()),
                 dims=dims)
+    Path(a.out).parent.mkdir(parents=True, exist_ok=True)
     np.savez_compressed(a.out, X=X, info=json.dumps(info))
     print(json.dumps(info), flush=True)
 
