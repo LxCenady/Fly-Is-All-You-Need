@@ -61,7 +61,7 @@ def main():
             m = np.mean(r[b], 0)
             out[cond][b] = [round(float(v), 4) for v in m]
             print(f"{b:8s} " + " ".join(f"{v:6.3f}" for v in m))
-    Path(Path(__file__).parent / "window_test.json").write_text(json.dumps(out, indent=1))
+    Path(Path(__file__).parent / f"window_test_m{a.m}.json").write_text(json.dumps(out, indent=1))
 
 
 if __name__ == "__main__":

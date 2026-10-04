@@ -1,7 +1,7 @@
 """Built-in plugins. The registry imports these modules on first use
 (core/registry.py, BUILTIN), so importing one plugin module stays light.
 
-    sources      folder, flybrain
+    sources      folder, flybrain, random
     transforms   cut_inputs, lesion, scale, transmitter_signs,
                  normalise_inputs, rewire
     neurons      lif
