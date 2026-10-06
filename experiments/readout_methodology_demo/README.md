@@ -42,5 +42,3 @@ A **toy model**: 1,804 LIF neurons (dt 20 ms, τ 100 ms, threshold 1, reset 0, t
 - `index.html` — the whole page (simulation, Web Worker measurement, Three.js view).
 - `UCTF_Readout.exe` — Windows launcher with the page embedded. Rebuild with `launcher/build.ps1` (uses the C# compiler that ships with Windows).
 - `calibration/measure.py`, `calibration/regimes.py` — NumPy versions of the toy model used to check the effects and set the regime thresholds.
-
-Visual language inspired by [RhineLabUI](https://github.com/LBEILC/RhineLabUI) (MIT); no assets from it are included.

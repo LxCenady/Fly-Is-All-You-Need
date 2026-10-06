@@ -9,9 +9,9 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/misans-webfont@4.3.1/misans/misans-demibold/result.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/misans-webfont@4.3.1/misans/misans-bold/result.min.css">
 <style>
-/* RhineLab main-screen grammar: brand top-left, system nav top-right, counter + title + tick row
-   bottom-left, reading column on the right behind a paper fade, 10px system footer.
-   Paper / ink from RhineLab; the single signal colour is radiation blue instead of amber. */
+/* Layout: wordmark + live terminal on top, tilted glass boards left (dilemma, parameters, curves) and right (memory chart),
+   a tick ruler for navigation at the bottom, the reservoir array as the page itself.
+   One line language (ticks, hairline guides, ring scale) on beige paper and ink; radiation blue marks stable readout only. */
 :root{
   --paper:#e8e5e1; --paper-rgb:232,229,225;
   --ink:#080a08; --muted:#77756d; --muted-2:#8f8a80; --line:#aaa59a; --line-2:#bdb8ad;
@@ -161,7 +161,7 @@ button:focus-visible{outline:1px solid var(--signal);outline-offset:3px}
 .slab{position:absolute;inset:0;transform-style:preserve-3d;transform-origin:100% 50%;will-change:transform}
 .slab>*{position:absolute;inset:0;border-radius:var(--rad)}
 :root{--rad:22px}
-/* base plate (ivory end face in RhineLab) sits behind the glass cover */
+/* base plate sits behind the glass cover */
 .slab .base{-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);transform:translate3d(16px,20px,-54px);background:var(--g-base);border:1px solid var(--g-edge);box-shadow:0 50px 90px -40px var(--g-shadow),inset 0 1px 0 var(--g-hi)}
 .slab .base::after{content:"";position:absolute;inset:14px;border-radius:calc(var(--rad) - 10px);border:1px dashed var(--g-engrave)}
 /* cover thickness: stacked slices with the same radius */
@@ -495,7 +495,7 @@ function setLang(l){if(l===LANG)return;twRestore();LANG=l;buildCH();i18nStatic()
   log(`language → ${LANG==="en"?"English":"中文"}`);try{localStorage.setItem("uctf-lang",LANG);}catch(e){}}
 $("lang").onclick=()=>setLang(LANG==="en"?"zh":"en");
 
-/* chart, drawn in ink like a RhineLab plate */
+/* chart, drawn in ink */
 function css(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();}
 /* ---- typewriter: panel text is printed in reading order, one character at a time.
    Each text node becomes [typed][hidden rest]; the hidden rest keeps the final layout, so lines never reflow. */
@@ -685,7 +685,7 @@ function regime(dt){const n=sstep((freeE-.05)/.06),d=(1-n)*sstep((.03-covE)/.012
   RG.n+=(n-RG.n)*Math.min(1,dt*3);RG.d+=(d-RG.d)*Math.min(1,dt*3);
   return RG.n>.5?2:RG.d>.5?0:1;}
 
-/* 3D: low, long-lens oblique view of the rod field (RhineLab camera: ~59° azimuth, ~19° elevation) */
+/* 3D: low, long-lens oblique view of the rod field (~59° azimuth, ~21° elevation) */
 const cv=$("gl"),probe=$("probe");let R=null;
 if(window.THREE){
   const T=THREE,renderer=new T.WebGLRenderer({canvas:cv,antialias:true,alpha:true});renderer.setClearColor(0,0);
