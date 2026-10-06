@@ -184,6 +184,11 @@ button:focus-visible{outline:1px solid var(--signal);outline-offset:3px}
 .read{position:absolute;inset:0;padding:30px 34px 30px 36px;display:grid;align-content:center;gap:15px;pointer-events:auto;transform:translateZ(1px)}
 .read>*{transition:opacity .25s}
 .tw .r{visibility:hidden}
+.lite .face,.lite .slab .base,.lite .dockglass{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+.lite .face{background:linear-gradient(140deg,rgba(var(--paper-rgb),.93),rgba(var(--paper-rgb),.86))}
+.lite .slab .ly,.lite .slab .base .cast,.lite .face .sheen{display:none}
+.lite .slab .base{background:rgba(var(--paper-rgb),.5)}
+.lite .read{text-shadow:none}.lite .read #chart{filter:none}
 .tw.on .a::after{content:"";display:inline-block;width:2px;height:1em;margin-right:-2px;background:var(--signal);vertical-align:-.14em}
 .read.swap>*{opacity:0}
 :root{--g-face:linear-gradient(140deg,rgba(255,255,255,.22),rgba(255,255,255,.03) 50%,rgba(255,255,255,.12));--g-base:linear-gradient(150deg,rgba(255,255,255,.14),rgba(230,226,220,.06));
@@ -229,12 +234,36 @@ td:first-child,th:first-child{text-align:left;color:var(--muted)}
 .probe span:first-child{color:var(--muted)}
 
 @media (max-width:1100px){.nav button{padding-inline:8px}.nav button span{font-size:11px}}
+/* phone: header, a window onto the array, terminal, memory chart, parameters, footer; the ruler is a bottom tab bar */
+.mwin,.rulerbg{display:none}
 @media (max-width:760px){
-  body{overflow:auto}.ui{position:relative;inset:auto;display:grid;gap:22px;padding:24px 18px 30px;min-height:100vh;align-content:start}
-  .brand,.file,.footer,.powered{position:static;max-width:none;width:auto}
-  .board,.board.l{position:relative;inset:auto;width:auto;perspective:none}.slab{position:relative}.read{position:relative}.brand .rule{width:100%}
-  .atmo{background:linear-gradient(180deg,var(--paper) 0%,rgba(var(--paper-rgb),.6) 20%,transparent 40%,rgba(var(--paper-rgb),.85) 55%,var(--paper) 70%)}
-  .ruler{position:relative;left:auto;bottom:auto;transform:none;width:100%}.term{position:static;width:auto}.nav button span{display:none}.file{margin-top:28vh}.footer{flex-wrap:wrap;gap:10px 20px}.brand h1{font-size:34px}.brand .cn{font-size:26px}}
+  html,body{height:auto;overflow-x:hidden}body{overflow-y:visible}
+  #gl{touch-action:pan-y}
+  .ui{position:relative;inset:auto;display:grid;grid-template-columns:minmax(0,1fr);gap:18px;padding:18px 16px 160px;min-height:100svh;align-content:start}
+  .brand{position:static;order:1;white-space:normal;gap:10px;width:auto}
+  .brand .mark span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:60vw}
+  .brand h1{font-size:44px}.brand .sub{font-size:14px}.brand .rule{width:100%}
+  .brand .meta{gap:2px 18px}.brand .meta b{font-size:18px}
+  .mwin{display:grid;order:2;height:44svh;align-content:end;justify-items:end;pointer-events:none}
+  .mwin span{font-size:9.5px;letter-spacing:1px;color:var(--muted);background:rgba(var(--paper-rgb),.75);padding:2px 6px}
+  .term{position:relative;order:3;left:auto;top:auto;width:auto;min-width:0;font-size:10px;padding:10px 10px 8px 14px;background:rgba(var(--paper-rgb),.88)}
+  .term::before{left:-8px;right:-8px}.term::after{top:-8px;bottom:-8px}
+  .term .th span:first-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+  .term .th{display:grid;grid-template-columns:minmax(0,1fr) auto}
+  .tlog{min-height:0}.tlog div:nth-last-child(n+4){display:none}
+  .board,.board.l{position:relative;inset:auto;width:auto;perspective:none}
+  .board:not(.l){order:4}.board.l{order:5}
+  .slab{position:relative;transform:none!important}.read,.board.l .read{position:relative;padding:20px 18px 18px}
+  .powered{position:static;order:7;font-size:15px}
+  .footer{position:static;order:6;flex-wrap:wrap;gap:8px 16px}
+  .footer .push{margin-left:0;flex-basis:100%}
+  .rulerbg{display:block;position:fixed;left:0;right:0;bottom:0;height:150px;z-index:2;pointer-events:none;
+    background:linear-gradient(180deg,rgba(var(--paper-rgb),0),rgba(var(--paper-rgb),.97) 32%,var(--paper))}
+  .ruler{position:fixed;left:22px;right:22px;bottom:calc(10px + env(safe-area-inset-bottom,0px));width:auto;transform:none;z-index:3}
+  .nav button span{display:none}.nav button i{font-size:11px}
+  .atmo{background:linear-gradient(180deg,var(--paper) 0%,rgba(var(--paper-rgb),.5) 14%,transparent 26%)}
+  .probe{display:none}
+}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -250,6 +279,7 @@ td:first-child,th:first-child{text-align:left;color:var(--muted)}
 </div>
 
 <div class="ui">
+  <div class="mwin" aria-hidden="true"><span data-en="DRAG SIDEWAYS TO ROTATE · TAP TO INJECT">左右拖动旋转 · 点按注入刺激</span></div>
   <div class="brand">
     <div class="mark">
       <svg viewBox="0 0 100 100" aria-hidden="true"><g transform="translate(-10.503 -10.503) scale(1.2101)" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linejoin="round"><path d="M77.020 39.613 L63.510 47.413 L50.000 39.613 L50.000 24.013 L63.510 16.213 L77.020 24.013 Z"/><path d="M87.520 57.800 L74.010 65.600 L60.500 57.800 L60.500 42.200 L74.010 34.400 L87.520 42.200 Z"/><path d="M77.020 75.987 L63.510 83.787 L50.000 75.987 L50.000 60.387 L63.510 52.587 L77.020 60.387 Z"/><path d="M50.000 75.987 L36.490 83.787 L22.980 75.987 L22.980 60.387 L36.490 52.587 L50.000 60.387 Z"/><path d="M39.500 57.800 L25.990 65.600 L12.480 57.800 L12.480 42.200 L25.990 34.400 L39.500 42.200 Z"/><path d="M50.000 39.613 L36.490 47.413 L22.980 39.613 L22.980 24.013 L36.490 16.213 L50.000 24.013 Z"/></g></svg>
@@ -271,6 +301,7 @@ td:first-child,th:first-child{text-align:left;color:var(--muted)}
     <div class="tl" id="t-l3"></div>
     <div class="tlog" id="tlog"></div>
   </div>
+  <div class="rulerbg" aria-hidden="true"></div>
   <div class="ruler" id="ruler"><div class="rticks" id="rticks"></div><div class="peak" id="peak" aria-hidden="true"><b id="pk-t"></b><small id="pk-v"></small></div><nav class="nav" id="nav" role="tablist" aria-label="五个困境"></nav></div>
 
   <div class="board l"><div class="slab" id="slabL">
@@ -398,6 +429,11 @@ function core(){
 "use strict";
 const $=id=>document.getElementById(id);
 const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+/* quality: "lite" for phones (coarse pointer or narrow), "high" otherwise; ?quality=lite|high overrides.
+   A high-tier desktop that averages > 28 ms per frame over its first seconds also drops to lite. */
+const QP=new URLSearchParams(location.search).get("quality");
+let LITE=QP?QP==="lite":(matchMedia("(pointer:coarse)").matches||Math.min(innerWidth,innerHeight)<700);
+document.documentElement.classList.toggle("lite",LITE);
 const C=core(),{N,G,cells,idx,rod,S,perm}=C,SYM="ABCDEFGH";
 const DEF={gain:4,seq:"iid",M:200,feat:"counts",shift:0};
 let LANG="zh";const LL=(zh,en)=>LANG==="en"?en:zh;
@@ -545,7 +581,7 @@ function render(){
   drawSide(G);
   syncCast();
 }
-function syncCast(){$("cast").innerHTML=$("read").innerHTML.replace(/ id="[^"]*"/g,"");$("castL").innerHTML=$("pread").innerHTML.replace(/ id="[^"]*"/g,"");}
+function syncCast(){if(LITE)return;$("cast").innerHTML=$("read").innerHTML.replace(/ id="[^"]*"/g,"");$("castL").innerHTML=$("pread").innerHTML.replace(/ id="[^"]*"/g,"");}
 
 /* ---- left board: parameter list + two continuous draggable curves ---- */
 const LAB={seq:v=>CH[2].lab(v),feat:v=>CH[1].lab(v),shift:v=>CH[3].lab(v),gain:v=>v.toFixed(2),M:v=>Math.round(v)+LL(" 个"," neurons")};
@@ -635,13 +671,14 @@ function dockStep(dt){
   const W=rul.clientWidth;
   spring(pk,rIn?rU:pinU,rIn?260:120,rIn?.9:.75,dt);spring(amp,rIn?24:16,200,.7,dt);
   const px=pk[0]*W;
-  for(const t of ticks){const k=bump(t.u*W-px);spring(t.h,4+amp[0]*k,420,.8,dt);t.el.style.left=(t.u*100)+"%";
-    t.el.style.height=Math.max(1,t.h[0]).toFixed(1)+"px";t.el.style.opacity=(.28+.72*k).toFixed(3);}
+  for(const t of ticks){const k=bump(t.u*W-px);spring(t.h,4+amp[0]*k,420,.8,dt);
+    if(t.w===undefined){t.el.style.left=(t.u*100)+"%";t.w=-1;}
+    if(Math.abs(t.h[0]-t.w)>.15){t.w=t.h[0];t.el.style.height=Math.max(1,t.h[0]).toFixed(1)+"px";t.el.style.opacity=(.28+.72*k).toFixed(2);}}
   longs.forEach((l,i)=>{const k=bump(l.u*W-px);spring(l.h,(i===cur?22:13)+amp[0]*k*.9,320,.7,dt);
     l.el.style.left=(l.u*100)+"%";l.el.style.height=l.h[0].toFixed(1)+"px";l.el.style.opacity=i===cur?1:(.45+.55*k).toFixed(3);});
   // the label rides on top of the peak and names the interval it sits in
   const sec=Math.max(0,Math.min(CH.length-1,Math.floor(pk[0]*CH.length))),top=4+amp[0];
-  peakEl.style.left=px.toFixed(1)+"px";peakEl.style.bottom=(78-44+top+6)+"px";
+  {const hw=peakEl.offsetWidth/2,lx=Math.max(hw-14,Math.min(W-hw+14,px));peakEl.style.left=lx.toFixed(1)+"px";}peakEl.style.bottom=(78-44+top+6)+"px";
   if(sec!==pkSec||(pkTick=(pkTick+1)%10)==0){pkSec=sec;const c=CH[sec],key=PKEY[sec];
     $("pk-t").textContent=`${String(sec+1).padStart(2,"0")} ${c.t}`;$("pk-v").textContent=`${c.en} · ${LAB[key](cfg[key])}`;}
 }
@@ -650,11 +687,12 @@ function physics(dt){
   dockStep(dt);
   spring(SP.z,0,150,.55,dt);spring(SP.ry,0,150,.55,dt);spring(SP.x,0,150,.6,dt);spring(SP.cam,0,60,.5,dt);spring(SP.t,0,170,.5,dt);
   spring(SP.tx,pmx,30,1,dt);spring(SP.ty,pmy,30,1,dt);
-  if(innerWidth>=760){const ry=-16+SP.tx[0]*7+SP.ry[0],rx=3-SP.ty[0]*5;
+  if(innerWidth>=760&&!LITE){const ry=-16+SP.tx[0]*7+SP.ry[0],rx=3-SP.ty[0]*5;
     slab.style.transform=`translate3d(${SP.x[0]}px,0,${SP.z[0]}px) rotateY(${ry}deg) rotateX(${rx}deg)`;
     slabL.style.transform=`translate3d(${-SP.x[0]*.5}px,0,${SP.z[0]*.6}px) rotateY(${16+SP.tx[0]*7-SP.ry[0]*.6}deg) rotateX(${rx}deg)`;}
-  else{slab.style.transform="none";slabL.style.transform="none";}
-  sheens.forEach(s=>{s.style.setProperty("--sx",(-SP.tx[0]*60-10)+"%");s.style.setProperty("--sy",(-SP.ty[0]*60-20)+"%");});
+  else if(innerWidth<760){slab.style.transform="none";slabL.style.transform="none";}
+  else{slab.style.transform=`translate3d(${SP.x[0]}px,0,${SP.z[0]}px) rotateY(-16deg) rotateX(3deg)`;slabL.style.transform=`translate3d(${-SP.x[0]*.5}px,0,${SP.z[0]*.6}px) rotateY(16deg) rotateX(3deg)`;}
+  if(!LITE)sheens.forEach(s=>{s.style.setProperty("--sx",(-SP.tx[0]*60-10)+"%");s.style.setProperty("--sy",(-SP.ty[0]*60-20)+"%");});
   fileEl.style.transform=`translateX(${SP.t[0]*.06}px)`;
 }
 
@@ -689,7 +727,7 @@ function regime(dt){const n=sstep((freeE-.05)/.06),d=(1-n)*sstep((.03-covE)/.012
 const cv=$("gl"),probe=$("probe");let R=null;
 if(window.THREE){
   const T=THREE,renderer=new T.WebGLRenderer({canvas:cv,antialias:true,alpha:true});renderer.setClearColor(0,0);
-  renderer.setPixelRatio(Math.min(2,devicePixelRatio||1));renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;
+  renderer.shadowMap.type=T.PCFSoftShadowMap;
   renderer.toneMapping=T.ACESFilmicToneMapping;
   const scene=new T.Scene();scene.fog=new T.Fog(0,60,120);
   const cam=new T.PerspectiveCamera(13,1,10,400);
@@ -708,6 +746,10 @@ if(window.THREE){
   const geo=new T.BoxGeometry(.86,1,.86);geo.translate(0,.5,0);
   const mat=new T.MeshStandardMaterial({roughness:.38,metalness:.08});
   const mesh=new T.InstancedMesh(geo,mat,N);mesh.castShadow=true;mesh.receiveShadow=true;scene.add(mesh);
+  function applyTier(){renderer.setPixelRatio(LITE?Math.min(1,devicePixelRatio||1):Math.min(1.75,devicePixelRatio||1));
+    renderer.shadowMap.enabled=!LITE;key.castShadow=!LITE;floor.visible=!LITE;mat.needsUpdate=true;floorM.needsUpdate=true;
+    renderer.setSize(innerWidth,innerHeight,false);}
+  applyTier();
   const fr=new T.LineSegments(new T.EdgesGeometry(new T.BoxGeometry(1.04,1,1.04)),new T.LineBasicMaterial({transparent:true,opacity:0}));fr.geometry.translate(0,.5,0);scene.add(fr);
   const P={};
   function theme(dark){
@@ -736,18 +778,19 @@ if(window.THREE){
     yawOff+=yawV*dt;yawV*=Math.exp(-dt*(1.1+.035*Math.abs(yawV)));if(Math.abs(yawV)<.05)yawV=0;   // drag ~ v + c*v^2: fast spins brake hard, slow drift lingers
     const a=-60*pitchRaw-2*Math.sqrt(60)*.8*pitchV;pitchV+=a*dt;pitchRaw+=pitchV*dt;}
   function place(dt){orbit(dt);sx+=(mx-sx)*Math.min(1,dt*2.5);sy+=(my-sy)*Math.min(1,dt*2.5);
-    const narrow=innerWidth<760,az=(59+sx*4+SP.cam[0]*9)*Math.PI/180,el=Math.max(6,Math.min(70,(narrow?34:21-sy*2)+pitchEff()))*Math.PI/180,dist=narrow?170:150;
+    const narrow=innerWidth<760,az=(59+sx*4+SP.cam[0]*9)*Math.PI/180,el=Math.max(6,Math.min(70,(narrow?40:21-sy*2)+pitchEff()))*Math.PI/180,dist=narrow?150:150;
     look.set(narrow?0:-6,0,narrow?0:4);
     cam.position.set(look.x+Math.sin(az)*Math.cos(el)*dist,Math.sin(el)*dist,look.z+Math.cos(az)*Math.cos(el)*dist);
     {const q=yawOff*Math.PI/180,c=Math.cos(q),s=Math.sin(q);   // rigid orbit about the ring centre (0,0,0): its screen position stays put
      for(const v of [cam.position,look]){const x=v.x,z=v.z;v.x=x*c+z*s;v.z=-x*s+z*c;}}
     cam.lookAt(look);
     $("bgp").style.backgroundPosition=`${(yawOff*1.6).toFixed(1)}px ${(-yawOff*1.6+pitchEff()*3).toFixed(1)}px`;
-    cam.fov=narrow?16:13;cam.updateProjectionMatrix();
+    cam.fov=narrow?Math.min(38,30/Math.max(.45,innerWidth/innerHeight)*.5):13;cam.updateProjectionMatrix();
     scene.fog.near=dist-30;scene.fog.far=dist+45;}
   function size(){renderer.setSize(innerWidth,innerHeight,false);cam.aspect=innerWidth/innerHeight;
     // frame the field slightly left of centre, leaving the reading column on the right
-    if(innerWidth>=760)cam.setViewOffset(innerWidth,innerHeight,-innerWidth*.10,-innerHeight*.03,innerWidth,innerHeight);else cam.clearViewOffset();
+    if(innerWidth>=760)cam.setViewOffset(innerWidth,innerHeight,-innerWidth*.10,-innerHeight*.03,innerWidth,innerHeight);
+    else cam.setViewOffset(innerWidth,innerHeight,0,innerHeight*.13,innerWidth,innerHeight);   // disc centred in the top window
     cam.updateProjectionMatrix();}
   addEventListener("resize",size);size();place(1);
   const ray=new T.Raycaster(),ndc=new T.Vector2(),plane=new T.Plane(new T.Vector3(0,1,0),-.6),hit=new T.Vector3();
@@ -757,7 +800,7 @@ if(window.THREE){
     if(!ray.ray.intersectPlane(plane,hit)){hover=-1;return;}const gx=Math.round(hit.x+23.5),gz=Math.round(hit.z+23.5);hover=(gx>=0&&gz>=0&&gx<G&&gz<G)?idx[gz*G+gx]:-1;}
   addEventListener("pointermove",e=>{mx=e.clientX/innerWidth-.5;my=e.clientY/innerHeight-.5;px=e.clientX;py=e.clientY;pick(e);});
   addEventListener("click",e=>{if(dragged){dragged=false;return;}pick(e);if(hover>=0){poke=hover;log(`inject neuron #${String(hover).padStart(4,"0")} · +0.9 for 5 steps`);}});
-  R={theme,update(dt,time){
+  R={theme,applyTier,update(dt,time){
     place(dt);
     P.GL.copy(P.glow).lerp(P.glowD,RG.d).lerp(P.glowN,RG.n);P.RO.copy(P.ro).lerp(P.roD,RG.d).lerp(P.roN,RG.n);
     const hx=hover>=0?cells[hover][0]:-99,hz=hover>=0?cells[hover][1]:-99;
@@ -783,13 +826,19 @@ if(window.THREE){
   }};
 }
 
-let curReg=1,lastReg=1;const STEP_MS=1000/15;let acc=0,prev=performance.now(),frame=0;
+let curReg=1,lastReg=1,r3d=0,ftE=16,ftLast=performance.now(),ftS=[],ftPrev=performance.now(),tierDone=false;const t0Perf=performance.now();const STEP_MS=1000/15;let acc=0,prev=performance.now(),frame=0;
 function loop(now){
   const dt=Math.min(.05,(now-prev)/1000);prev=now;acc+=dt*1000;
   while(acc>=STEP_MS){liveStep();acc-=STEP_MS;}
-  if(!reduce)physics(dt);
-  if(R)R.update(dt,now/1000);
-  if(animating())render();else if(frame%30==0)syncCast();
+  if(!reduce)physics(dt);else dockStep(dt);
+  r3d+=dt;if(R&&(!LITE||r3d>=1/31)){R.update(r3d,now/1000);r3d=0;}
+  if(animating())render();else if(!LITE&&frame%30==0)syncCast();
+  ftE+=((now-ftLast)-ftE)*.05;ftLast=now;window.__perf={frameMs:+ftE.toFixed(1),lite:LITE};
+  // auto tier: median frame interval between 2.5 s and 5 s after load (robust to start-up spikes)
+  if(!QP&&!tierDone){const el=now-t0Perf;if(el>2500&&el<5000)ftS.push(now-ftPrev);
+    if(el>=5000){tierDone=true;const s=ftS.sort((a,b)=>a-b),med=s.length?s[s.length>>1]:16;
+      if(!LITE&&med>30){LITE=true;document.documentElement.classList.add("lite");if(R)R.applyTier();log(`quality → lite (median ${med.toFixed(0)} ms per frame)`);}}}
+  ftPrev=now;
   if(frame%30==0)freeRun();
   curReg=regime(dt);
   if(frame%6==0)termNow();

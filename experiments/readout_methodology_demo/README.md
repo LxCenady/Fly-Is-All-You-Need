@@ -26,6 +26,8 @@ Internet is needed for three.js and the MiSans web font (both loaded from jsDeli
 
 URL parameters: `?lang=en&ch=5&gain=6.5&M=120&seq=text&feat=both&shift=1`.
 
+Phones and slow machines get a lighter render automatically (1× pixel ratio, no shadows, no backdrop blur, 3D at 30 fps) with a phone layout: array window on top, ruler as a bottom tab bar. Force it with `?quality=lite` or `?quality=high`.
+
 ## Controls
 
 - `← →` switch dilemma, `↑ ↓` change the current setting; the tick ruler at the bottom does the same with the mouse.
